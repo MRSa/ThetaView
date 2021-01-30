@@ -26,6 +26,9 @@ class EquirectangularDrawer(context: Context) : IGraphicsDrawer
 
     private var mDroidTextureID = 0
     private var mScaleFactor = 1.0f
+    private var mAngleX = 0.0f
+    private var mAngleY = 0.0f
+    private var mAngleZ = 0.0f
 
     companion object
     {
@@ -41,6 +44,21 @@ class EquirectangularDrawer(context: Context) : IGraphicsDrawer
     override fun setScaleFactor(scaleFactor: Float)
     {
         mScaleFactor *= scaleFactor
+    }
+
+    override fun resetView()
+    {
+        mScaleFactor = 1.0f
+        mAngleX = 0.0f
+        mAngleY = 0.0f
+        mAngleZ = 0.0f
+    }
+
+    override fun setViewMove(x: Float, y: Float, z: Float)
+    {
+        mAngleX += x
+        mAngleY += y
+        mAngleZ += z
     }
 
     override fun prepareDrawer(gl: GL10?)
@@ -64,6 +82,11 @@ class EquirectangularDrawer(context: Context) : IGraphicsDrawer
         gl?.glBindTexture(GL10.GL_TEXTURE_2D, mDroidTextureID) // テクスチャをバインド (mTextureIDのビットマップを利用)
         gl?.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_REPEAT) // テクスチャをs軸方向に繰り返す
         gl?.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_REPEAT) // テクスチャをt軸方向に繰り返す
+
+        // 画像を回転させる
+        gl?.glRotatef(mAngleX, 1.0f, 0.0f, 0.0f) // X軸周りに回転
+        gl?.glRotatef(mAngleY, 0.0f, 1.0f, 0.0f) // Y軸周りに回転
+        gl?.glRotatef(mAngleZ, 0.0f, 0.0f, 1.0f) // Z軸周りに回転
     }
 
     override fun drawObject(gl: GL10?)

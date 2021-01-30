@@ -8,8 +8,14 @@ interface IGraphicsDrawer
     /** テクスチャ画像提供オブジェクト **/
     fun setImageProvider(provider: IImageProvider)
 
-    /** 拡大・縮小サイズ **/
+    /** 表示の 拡大・縮小 **/
     fun setScaleFactor(scaleFactor: Float)
+
+    /** 視点の移動 **/
+    fun setViewMove(x : Float, y : Float, z : Float)
+
+    /** 視点を初期化 **/
+    fun resetView()
 
     /** 準備クラス  */
     fun prepareObject()

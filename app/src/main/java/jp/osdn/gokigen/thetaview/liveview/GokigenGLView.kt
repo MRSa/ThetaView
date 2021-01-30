@@ -31,6 +31,30 @@ class GokigenGLView : GLSurfaceView, ILiveViewRefresher, ILiveView, IMessageDraw
         initializeSelf(context, attrs)
     }
 
+    fun resetView()
+    {
+        try
+        {
+            graphicsDrawer.resetView()
+        }
+        catch (e : Exception)
+        {
+            e.printStackTrace()
+        }
+    }
+
+    fun moveView(x : Float, y : Float)
+    {
+        try
+        {
+            graphicsDrawer.setViewMove(x, y, 0.0f)
+        }
+        catch (e : Exception)
+        {
+            e.printStackTrace()
+        }
+    }
+
     fun setScaleFactor(scaleFactor : Float)
     {
         try

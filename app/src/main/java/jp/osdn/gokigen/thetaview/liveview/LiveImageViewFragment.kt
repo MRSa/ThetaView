@@ -34,6 +34,7 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
 
         //　入力の初期化
         gestureDetector = GestureDetector(context, this)
+        gestureDetector.setIsLongpressEnabled(true)
         scaleGestureDetector = ScaleGestureDetector(context, this)
     }
 
@@ -79,7 +80,7 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
             v?.performClick()
             return (false)
         }
-        return (scaleGestureDetector.onTouchEvent(event) || gestureDetector.onTouchEvent(event))
+        return (gestureDetector.onTouchEvent(event) || scaleGestureDetector.onTouchEvent(event))
     }
 
     // GestureDetector.OnGestureListener
@@ -106,6 +107,7 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
     override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean
     {
         Log.v(TAG, " Gesture onScroll")
+        imageView.moveView(distanceX, distanceY)
         return (false)
     }
 
@@ -113,6 +115,7 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
     override fun onLongPress(e: MotionEvent?)
     {
         Log.v(TAG, " Gesture onLongPress")
+        imageView.resetView()
     }
 
     // GestureDetector.OnGestureListener
