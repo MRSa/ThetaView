@@ -1,0 +1,64 @@
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:title="@string/pref_cat_application_control">
+        <PreferenceScreen
+            android:key="exit_application"
+            android:icon="@drawable/ic_baseline_power_settings_new_24"
+            android:title="@string/pref_exit_power_off"
+            android:summary="@string/pref_summary_exit_power_off"
+            />
+        <PreferenceScreen
+            android:key="wifi_settings"
+            android:title="@string/pref_wifi_settings"
+            android:summary="@string/pref_summary_wifi_settings" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="@string/pref_cat_application_settings">
+
+        <SwitchPreferenceCompat
+            android:key="use_camera_x_preview"
+            android:title="@string/pref_use_camerax_preview"/>
+
+        <SwitchPreferenceCompat
+            android:key="save_local_location"
+            android:title="@string/save_local_location"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_cat_camera">
+        <SwitchPreferenceCompat
+            android:key="capture_both_camera_and_live_view"
+            android:title="@string/pref_capture_both_camera_and_live_view"
+            android:summary="@string/pref_summary_capture_both_live_view"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="@string/pref_cat_gokigen">
+        <Preference
+            android:key="instruction_link"
+            android:title="@string/pref_instruction_manual"
+            android:summary="https://osdn.net/projects/gokigen/wiki/Mangle"
+            android:selectable="true">
+            <intent android:action="android.intent.action.VIEW"
+                android:data="https://osdn.net/projects/gokigen/wiki/Mangle" />
+        </Preference>
+        <Preference
+            android:key="privacy_policy"
+            android:title="@string/pref_privacy_policy"
+            android:summary="https://osdn.net/projects/gokigen/wiki/PrivacyPolicy"
+            android:selectable="true">
+            <intent android:action="android.intent.action.VIEW"
+                android:data="https://osdn.net/projects/gokigen/wiki/PrivacyPolicy" />
+        </Preference>
+        <PreferenceScreen
+            android:key="debug_info"
+            android:title="@string/pref_degug_info"
+            android:summary="@string/pref_summary_debug_info" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

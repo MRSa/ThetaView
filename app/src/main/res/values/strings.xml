@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">ThetaView</string>
+    <string name="blank"> </string>
+    <string name="app_location">AirA01a</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="finish_refresh">Finish refresh.</string>
+
+    <string name="permission_not_granted">Permissions not granted by the user.</string>
+
+    <string name="dialog_positive_execute">OK</string>
+    <string name="dialog_negative_cancel">Cancel</string>
+
+    <string name="capture_success">Photo capture succeeded: </string>
+
+    <string name="dialog_confirm_title_output_log">Share debug log</string>
+    <string name="dialog_confirm_message_output_log">Share the debug log, OK?</string>
+
+    <string name="dialog_title_exit_application">Exit Application</string>
+    <string name="dialog_message_exit_application">Exit Application</string>
+
+    <string name="pref_cat_application_control">App. Control</string>
+    <string name="pref_exit_power_off">Exit Application</string>
+    <string name="pref_summary_exit_power_off"> </string>
+    <string name="pref_wifi_settings">WIFI Settings</string>
+    <string name="pref_summary_wifi_settings"> </string>
+
+    <string name="pref_cat_application_settings">App. Settings</string>
+    <string name="save_local_location">Save local location</string>
+
+    <string name="pref_cat_camera">Camera</string>
+    <string name="pref_capture_both_camera_and_live_view">Capture LiveView Image</string>
+    <string name="pref_summary_capture_both_live_view">Captures a LiveView image.</string>
+
+    <string name="pref_cat_gokigen">GOKIGEN</string>
+    <string name="pref_instruction_manual">Instructions</string>
+    <string name="pref_privacy_policy">Privacy Policy</string>
+    <string name="pref_degug_info">Debug Information</string>
+    <string name="pref_summary_debug_info">LogCat Information</string>
+
+    <string name="pref_use_camerax_preview">Use Camera preview(need restart)</string>
+
+    <string name="shoot_camera">Captured!</string>
+
+    <string name="connect_start">start</string>
+    <string name="connect_check_wifi">check WIFI</string>
+    <string name="connect_connect">connecting</string>
+    <string name="connect_connecting">connecting&#8230;</string>
+    <string name="connect_connected">connected</string>
+    <string name="connect_change_run_mode">changeRunMode</string>
+    <string name="connect_restore_camera_settings">restoreCameraSettings</string>
+
+    <string name="camera_not_found">Not Found&#8230;</string>
+    <string name="theta_connect_response_ng">Camera replies NG.</string>
+
+    <string name="dialog_title_connect_failed_theta">Connect failed (THETA)</string>
+    <string name="dialog_title_button_retry">Retry</string>
+    <string name="dialog_title_button_network_settings">WiFi Settings</string>
+</resources>
