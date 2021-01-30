@@ -25,6 +25,7 @@ class EquirectangularDrawer(context: Context) : IGraphicsDrawer
     private var mIndices : Int = 0
 
     private var mDroidTextureID = 0
+    private var mScaleFactor = 1.0f
 
     companion object
     {
@@ -35,6 +36,11 @@ class EquirectangularDrawer(context: Context) : IGraphicsDrawer
     {
         Log.v(TAG, "setImageProvider()")
         this.imageProvider = provider
+    }
+
+    override fun setScaleFactor(scaleFactor: Float)
+    {
+        mScaleFactor *= scaleFactor
     }
 
     override fun prepareDrawer(gl: GL10?)
@@ -63,6 +69,7 @@ class EquirectangularDrawer(context: Context) : IGraphicsDrawer
     override fun drawObject(gl: GL10?)
     {
         //Log.v(TAG, "drawObject()")
+        gl?.glScalef(mScaleFactor, mScaleFactor, mScaleFactor)
         gl?.glFrontFace(GL10.GL_CCW)
         gl?.glVertexPointer(3, GL10.GL_FLOAT, 0, mFVertexBuffer)
         gl?.glEnable(GL10.GL_TEXTURE_2D)

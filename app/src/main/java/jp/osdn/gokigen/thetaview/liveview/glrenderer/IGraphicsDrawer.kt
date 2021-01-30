@@ -8,6 +8,9 @@ interface IGraphicsDrawer
     /** テクスチャ画像提供オブジェクト **/
     fun setImageProvider(provider: IImageProvider)
 
+    /** 拡大・縮小サイズ **/
+    fun setScaleFactor(scaleFactor: Float)
+
     /** 準備クラス  */
     fun prepareObject()
 

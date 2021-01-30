@@ -4,7 +4,11 @@ import android.content.Context
 import android.graphics.PixelFormat
 import android.opengl.GLSurfaceView
 import android.util.AttributeSet
-import jp.osdn.gokigen.thetaview.liveview.glrenderer.*
+import android.util.Log
+import jp.osdn.gokigen.thetaview.liveview.glrenderer.EquirectangularDrawer
+import jp.osdn.gokigen.thetaview.liveview.glrenderer.GokigenGLRenderer
+import jp.osdn.gokigen.thetaview.liveview.glrenderer.IGraphicsDrawer
+import jp.osdn.gokigen.thetaview.liveview.glrenderer.SquareDrawer
 import jp.osdn.gokigen.thetaview.liveview.image.IImageProvider
 
 class GokigenGLView : GLSurfaceView, ILiveViewRefresher, ILiveView, IMessageDrawer
@@ -27,6 +31,19 @@ class GokigenGLView : GLSurfaceView, ILiveViewRefresher, ILiveView, IMessageDraw
         initializeSelf(context, attrs)
     }
 
+    fun setScaleFactor(scaleFactor : Float)
+    {
+        try
+        {
+            Log.v(TAG, " scaleFactor : $scaleFactor")
+            graphicsDrawer.setScaleFactor(scaleFactor)
+        }
+        catch (e : Exception)
+        {
+            e.printStackTrace()
+        }
+    }
+
     /**
      * クラスの初期化処理...レンダラを設定する
      *
@@ -47,9 +64,9 @@ class GokigenGLView : GLSurfaceView, ILiveViewRefresher, ILiveView, IMessageDraw
             setRenderer(renderer)
 
             // 画面を透過させる
-            holder.setFormat(PixelFormat.TRANSLUCENT)
+            holder.setFormat(PixelFormat.TRANSLUCENT )
         }
-        catch (e : Exception)
+        catch (e: Exception)
         {
             e.printStackTrace()
         }
@@ -67,7 +84,7 @@ class GokigenGLView : GLSurfaceView, ILiveViewRefresher, ILiveView, IMessageDraw
             imageProvider = provider
             graphicsDrawer.setImageProvider(provider)
         }
-        catch (e : Exception)
+        catch (e: Exception)
         {
             e.printStackTrace()
         }
@@ -88,7 +105,8 @@ class GokigenGLView : GLSurfaceView, ILiveViewRefresher, ILiveView, IMessageDraw
         //TODO("Not yet implemented")
     }
 
-    override fun setLevelToShow(value: Float, area: IMessageDrawer.LevelArea) {
+    override fun setLevelToShow(value: Float, area: IMessageDrawer.LevelArea)
+    {
         //TODO("Not yet implemented")
     }
 

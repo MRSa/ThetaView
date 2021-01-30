@@ -24,6 +24,9 @@ class SquareDrawer(context: Context) : IGraphicsDrawer
 
     private var mDroidTextureID = 0
 
+    private var mScaleFactor = 1.0f
+
+
     companion object
     {
         private val  TAG = this.toString()
@@ -33,6 +36,11 @@ class SquareDrawer(context: Context) : IGraphicsDrawer
     {
         Log.v(TAG, "setImageProvider()")
         this.imageProvider = provider
+    }
+
+    override fun setScaleFactor(scaleFactor: Float)
+    {
+        mScaleFactor *= scaleFactor
     }
 
     override fun prepareDrawer(gl: GL10?)
@@ -61,6 +69,7 @@ class SquareDrawer(context: Context) : IGraphicsDrawer
     override fun drawObject(gl: GL10?)
     {
         //Log.v(TAG, "drawObject()")
+        gl?.glScalef(mScaleFactor, mScaleFactor, mScaleFactor)
         gl?.glFrontFace(GL10.GL_CCW)
         gl?.glVertexPointer(3, GL10.GL_FLOAT, 0, mFVertexBuffer)
         gl?.glEnable(GL10.GL_TEXTURE_2D)
