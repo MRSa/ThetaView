@@ -26,8 +26,8 @@ class EquirectangularDrawer(context: Context) : IGraphicsDrawer
 
     private var mDroidTextureID = 0
     private var mScaleFactor = 1.0f
-    private var mAngleX = 0.0f
-    private var mAngleY = 0.0f
+    private var mAngleX = -180.0f
+    private var mAngleY = -180.0f
     private var mAngleZ = 0.0f
 
     companion object
@@ -59,6 +59,7 @@ class EquirectangularDrawer(context: Context) : IGraphicsDrawer
         mAngleX += x
         mAngleY += y
         mAngleZ += z
+        //Log.v(TAG, "setView : ($mAngleX, $mAngleY, $mAngleZ)")
     }
 
     override fun prepareDrawer(gl: GL10?)
@@ -103,10 +104,10 @@ class EquirectangularDrawer(context: Context) : IGraphicsDrawer
     override fun prepareObject()
     {
         //Log.v(TAG, "prepareObject()")
-
-        //makeSphere0(1.0f, 40, 20)
-        makeSphere(1.0f, 80, 40)
-        //makeSphere1(1.0f, 20, 10)
+        //makeSphere(1.0f, 360, 180)
+        //makeSphere(1.0f, 36, 18)
+        //makeSphere(1.0f, 72, 36)
+        makeSphere(1.0f, 360, 180)
 
         mFVertexBuffer?.position(0)
         mTexBuffer?.position(0)
@@ -114,149 +115,11 @@ class EquirectangularDrawer(context: Context) : IGraphicsDrawer
 
     }
 
-    private fun makeSphere1(radius: Float, nSlices: Int, nStacks: Int)
-    {
-        mIndices = 6
-
-        val numOfVertex = 4
-        val vbb: ByteBuffer = ByteBuffer.allocateDirect(((numOfVertex) * 3) * 4)
-        vbb.order(ByteOrder.nativeOrder())
-        mFVertexBuffer = vbb.asFloatBuffer()
-
-        val tbb: ByteBuffer = ByteBuffer.allocateDirect(((numOfVertex) * 2) * 4)
-        tbb.order(ByteOrder.nativeOrder())
-        mTexBuffer = tbb.asFloatBuffer()
-
-        val ibb: ByteBuffer = ByteBuffer.allocateDirect((mIndices) * 2)
-        ibb.order(ByteOrder.nativeOrder())
-        mIndexBuffer = ibb.asShortBuffer()
-
-
-        // 頂点座標０
-        mFVertexBuffer?.put(0.0f)
-        mFVertexBuffer?.put(1.0f)
-        mFVertexBuffer?.put(0.0f)
-
-        // 頂点座標１
-        mFVertexBuffer?.put(0.0f)
-        mFVertexBuffer?.put(0.0f)
-        mFVertexBuffer?.put(0.0f)
-
-        // 頂点座標２
-        mFVertexBuffer?.put(1.0f)
-        mFVertexBuffer?.put(0.0f)
-        mFVertexBuffer?.put(0.0f)
-
-        // 頂点座標３
-        mFVertexBuffer?.put(1.0f)
-        mFVertexBuffer?.put(1.0f)
-        mFVertexBuffer?.put(0.0f)
-
-        // 三角形１
-        mIndexBuffer?.put(0)
-        mIndexBuffer?.put(1)
-        mIndexBuffer?.put(2)
-
-        // 三角形２
-        mIndexBuffer?.put(0)
-        mIndexBuffer?.put(2)
-        mIndexBuffer?.put(3)
-
-        // テクスチャ０
-        mTexBuffer?.put(0.0f)
-        mTexBuffer?.put(1.0f)
-
-        // テクスチャ１
-        mTexBuffer?.put(0.0f)
-        mTexBuffer?.put(0.0f)
-
-        // テクスチャ２
-        mTexBuffer?.put(1.0f)
-        mTexBuffer?.put(0.0f)
-
-        // テクスチャ３
-        mTexBuffer?.put(1.0f)
-        mTexBuffer?.put(1.0f)
-
-    }
-    private fun makeSphere0(radius: Float, nSlices: Int, nStacks: Int)
-    {
-
-        // Allocation
-        mIndices = ((nStacks - 1) * nSlices + 2 - 2) * 2 + 4 * nSlices - 2
-
-        val vbb: ByteBuffer = ByteBuffer.allocateDirect((((nStacks - 1) * nSlices + 2) * 3) * 4)
-        vbb.order(ByteOrder.nativeOrder())
-        mFVertexBuffer = vbb.asFloatBuffer()
-
-        val tbb: ByteBuffer = ByteBuffer.allocateDirect((((nStacks - 1) * nSlices + 2) * 2) * 4)
-        tbb.order(ByteOrder.nativeOrder())
-        mTexBuffer = tbb.asFloatBuffer()
-
-        val ibb: ByteBuffer = ByteBuffer.allocateDirect((mIndices) * 2)
-        ibb.order(ByteOrder.nativeOrder())
-        mIndexBuffer = ibb.asShortBuffer()
-
-        //  Vertex
-        mFVertexBuffer?.put(0.0f)
-        mFVertexBuffer?.put(radius)
-        mFVertexBuffer?.put(0.0f)
-
-        for (i in 0 until (nStacks - 1))
-        {
-            for (j in 1..nSlices)
-            {
-                val theta = (nStacks - i - 1).toDouble() / nStacks.toDouble() * 3.14159265f - 3.14159265f * 0.5f
-                val phi = j.toDouble() / nSlices.toDouble() * 2.0f * 3.14159265f
-
-                mFVertexBuffer?.put((radius * cos(theta) * sin(phi)).toFloat())
-                mFVertexBuffer?.put((radius * sin(theta)).toFloat())
-                mFVertexBuffer?.put((radius * cos(theta) * cos(phi)).toFloat())
-            }
-        }
-        mFVertexBuffer?.put(0.0f)
-        mFVertexBuffer?.put(-radius)
-        mFVertexBuffer?.put(0.0f)
-
-        //  Texture
-        mTexBuffer?.put(0.0f)
-        mTexBuffer?.put(-radius)
-
-        for (i in 0 until (nStacks - 1))
-        {
-            for (j in 1..nSlices)
-            {
-                val theta = ((nStacks - 1) - i).toDouble() / nStacks.toDouble() * 3.14159265f - 3.14159265f * 0.5f
-                val phi = j.toDouble() / nSlices.toDouble() * 3.14159265f * 2.0f
-
-                mTexBuffer?.put((radius * cos(theta) * sin(phi)).toFloat())
-                mTexBuffer?.put((radius * sin(theta)).toFloat())
-            }
-        }
-        mTexBuffer?.put(0.0f)
-        mTexBuffer?.put(radius)
-
-        //   Index
-        for (i in 0 until nSlices)
-        {
-            mIndexBuffer?.put(0)
-            for (j in 0 until (nStacks - 1))
-            {
-                mIndexBuffer?.put((j * nSlices + i + 1).toShort())
-                mIndexBuffer?.put((j * nSlices + 1 + (i + 1) % nSlices).toShort())
-            }
-            mIndexBuffer?.put(((nStacks - 1) * nSlices + 1).toShort())
-            mIndexBuffer?.put(0)
-        }
-        mIndexBuffer?.put(((nStacks - 1) * nSlices + 1).toShort())
-    }
-
-
     private fun makeSphere(radius: Float, numLatitudeLines : Int, numLongitudeLines : Int)
     {
 
         // AREA Allocation
-        mIndices =  numLatitudeLines * (numLongitudeLines + 1) + 2
+        mIndices =  (numLatitudeLines + 1) * (numLongitudeLines + 2) + 2
 
         val vbb: ByteBuffer = ByteBuffer.allocateDirect((mIndices * 3) * 4)
         vbb.order(ByteOrder.nativeOrder())
@@ -280,16 +143,16 @@ class EquirectangularDrawer(context: Context) : IGraphicsDrawer
         val latitudeSpacing = 1.0f / (numLatitudeLines + 1.0f)
         val longitudeSpacing = 1.0f / (numLongitudeLines)
 
-        for (latitude   in 0 until numLatitudeLines)
+        for (latitude in 0 .. numLatitudeLines)  // 緯度 (横)
         {
-            for (longitude  in 0 .. numLongitudeLines)
+            for (longitude in 0 until numLongitudeLines)  // 経度 (縦)
             {
                 mTexBuffer?.put(longitude * longitudeSpacing)
                 mTexBuffer?.put(1.0f - (latitude + 1) * latitudeSpacing)
 
 
-                val theta = (longitude * longitudeSpacing) * 2.0f  * 3.14159265f
-                val phi = ((1.0f - (latitude + 1) * latitudeSpacing) - 0.5f) * 3.14159265f
+                val theta = (longitude * longitudeSpacing) * 2.0f  * 3.14159265359f
+                val phi = ((1.0f - (latitude + 1) * latitudeSpacing) - 0.5f) * 3.14159265359f
                 val c = cos(phi)
 
                 mFVertexBuffer?.put(radius * c * cos(theta))
@@ -302,17 +165,17 @@ class EquirectangularDrawer(context: Context) : IGraphicsDrawer
         mFVertexBuffer?.put(0.0f)
 
         mTexBuffer?.put(0.0f)
-        mTexBuffer?.put(0.0f)
+        //mTexBuffer?.put(0.0f)
+        mTexBuffer?.put(-latitudeSpacing)
 
         //   Index
         mIndexBuffer?.put(0)
         for (i in 0 until numLatitudeLines)
         {
             for (j in 0 until (numLongitudeLines - 1))
-            //or (j in 0..numLongitudeLines)
             {
                 mIndexBuffer?.put((j * numLatitudeLines + i + 1).toShort())
-                mIndexBuffer?.put((j * numLatitudeLines + 1 + (i + 1) % numLatitudeLines).toShort())
+                mIndexBuffer?.put((j * numLatitudeLines + i + 1 + 1).toShort())
             }
             mIndexBuffer?.put(((numLongitudeLines - 1) * numLatitudeLines + 1).toShort())
             mIndexBuffer?.put(0)
