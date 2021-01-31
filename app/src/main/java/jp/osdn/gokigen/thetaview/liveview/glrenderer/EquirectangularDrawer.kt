@@ -49,8 +49,8 @@ class EquirectangularDrawer(context: Context) : IGraphicsDrawer
     override fun resetView()
     {
         mScaleFactor = 1.0f
-        mAngleX = 0.0f
-        mAngleY = 0.0f
+        mAngleX = -180.0f
+        mAngleY = -180.0f
         mAngleZ = 0.0f
     }
 
@@ -104,15 +104,15 @@ class EquirectangularDrawer(context: Context) : IGraphicsDrawer
     override fun prepareObject()
     {
         //Log.v(TAG, "prepareObject()")
-        //makeSphere(1.0f, 360, 180)
         //makeSphere(1.0f, 36, 18)
         //makeSphere(1.0f, 72, 36)
-        makeSphere(1.0f, 360, 180)
+        makeSphere(1.0f, 90, 45)
+        //makeSphere(1.0f, 180, 90)
+        //makeSphere(1.0f, 360, 180)
 
         mFVertexBuffer?.position(0)
         mTexBuffer?.position(0)
         mIndexBuffer?.position(0)
-
     }
 
     private fun makeSphere(radius: Float, numLatitudeLines : Int, numLongitudeLines : Int)
@@ -140,19 +140,46 @@ class EquirectangularDrawer(context: Context) : IGraphicsDrawer
         mTexBuffer?.put(0.0f)
         mTexBuffer?.put(1.0f)
 
-        val latitudeSpacing = 1.0f / (numLatitudeLines + 1.0f)
+        val latitudeSpacing = 1.0f / (numLatitudeLines)
         val longitudeSpacing = 1.0f / (numLongitudeLines)
 
         for (latitude in 0 .. numLatitudeLines)  // 緯度 (横)
         {
             for (longitude in 0 until numLongitudeLines)  // 経度 (縦)
             {
-                mTexBuffer?.put(longitude * longitudeSpacing)
-                mTexBuffer?.put(1.0f - (latitude + 1) * latitudeSpacing)
+                // Texture : 計算誤差を避けて場合分け
+                if (longitude != (numLongitudeLines - 1))
+                {
+                    mTexBuffer?.put(longitude * longitudeSpacing)
+                }
+                else
+                {
+                    mTexBuffer?.put(1.0f)
+                }
+                if (latitude != numLatitudeLines)
+                {
+                    mTexBuffer?.put(1.0f - latitude * latitudeSpacing)
+                }
+                else
+                {
+                    mTexBuffer?.put(0.0f)
+                }
 
-
-                val theta = (longitude * longitudeSpacing) * 2.0f  * 3.14159265359f
-                val phi = ((1.0f - (latitude + 1) * latitudeSpacing) - 0.5f) * 3.14159265359f
+                // Theta と Phi : 計算誤差を避けて場合分け
+                val theta = if (longitude != (numLongitudeLines - 1)) {
+                        (longitude * longitudeSpacing) * 2.0f  * 3.14159265359f
+                }
+                else
+                {
+                    2.0f * 3.14159265359f
+                }
+                val phi = if (latitude != numLatitudeLines) {
+                        ((1.0f - (latitude * latitudeSpacing)) - 0.5f) * 3.14159265359f
+                }
+                else
+                {
+                        (-0.5f) * 3.14159265359f
+                }
                 val c = cos(phi)
 
                 mFVertexBuffer?.put(radius * c * cos(theta))
@@ -165,8 +192,8 @@ class EquirectangularDrawer(context: Context) : IGraphicsDrawer
         mFVertexBuffer?.put(0.0f)
 
         mTexBuffer?.put(0.0f)
-        //mTexBuffer?.put(0.0f)
-        mTexBuffer?.put(-latitudeSpacing)
+        mTexBuffer?.put(0.0f)
+
 
         //   Index
         mIndexBuffer?.put(0)
