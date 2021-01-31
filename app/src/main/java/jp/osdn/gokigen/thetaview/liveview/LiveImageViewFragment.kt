@@ -38,7 +38,7 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
         scaleGestureDetector = ScaleGestureDetector(context, this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
     {
         if (::liveViewView.isInitialized)
         {
@@ -86,27 +86,27 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
     // GestureDetector.OnGestureListener
     override fun onDown(e: MotionEvent?): Boolean
     {
-        Log.v(TAG, " Gesture onDown")
+        //Log.v(TAG, " Gesture onDown")
         return (false)
     }
 
     // GestureDetector.OnGestureListener
     override fun onShowPress(e: MotionEvent?)
     {
-        Log.v(TAG, " Gesture onShowPress")
+        //Log.v(TAG, " Gesture onShowPress")
     }
 
     // GestureDetector.OnGestureListener
     override fun onSingleTapUp(e: MotionEvent?): Boolean
     {
-        Log.v(TAG, " Gesture onSingleTapUp")
+        //Log.v(TAG, " Gesture onSingleTapUp")
         return (false)
     }
 
     // GestureDetector.OnGestureListener
     override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean
     {
-        Log.v(TAG, " Gesture onScroll")
+        //Log.v(TAG, " Gesture onScroll")
         imageView.moveView(distanceX, distanceY)
         return (false)
     }
@@ -114,21 +114,21 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
     // GestureDetector.OnGestureListener
     override fun onLongPress(e: MotionEvent?)
     {
-        Log.v(TAG, " Gesture onLongPress")
+        //Log.v(TAG, " Gesture onLongPress")
         imageView.resetView()
     }
 
     // GestureDetector.OnGestureListener
     override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean
     {
-        Log.v(TAG, " Gesture onFling")
+        //Log.v(TAG, " Gesture onFling")
         return (false)
     }
 
     // ScaleGestureDetector.OnScaleGestureListener
     override fun onScale(detector: ScaleGestureDetector?): Boolean
     {
-        Log.v(TAG, " Gesture onScale")
+        //Log.v(TAG, " Gesture onScale")
         try
         {
             if (detector != null)
@@ -147,13 +147,13 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
     // ScaleGestureDetector.OnScaleGestureListener
     override fun onScaleBegin(detector: ScaleGestureDetector?): Boolean
     {
-        Log.v(TAG, " Gesture onScaleBegin")
+        //Log.v(TAG, " Gesture onScaleBegin")
         return (true)
     }
 
     // ScaleGestureDetector.OnScaleGestureListener
     override fun onScaleEnd(detector: ScaleGestureDetector?)
     {
-        Log.v(TAG, " Gesture onScaleEnd")
+        //Log.v(TAG, " Gesture onScaleEnd")
     }
 }

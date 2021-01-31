@@ -40,7 +40,7 @@ class CameraLiveViewListenerImpl(private val context: Context) : IImageDataRecei
 
     override fun onUpdateLiveView(data: ByteArray, metadata: Map<String, Any>?)
     {
-        Log.v(TAG, " onUpdateLiveView() : ${data.size} bytes.")
+        //Log.v(TAG, " onUpdateLiveView() : ${data.size} bytes.")
         try
         {
             imageBitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
