@@ -266,7 +266,7 @@ class EquirectangularDrawer(context: Context) : IGraphicsDrawer
         tbb.order(ByteOrder.nativeOrder())
         mTexBuffer = tbb.asFloatBuffer()
 
-        val ibb: ByteBuffer = ByteBuffer.allocateDirect(((mIndices) * 2) * 2)
+        val ibb: ByteBuffer = ByteBuffer.allocateDirect(((mIndices) * 3) * 2)
         ibb.order(ByteOrder.nativeOrder())
         mIndexBuffer = ibb.asShortBuffer()
 
@@ -305,10 +305,11 @@ class EquirectangularDrawer(context: Context) : IGraphicsDrawer
         mTexBuffer?.put(0.0f)
 
         //   Index
+        mIndexBuffer?.put(0)
         for (i in 0 until numLatitudeLines)
         {
-            mIndexBuffer?.put(0)
             for (j in 0 until (numLongitudeLines - 1))
+            //or (j in 0..numLongitudeLines)
             {
                 mIndexBuffer?.put((j * numLatitudeLines + i + 1).toShort())
                 mIndexBuffer?.put((j * numLatitudeLines + 1 + (i + 1) % numLatitudeLines).toShort())

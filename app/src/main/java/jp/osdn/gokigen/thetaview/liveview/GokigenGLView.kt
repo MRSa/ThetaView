@@ -47,7 +47,7 @@ class GokigenGLView : GLSurfaceView, ILiveViewRefresher, ILiveView, IMessageDraw
     {
         try
         {
-            graphicsDrawer.setViewMove(x, y, 0.0f)
+            graphicsDrawer.setViewMove(y, x, 0.0f)
         }
         catch (e : Exception)
         {
