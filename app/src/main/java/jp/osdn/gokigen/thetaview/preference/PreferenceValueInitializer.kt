@@ -90,6 +90,13 @@ class PreferenceValueInitializer() : IPreferenceValueInitializer
                     IPreferencePropertyAccessor.CAPTURE_ONLY_LIVE_VIEW_DEFAULT_VALUE
                 )
             }
+            if (!items.containsKey(IPreferencePropertyAccessor.SHOW_CAMERA_STATUS))
+            {
+                editor.putBoolean(
+                        IPreferencePropertyAccessor.SHOW_CAMERA_STATUS,
+                        IPreferencePropertyAccessor.SHOW_CAMERA_STATUS_DEFAULT_VALUE
+                )
+            }
             if (!items.containsKey(IPreferencePropertyAccessor.EXTERNAL_STORAGE_LOCATION))
             {
                 editor.putString(IPreferencePropertyAccessor.EXTERNAL_STORAGE_LOCATION, IPreferencePropertyAccessor.EXTERNAL_STORAGE_LOCATION_DEFAULT_VALUE)

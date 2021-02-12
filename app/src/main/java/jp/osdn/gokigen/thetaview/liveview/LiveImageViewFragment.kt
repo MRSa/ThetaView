@@ -1,5 +1,6 @@
 package jp.osdn.gokigen.thetaview.liveview
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -7,6 +8,8 @@ import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import jp.osdn.gokigen.thetaview.R
 import jp.osdn.gokigen.thetaview.operation.ICameraControl
+import jp.osdn.gokigen.thetaview.preference.IPreferencePropertyAccessor
+import jp.osdn.gokigen.thetaview.preference.PreferenceAccessWrapper
 
 //class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.liveimage_view) : Fragment(contentLayoutId)
 class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurface_view) : Fragment(contentLayoutId), View.OnTouchListener, GestureDetector.OnGestureListener, ScaleGestureDetector.OnScaleGestureListener
@@ -16,6 +19,8 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
     private lateinit var gestureDetector : GestureDetector
     private lateinit var scaleGestureDetector : ScaleGestureDetector
     private lateinit var imageView : GokigenGLView
+    private lateinit var informationView : CanvasView
+
 
     companion object
     {
@@ -48,14 +53,17 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
         liveViewView.setOnTouchListener(this)
 
         //val imageView = liveviewView.findViewById<LiveImageView>(R.id.liveViewFinder0)
-        imageView = liveViewView.findViewById<GokigenGLView>(R.id.liveViewFinder0)
+        imageView = liveViewView.findViewById(R.id.liveViewFinder0)
+        informationView = liveViewView.findViewById(R.id.canvasView)
         if (::cameraControl.isInitialized)
         {
             liveViewView.findViewById<ImageButton>(R.id.button_camera)?.setOnClickListener(cameraControl.captureButtonReceiver())
-        }
-        //cameraControl.setRefresher(imageView, imageView)
-        cameraControl.setRefresher(imageView, imageView)
 
+            //cameraControl.setRefresher(imageView, imageView)
+            cameraControl.setRefresher(imageView, imageView)
+
+            informationView.setShowCameraStatus(PreferenceAccessWrapper(requireContext()).getBoolean(IPreferencePropertyAccessor.SHOW_CAMERA_STATUS, IPreferencePropertyAccessor.SHOW_CAMERA_STATUS_DEFAULT_VALUE))
+        }
         return (liveViewView)
     }
 
@@ -63,6 +71,10 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
     {
         super.onResume()
         Log.v(TAG, " onResume() : ")
+        if (::informationView.isInitialized)
+        {
+            informationView.setShowCameraStatus(PreferenceAccessWrapper(requireContext()).getBoolean(IPreferencePropertyAccessor.SHOW_CAMERA_STATUS, IPreferencePropertyAccessor.SHOW_CAMERA_STATUS_DEFAULT_VALUE))
+        }
     }
 
     override fun onPause()

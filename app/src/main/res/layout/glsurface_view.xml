@@ -31,4 +31,13 @@
         android:scaleType="fitCenter"
         android:visibility="visible" />
 
+    <view
+        class="jp.osdn.gokigen.thetaview.liveview.CanvasView"
+        android:id="@+id/canvasView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:scaleType="fitCenter"
+        android:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

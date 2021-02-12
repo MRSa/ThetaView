@@ -35,6 +35,11 @@
             android:title="@string/pref_capture_both_camera_and_live_view"
             android:summary="@string/pref_summary_capture_both_live_view"/>
 
+        <SwitchPreferenceCompat
+            android:key="show_camera_status"
+            android:title="@string/pref_show_camera_status"
+            android:summary="@string/pref_summary_show_camera_status"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory

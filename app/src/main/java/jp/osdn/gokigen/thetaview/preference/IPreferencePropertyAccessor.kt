@@ -26,6 +26,9 @@ interface IPreferencePropertyAccessor
         const val CAPTURE_ONLY_LIVE_VIEW = "capture_only_live_view"
         const val CAPTURE_ONLY_LIVE_VIEW_DEFAULT_VALUE = false
 
+        const val SHOW_CAMERA_STATUS = "show_camera_status"
+        const val SHOW_CAMERA_STATUS_DEFAULT_VALUE = false
+
         // --- SCREEN TRANSACTION LABEL ---
         const val LABEL_EXIT_APPLICATION = "exit_application"
         const val LABEL_WIFI_SETTINGS = "wifi_settings"
