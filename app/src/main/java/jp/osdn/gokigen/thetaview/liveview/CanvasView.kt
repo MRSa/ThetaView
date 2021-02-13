@@ -4,39 +4,42 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.RectF
 import android.os.Looper
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import jp.osdn.gokigen.thetaview.scene.IIndicator
+import java.lang.Exception
 
 
 class CanvasView : View
 {
     private var showCameraStatus = false
 
+    private val informationMessage = mutableMapOf<IIndicator.Area, String>()
+    private val informationColor = mutableMapOf<IIndicator.Area, Int>()
 
     constructor(context: Context): super(context)
     {
-        initComponent(context)
+        initComponent()
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     {
-        initComponent(context)
+        initComponent()
     }
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int): super(context, attrs, defStyleAttr)
     {
-        initComponent(context)
+        initComponent()
     }
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int): super(context, attrs, defStyleAttr, defStyleRes)
     {
-        initComponent(context)
+        initComponent()
     }
 
-    private fun initComponent(context: Context)
+    private fun initComponent()
     {
         Log.v(TAG, "initComponent")
 
@@ -60,6 +63,19 @@ class CanvasView : View
         }
     }
 
+    fun setMessage(area: IIndicator.Area, color: Int, message: String)
+    {
+        try
+        {
+            informationMessage[area] = message
+            informationColor[area] = color
+        }
+        catch (e : Exception)
+        {
+            e.printStackTrace()
+        }
+    }
+
     fun refresh()
     {
         //Log.v(TAG, " refreshCanvas()")
@@ -78,134 +94,121 @@ class CanvasView : View
      */
     private fun drawInformationMessages(canvas: Canvas)
     {
-        var message: String
-        val viewRect =  RectF(5.0f, 0.0f, canvas.width - 5.0f, canvas.height - 55.0f)
-
-        message = " HELLO "
-        val paint = Paint()
-        paint.color = Color.GREEN
-        paint.textSize = 16.0f
-        paint.isAntiAlias = true
-        paint.setShadowLayer(5.0f, 3.0f, 3.0f, Color.BLACK)
-        val fontMetrics = paint.fontMetrics
-        //val cx = canvas.width / 2.0f - paint.measureText(message) / 2.0f
-        //val cy = canvas.height / 2.0f - (fontMetrics.ascent + fontMetrics.descent) / 2.0f
-        val cx = 10.0f
-        val cy = 20.0f
-        canvas.drawText(message, cx, cy, paint)
-
-
-/*
-        // 画面の中心に表示する
-        message = messageHolder.getMessage(ShowMessageHolder.MessageArea.CENTER)
-        if (message != null && message.length > 0) {
+        try
+        {
             val paint = Paint()
-            paint.color = messageHolder.getColor(ShowMessageHolder.MessageArea.CENTER)
-            paint.textSize = messageHolder.getSize(ShowMessageHolder.MessageArea.CENTER)
+            paint.color = Color.WHITE
+            paint.textSize = 16.0f
             paint.isAntiAlias = true
+            paint.setShadowLayer(5.0f, 3.0f, 3.0f, Color.BLACK)
+
             val fontMetrics = paint.fontMetrics
-            val cx = canvas.width / 2.0f - paint.measureText(message) / 2.0f
-            val cy = canvas.height / 2.0f - (fontMetrics.ascent + fontMetrics.descent) / 2.0f
-            canvas.drawText(message, cx, cy, paint)
-        }
+            val fontHeight = fontMetrics.bottom - fontMetrics.top + 4.0f
 
-        // 画面上部左側に表示する
-        message = messageHolder.getMessage(ShowMessageHolder.MessageArea.UPLEFT)
-        if (message != null && message.length > 0) {
-            val paintUp = Paint()
-            paintUp.color = messageHolder.getColor(ShowMessageHolder.MessageArea.UPLEFT)
-            paintUp.textSize = messageHolder.getSize(ShowMessageHolder.MessageArea.UPLEFT)
-            paintUp.isAntiAlias = true
-            val fontMetrics = paintUp.fontMetrics
-            canvas.drawText(message, viewRect.left + 3.0f, viewRect.top + (fontMetrics.descent - fontMetrics.ascent), paintUp)
-        }
+            val posX = 10.0f
+            var posY = 20.0f
+            var message = informationMessage[IIndicator.Area.AREA_1]
+            var color = informationColor[IIndicator.Area.AREA_1]
+            if ((message != null) && (color != null))
+            {
+                paint.color = color
+                canvas.drawText(message, posX, posY, paint)
+            }
 
-        // 画面上部右側に表示する
-        message = messageHolder.getMessage(ShowMessageHolder.MessageArea.UPRIGHT)
-        if (message != null && message.length > 0) {
-            val paintUp = Paint()
-            paintUp.color = messageHolder.getColor(ShowMessageHolder.MessageArea.UPRIGHT)
-            paintUp.textSize = messageHolder.getSize(ShowMessageHolder.MessageArea.UPRIGHT)
-            paintUp.isAntiAlias = true
-            val width = paintUp.measureText(message)
-            val fontMetrics = paintUp.fontMetrics
-            canvas.drawText(message, viewRect.right - 3.0f - width, viewRect.top + (fontMetrics.descent - fontMetrics.ascent), paintUp)
-        }
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_2]
+            color = informationColor[IIndicator.Area.AREA_2]
+            if ((message != null) && (color != null))
+            {
+                paint.color = color
+                canvas.drawText(message, posX, posY, paint)
+            }
 
-        // 画面下部左側に表示する
-        message = messageHolder.getMessage(ShowMessageHolder.MessageArea.LOWLEFT)
-        if (message != null && message.length > 0) {
-            val paint = Paint()
-            paint.color = messageHolder.getColor(ShowMessageHolder.MessageArea.LOWLEFT)
-            paint.textSize = messageHolder.getSize(ShowMessageHolder.MessageArea.LOWLEFT)
-            paint.isAntiAlias = true
-            val fontMetrics = paint.fontMetrics
-            canvas.drawText(message, viewRect.left + 3.0f, viewRect.bottom - fontMetrics.bottom, paint)
-        }
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_3]
+            color = informationColor[IIndicator.Area.AREA_3]
+            if ((message != null) && (color != null))
+            {
+                paint.color = color
+                canvas.drawText(message, posX, posY, paint)
+            }
 
-        // 画面下部右側に表示する
-        message = messageHolder.getMessage(LOWRIGHT)
-        if (message != null && message.length > 0) {
-            val paint = Paint()
-            paint.color = messageHolder.getColor(LOWRIGHT)
-            paint.textSize = messageHolder.getSize(LOWRIGHT)
-            paint.isAntiAlias = true
-            val width = paint.measureText(message)
-            val fontMetrics = paint.fontMetrics
-            canvas.drawText(message, viewRect.right - 3.0f - width, viewRect.bottom - fontMetrics.bottom, paint)
-        }
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_4]
+            color = informationColor[IIndicator.Area.AREA_4]
+            if ((message != null) && (color != null))
+            {
+                paint.color = color
+                canvas.drawText(message, posX, posY, paint)
+            }
 
-        // 画面上部中央に表示する
-        message = messageHolder.getMessage(ShowMessageHolder.MessageArea.UPCENTER)
-        if (message != null && message.length > 0) {
-            val paintUp = Paint()
-            paintUp.color = messageHolder.getColor(ShowMessageHolder.MessageArea.UPCENTER)
-            paintUp.textSize = messageHolder.getSize(ShowMessageHolder.MessageArea.UPCENTER)
-            paintUp.isAntiAlias = true
-            val width = paintUp.measureText(message) / 2.0f
-            val fontMetrics = paintUp.fontMetrics
-            canvas.drawText(message, viewRect.centerX() - width, viewRect.top + (fontMetrics.descent - fontMetrics.ascent), paintUp)
-        }
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_5]
+            color = informationColor[IIndicator.Area.AREA_5]
+            if ((message != null) && (color != null))
+            {
+                paint.color = color
+                canvas.drawText(message, posX, posY, paint)
+            }
 
-        // 画面下部中央に表示する
-        message = messageHolder.getMessage(ShowMessageHolder.MessageArea.LOWCENTER)
-        if (message != null && message.length > 0) {
-            val paint = Paint()
-            paint.color = messageHolder.getColor(ShowMessageHolder.MessageArea.LOWCENTER)
-            paint.textSize = messageHolder.getSize(ShowMessageHolder.MessageArea.LOWCENTER)
-            paint.isAntiAlias = true
-            val width = paint.measureText(message) / 2.0f
-            val fontMetrics = paint.fontMetrics
-            canvas.drawText(message, viewRect.centerX() - width, viewRect.bottom - fontMetrics.bottom, paint)
-        }
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_6]
+            color = informationColor[IIndicator.Area.AREA_6]
+            if ((message != null) && (color != null))
+            {
+                paint.color = color
+                canvas.drawText(message, posX, posY, paint)
+            }
 
-        // 画面中央左に表示する
-        message = messageHolder.getMessage(ShowMessageHolder.MessageArea.LEFTCENTER)
-        if (message != null && message.length > 0) {
-            val paint = Paint()
-            paint.color = messageHolder.getColor(ShowMessageHolder.MessageArea.LEFTCENTER)
-            paint.textSize = messageHolder.getSize(ShowMessageHolder.MessageArea.LEFTCENTER)
-            paint.isAntiAlias = true
-            paint.setShadowLayer(5.0f, 3.0f, 3.0f, Color.BLACK) // これで文字に影をつけたい
-            val fontMetrics = paint.fontMetrics
-            val cy = canvas.height / 2.0f - (fontMetrics.ascent + fontMetrics.descent) / 2.0f
-            canvas.drawText(message, viewRect.left + 3.0f, cy, paint)
-        }
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_7]
+            color = informationColor[IIndicator.Area.AREA_7]
+            if ((message != null) && (color != null))
+            {
+                paint.color = color
+                canvas.drawText(message, posX, posY, paint)
+            }
 
-        // 画面中央右に表示する
-        message = messageHolder.getMessage(ShowMessageHolder.MessageArea.RIGHTCENTER)
-        if (message != null && message.length > 0) {
-            val paint = Paint()
-            paint.color = messageHolder.getColor(ShowMessageHolder.MessageArea.RIGHTCENTER)
-            paint.textSize = messageHolder.getSize(ShowMessageHolder.MessageArea.RIGHTCENTER)
-            paint.isAntiAlias = true
-            paint.setShadowLayer(5.0f, 3.0f, 3.0f, Color.BLACK) // これで文字に影をつけたい
-            val width = paint.measureText(message)
-            val fontMetrics = paint.fontMetrics
-            val cy = canvas.height / 2.0f - (fontMetrics.ascent + fontMetrics.descent) / 2.0f
-            canvas.drawText(message, viewRect.right - 3.0f - width, cy, paint)
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_8]
+            color = informationColor[IIndicator.Area.AREA_8]
+            if ((message != null) && (color != null))
+            {
+                paint.color = color
+                canvas.drawText(message, posX, posY, paint)
+            }
+
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_9]
+            color = informationColor[IIndicator.Area.AREA_9]
+            if ((message != null) && (color != null))
+            {
+                paint.color = color
+                canvas.drawText(message, posX, posY, paint)
+            }
+
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_A]
+            color = informationColor[IIndicator.Area.AREA_A]
+            if ((message != null) && (color != null))
+            {
+                paint.color = color
+                canvas.drawText(message, posX, posY, paint)
+            }
+
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_B]
+            color = informationColor[IIndicator.Area.AREA_B]
+            if ((message != null) && (color != null))
+            {
+                paint.color = color
+                canvas.drawText(message, posX, posY, paint)
+            }
         }
-*/
+        catch (e : Exception)
+        {
+            e.printStackTrace()
+        }
     }
 
     fun setShowCameraStatus(isEnable : Boolean)

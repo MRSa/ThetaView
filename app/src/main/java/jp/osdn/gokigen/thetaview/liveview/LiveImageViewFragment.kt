@@ -1,6 +1,5 @@
 package jp.osdn.gokigen.thetaview.liveview
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -10,9 +9,9 @@ import jp.osdn.gokigen.thetaview.R
 import jp.osdn.gokigen.thetaview.operation.ICameraControl
 import jp.osdn.gokigen.thetaview.preference.IPreferencePropertyAccessor
 import jp.osdn.gokigen.thetaview.preference.PreferenceAccessWrapper
+import jp.osdn.gokigen.thetaview.scene.IIndicator
 
-//class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.liveimage_view) : Fragment(contentLayoutId)
-class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurface_view) : Fragment(contentLayoutId), View.OnTouchListener, GestureDetector.OnGestureListener, ScaleGestureDetector.OnScaleGestureListener
+class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurface_view) : Fragment(contentLayoutId), View.OnTouchListener, GestureDetector.OnGestureListener, ScaleGestureDetector.OnScaleGestureListener, IIndicator
 {
     private lateinit var liveViewView : View
     private lateinit var cameraControl: ICameraControl
@@ -20,7 +19,6 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
     private lateinit var scaleGestureDetector : ScaleGestureDetector
     private lateinit var imageView : GokigenGLView
     private lateinit var informationView : CanvasView
-
 
     companion object
     {
@@ -52,7 +50,6 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
         liveViewView = inflater.inflate(contentLayoutId, null, false)
         liveViewView.setOnTouchListener(this)
 
-        //val imageView = liveviewView.findViewById<LiveImageView>(R.id.liveViewFinder0)
         imageView = liveViewView.findViewById(R.id.liveViewFinder0)
         informationView = liveViewView.findViewById(R.id.canvasView)
         if (::cameraControl.isInitialized)
@@ -167,5 +164,37 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
     override fun onScaleEnd(detector: ScaleGestureDetector?)
     {
         //Log.v(TAG, " Gesture onScaleEnd")
+    }
+
+
+    override fun setMessage(area: IIndicator.Area, color: Int, message: String)
+    {
+        Log.v(TAG, ">>> $area[$color] : $message")
+        try
+        {
+            if (::informationView.isInitialized)
+            {
+                informationView.setMessage(area, color, message)
+            }
+        }
+        catch (e: Exception)
+        {
+            e.printStackTrace()
+        }
+    }
+
+    override fun invalidate()
+    {
+        try
+        {
+            if (::informationView.isInitialized)
+            {
+                informationView.refresh()
+            }
+        }
+        catch (e: Exception)
+        {
+            e.printStackTrace()
+        }
     }
 }

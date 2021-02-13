@@ -21,11 +21,10 @@ import jp.osdn.gokigen.thetaview.utils.ConfirmationDialog
 import jp.osdn.gokigen.thetaview.utils.logcat.LogCatFragment
 
 
-class SceneChanger(private val activity: AppCompatActivity, private val informationNotify: IInformationReceiver, private val accessRequest : IScopedStorageAccessPermission?, private val showInformation : IShowInformation, private val statusReceiver : ICameraStatusReceiver) :
-    IChangeScene
+class SceneChanger(private val activity: AppCompatActivity, private val informationNotify: IInformationReceiver, accessRequest : IScopedStorageAccessPermission?, showInformation : IShowInformation, statusReceiver : ICameraStatusReceiver) : IChangeScene
 {
     private val cameraControl: ICameraControl = CameraControl(activity, accessRequest)
-    private val thetaControl : ICameraControl = ThetaControl(activity, showInformation, statusReceiver)
+    private val thetaControl : ThetaControl = ThetaControl(activity, showInformation, statusReceiver)
     private lateinit var liveViewFragment : LiveImageViewFragment
     private lateinit var previewFragment : PreviewFragment
     private lateinit var logCatFragment : LogCatFragment
@@ -56,7 +55,7 @@ class SceneChanger(private val activity: AppCompatActivity, private val informat
         cameraControl.startCamera()
 
         val msg = activity.getString(R.string.app_name) + " : " + " camerax"
-        informationNotify.updateMessage(msg, false, true, Color.LTGRAY)
+        informationNotify.updateMessage(msg, isBold = false, isColor = true, color = Color.LTGRAY)
     }
 
     private fun initializeFragmentForLiveView()
@@ -65,12 +64,13 @@ class SceneChanger(private val activity: AppCompatActivity, private val informat
         {
             liveViewFragment = LiveImageViewFragment.newInstance()
             liveViewFragment.setCameraControl(thetaControl)
+            thetaControl.setIndicator(liveViewFragment)
         }
         setDefaultFragment(liveViewFragment)
         thetaControl.startCamera(false)
 
         val msg = activity.getString(R.string.app_name) + " : " + " STARTED."
-        informationNotify.updateMessage(msg, false, true, Color.LTGRAY)
+        informationNotify.updateMessage(msg, isBold = false, isColor = true, color = Color.LTGRAY)
     }
 
     override fun initializeFragment()
@@ -110,6 +110,7 @@ class SceneChanger(private val activity: AppCompatActivity, private val informat
         {
             liveViewFragment = LiveImageViewFragment.newInstance()
             liveViewFragment.setCameraControl(thetaControl)
+            thetaControl.setIndicator(liveViewFragment)
         }
         changeFragment(liveViewFragment)
         thetaControl.startCamera()

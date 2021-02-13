@@ -2,12 +2,11 @@ package jp.osdn.gokigen.thetaview.camera.theta.status
 
 import android.graphics.Color
 import android.util.Log
-import jp.osdn.gokigen.thetaview.IShowInformation
+import jp.osdn.gokigen.thetaview.scene.IIndicator
 import jp.osdn.gokigen.thetaview.utils.communication.SimpleHttpClient
 import org.json.JSONObject
-import java.lang.Math.ceil
 
-class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdProvider, private val showInformation: IShowInformation, private val executeUrl : String = "http://192.168.1.1") : ICameraStatusWatcher, IThetaStatusHolder
+class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdProvider, private val executeUrl : String = "http://192.168.1.1") : ICameraStatusWatcher, IThetaStatusHolder
 {
     private val httpClient = SimpleHttpClient()
     private var whileFetching = false
@@ -22,14 +21,37 @@ class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdPro
     private var currentWhiteBalance : String = ""
     private var currentFilter : String = ""
 
-    override fun startStatusWatch()
+    private var showInformation: IIndicator? = null
+
+    override fun startStatusWatch(indicator : IIndicator?)
     {
         if (whileFetching)
         {
             Log.v(TAG, "startStatusWatch() already starting.")
             return
         }
+        showInformation = indicator
         whileFetching = true
+
+        try
+        {
+            setMessage(IIndicator.Area.AREA_1, Color.WHITE, "")
+            setMessage(IIndicator.Area.AREA_2, Color.WHITE, "")
+            setMessage(IIndicator.Area.AREA_3, Color.WHITE, "")
+            setMessage(IIndicator.Area.AREA_4, Color.WHITE, "")
+            setMessage(IIndicator.Area.AREA_5, Color.WHITE, "")
+            setMessage(IIndicator.Area.AREA_6, Color.WHITE, "")
+            setMessage(IIndicator.Area.AREA_7, Color.WHITE, "")
+            setMessage(IIndicator.Area.AREA_8, Color.WHITE, "")
+            setMessage(IIndicator.Area.AREA_9, Color.WHITE, "")
+            setMessage(IIndicator.Area.AREA_A, Color.WHITE, "")
+            setMessage(IIndicator.Area.AREA_B, Color.WHITE, "")
+        }
+        catch (e : Exception)
+        {
+            e.printStackTrace()
+        }
+
         try
         {
             val thread = Thread {
@@ -65,6 +87,9 @@ class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdPro
                         }
                         try
                         {
+                            // 表示を更新する
+                            invalidate()
+
                             // ちょっと休む
                             Thread.sleep(loopWaitMs)
                         }
@@ -100,7 +125,7 @@ class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdPro
                 {
                     Log.v(TAG, " CapMode : $currentCaptureMode -> $captureMode")
                     currentCaptureMode = captureMode
-                    showInformation.setMessage(IShowInformation.Area.AREA_1, Color.WHITE, captureMode)
+                    setMessage(IIndicator.Area.AREA_2, Color.WHITE, "Capture Mode : $captureMode")
                 }
             }
             catch (e: Exception)
@@ -130,11 +155,11 @@ class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdPro
                     if (currentExposureCompensation == 0.0)
                     {
                         // 補正なしの時には数値を表示しない
-                        showInformation.setMessage(IShowInformation.Area.AREA_6, Color.WHITE, "")
+                        setMessage(IIndicator.Area.AREA_7, Color.WHITE, "")
                     }
                     else
                     {
-                        showInformation.setMessage(IShowInformation.Area.AREA_6, Color.WHITE, String.format("%1.1f", currentExposureCompensation))
+                        setMessage(IIndicator.Area.AREA_7, Color.WHITE, String.format("%1.1f", currentExposureCompensation))
                     }
                 }
             }
@@ -150,14 +175,7 @@ class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdPro
                 {
                     Log.v(TAG, " WB : $currentWhiteBalance => $whiteBalance")
                     currentWhiteBalance = whiteBalance
-                    if (currentWhiteBalance == "auto")
-                    {
-                        showInformation.setMessage(IShowInformation.Area.AREA_7, Color.WHITE, "")
-                    }
-                    else
-                    {
-                        showInformation.setMessage(IShowInformation.Area.AREA_7, Color.WHITE, currentWhiteBalance)
-                    }
+                    setMessage(IIndicator.Area.AREA_6, Color.WHITE, "WB : $currentWhiteBalance")
                 }
             }
             catch (e: Exception)
@@ -181,7 +199,7 @@ class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdPro
                         "4" -> mode = "Shutter"
                         "9" -> mode = "ISO"
                     }
-                    showInformation.setMessage(IShowInformation.Area.AREA_2, Color.WHITE, mode)
+                    setMessage(IIndicator.Area.AREA_3, Color.WHITE, "Exposure Program : $mode")
                 }
             }
             catch (e: Exception)
@@ -198,14 +216,7 @@ class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdPro
                     {
                         Log.v(TAG, " FILTER : $currentFilter -> $filterValue")
                         currentFilter = filterValue
-                        if (currentFilter == "off")
-                        {
-                            showInformation.setMessage(IShowInformation.Area.AREA_5, Color.WHITE, "")
-                        }
-                        else
-                        {
-                            showInformation.setMessage(IShowInformation.Area.AREA_5, Color.WHITE, currentFilter)
-                        }
+                        setMessage(IIndicator.Area.AREA_5, Color.WHITE, "FILTER : $currentFilter")
                     }
                 }
                 catch (e: Exception)
@@ -227,11 +238,11 @@ class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdPro
                     currentIsoSensitivity = isoSensitivity
                     if (currentIsoSensitivity == 0)
                     {
-                        showInformation.setMessage(IShowInformation.Area.AREA_4, Color.WHITE, "AUTO:iso")
+                        setMessage(IIndicator.Area.AREA_8, Color.WHITE, "ISO : AUTO")
                     }
                     else
                     {
-                        showInformation.setMessage(IShowInformation.Area.AREA_4, Color.WHITE, "${currentIsoSensitivity}iso")
+                        setMessage(IIndicator.Area.AREA_8, Color.WHITE, "ISO : $currentIsoSensitivity")
                     }
                 }
             }
@@ -251,11 +262,11 @@ class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdPro
                     {
                         if (currentAperture == 0.0)
                         {
-                            showInformation.setMessage(IShowInformation.Area.AREA_8, Color.WHITE, "auto")
+                            setMessage(IIndicator.Area.AREA_A, Color.WHITE, "F:auto")
                         }
                         else
                         {
-                            showInformation.setMessage(IShowInformation.Area.AREA_8, Color.WHITE, "F$currentAperture")
+                            setMessage(IIndicator.Area.AREA_A, Color.WHITE, "F$currentAperture")
                         }
                     }
                 }
@@ -274,11 +285,11 @@ class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdPro
                     currentShutterSpeed = shutterSpeed
                     if (currentShutterSpeed == 0.0)
                     {
-                        showInformation.setMessage(IShowInformation.Area.AREA_3, Color.WHITE, "")
+                        setMessage(IIndicator.Area.AREA_9, Color.WHITE, "")
                     }
                     else
                     {
-                        showInformation.setMessage(IShowInformation.Area.AREA_3, Color.WHITE, convertShutterSpeedString(currentShutterSpeed))
+                        setMessage(IIndicator.Area.AREA_9, Color.WHITE, convertShutterSpeedString(currentShutterSpeed))
                     }
                 }
             }
@@ -345,15 +356,7 @@ class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdPro
                 if (captureStatus != currentCaptureStatus)
                 {
                     Log.v(TAG, " CapStatus : $currentCaptureStatus -> $captureStatus")
-                    if (captureStatus != "idle")
-                    {
-                        showInformation.setMessage(IShowInformation.Area.AREA_8, Color.WHITE, captureStatus)
-                    }
-                    else
-                    {
-                        showInformation.setMessage(IShowInformation.Area.AREA_8, Color.WHITE, "")
-                    }
-                    showInformation.invalidate()
+                    setMessage(IIndicator.Area.AREA_4, Color.WHITE, "STATUS : $captureStatus")
                     currentCaptureStatus = captureStatus
                 }
             }
@@ -369,7 +372,6 @@ class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdPro
                     Log.v(TAG, " BATTERY : $currentBatteryLevel => $batteryLevel")
                     currentBatteryLevel = batteryLevel
                     updateRemainBattery(currentBatteryLevel)
-                    showInformation.invalidate()
                 }
             }
             catch (e: Exception)
@@ -386,22 +388,39 @@ class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdPro
 
     private fun updateRemainBattery(percentageDouble: Double)
     {
-        var color = Color.YELLOW
+        var color = Color.WHITE
         if (percentageDouble < 0.5)
         {
-            if (percentageDouble < 0.3)
-            {
+            color = Color.YELLOW
+        }
+        if (percentageDouble < 0.3)
+        {
                 color = Color.RED
-            }
-            try
-            {
-                val percentage = ceil(percentageDouble * 100.0).toInt()
-                showInformation.setMessage(IShowInformation.Area.AREA_8, color, "Batt.$percentage%")
-            }
-            catch (ee: java.lang.Exception)
-            {
-                ee.printStackTrace()
-            }
+        }
+        try
+        {
+            val percentage = kotlin.math.ceil(percentageDouble * 100.0).toInt()
+            setMessage(IIndicator.Area.AREA_1, color, "BATTERY : $percentage%")
+        }
+        catch (ee: java.lang.Exception)
+        {
+            ee.printStackTrace()
+        }
+    }
+
+    private fun setMessage(area: IIndicator.Area, color: Int, message: String)
+    {
+        if (showInformation != null)
+        {
+            showInformation?.setMessage(area, color, message)
+        }
+    }
+
+    private fun invalidate()
+    {
+        if (showInformation != null)
+        {
+            showInformation?.invalidate()
         }
     }
 
@@ -416,17 +435,20 @@ class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdPro
         private const val timeoutMs = 3300
         private const val loopWaitMs : Long = 400
 
+        private const val THETA_BATTERY_LEVEL = "batteryLevel"
+        private const val THETA_CAPTURE_STATUS = "_captureStatus"
+
+/*
         private const val THETA_BLUETOOTH_ROLE  = "_bluetoothRole"
         private const val THETA_BLUETOOTH_POWER = "_bluetoothPower"
         private const val THETA_BLUETOOTH_CLASSIC_ENABLE  = "_bluetoothClassicEnable"
 
-        private const val THETA_BATTERY_LEVEL = "batteryLevel"
-        private const val THETA_CAPTURE_STATUS = "_captureStatus"
         private const val THETA_RECORDING_SEC = "_recordedTime"
         private const val THETA_BATTERY_STATE = "_batteryState"
         private const val THETA_CURRENT_API_LEVEL = "_apiVersion"
         private const val THETA_SHOOTING_FUNCTION = "_function"
         private const val THETA_CAMERA_ERROR = "_cameraError"
+ */
 
         private const val THETA_APERTURE = "aperture"
         private const val THETA_CAPTURE_MODE = "captureMode"

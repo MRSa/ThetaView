@@ -17,6 +17,7 @@ import jp.osdn.gokigen.thetaview.liveview.ILiveViewRefresher
 import jp.osdn.gokigen.thetaview.liveview.image.CameraLiveViewListenerImpl
 import jp.osdn.gokigen.thetaview.operation.ICameraControl
 import jp.osdn.gokigen.thetaview.scene.ICameraConnectionStatus
+import jp.osdn.gokigen.thetaview.scene.IIndicator
 
 class ThetaControl(private val context: AppCompatActivity, private val showInformation : IShowInformation, statusReceiver : ICameraStatusReceiver) : ILiveViewController, ICameraControl, View.OnClickListener
 {
@@ -24,10 +25,15 @@ class ThetaControl(private val context: AppCompatActivity, private val showInfor
     private val cameraConnection = ThetaCameraConnection(context, statusReceiver, sessionIdHolder, sessionIdHolder, this)
     private var liveViewListener = CameraLiveViewListenerImpl(context)
     private val liveViewControl = ThetaLiveViewControl(liveViewListener)
-    //private val singleShotControl = ThetaSingleShotControl(sessionIdHolder, showInformation)
-    //private val optionSetControl = ThetaOptionUpdateControl(sessionIdHolder)
-    private val statusWatcher = ThetaCameraStatusWatcher(sessionIdHolder, showInformation)
+    private var indicator : IIndicator? = null
+
+    private val statusWatcher = ThetaCameraStatusWatcher(sessionIdHolder)
     private var isStatusWatch = false
+
+    fun setIndicator(indicator : IIndicator)
+    {
+        this.indicator = indicator
+    }
 
     override fun initialize()
     {
@@ -127,7 +133,7 @@ class ThetaControl(private val context: AppCompatActivity, private val showInfor
         {
             if (!isStatusWatch)
             {
-                statusWatcher.startStatusWatch()
+                statusWatcher.startStatusWatch(indicator)
                 isStatusWatch = true
             }
             liveViewControl.setSessionIdProvider(sessionIdHolder)

@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import jp.osdn.gokigen.thetaview.camera.ICameraStatusReceiver
-import jp.osdn.gokigen.thetaview.camera.theta.status.ThetaCameraStatusWatcher
 import jp.osdn.gokigen.thetaview.preference.PreferenceValueInitializer
 import jp.osdn.gokigen.thetaview.scene.*
 
@@ -203,22 +202,6 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
                 //if (liveView != null) {
                 //    liveView.invalidate()
                 //}
-            }
-        }
-        catch (e: Exception)
-        {
-            e.printStackTrace()
-        }
-    }
-
-    override fun setMessage(area: IShowInformation.Area, color: Int, message: String)
-    {
-        Log.v(TAG, ">>> $area[$color] : $message")
-        try
-        {
-            runOnUiThread {
-                //
-                //
             }
         }
         catch (e: Exception)
