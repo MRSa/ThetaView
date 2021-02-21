@@ -2,13 +2,18 @@ package jp.osdn.gokigen.thetaview.camera.theta
 
 import android.util.Log
 import android.view.View
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import jp.osdn.gokigen.thetaview.IShowInformation
 import jp.osdn.gokigen.thetaview.R
 import jp.osdn.gokigen.thetaview.camera.ICameraStatusReceiver
 import jp.osdn.gokigen.thetaview.camera.theta.connection.ThetaCameraConnection
 import jp.osdn.gokigen.thetaview.camera.theta.liveview.ThetaLiveViewControl
+import jp.osdn.gokigen.thetaview.camera.theta.operation.ThetaMovieRecordingControl
+import jp.osdn.gokigen.thetaview.camera.theta.operation.ThetaOptionUpdateControl
 import jp.osdn.gokigen.thetaview.camera.theta.operation.ThetaSingleShotControl
+import jp.osdn.gokigen.thetaview.camera.theta.status.ICaptureModeReceiver
 import jp.osdn.gokigen.thetaview.camera.theta.status.ThetaCameraStatusWatcher
 import jp.osdn.gokigen.thetaview.camera.theta.status.ThetaSessionHolder
 import jp.osdn.gokigen.thetaview.liveview.ILiveView
@@ -19,7 +24,7 @@ import jp.osdn.gokigen.thetaview.operation.ICameraControl
 import jp.osdn.gokigen.thetaview.scene.ICameraConnectionStatus
 import jp.osdn.gokigen.thetaview.scene.IIndicator
 
-class ThetaControl(private val context: AppCompatActivity, private val showInformation : IShowInformation, statusReceiver : ICameraStatusReceiver) : ILiveViewController, ICameraControl, View.OnClickListener
+class ThetaControl(private val context: AppCompatActivity, private val showInformation : IShowInformation, statusReceiver : ICameraStatusReceiver) : ILiveViewController, ICameraControl, View.OnClickListener, ICaptureModeReceiver
 {
     private val sessionIdHolder = ThetaSessionHolder()
     private val cameraConnection = ThetaCameraConnection(context, statusReceiver, sessionIdHolder, sessionIdHolder, this)
@@ -27,12 +32,52 @@ class ThetaControl(private val context: AppCompatActivity, private val showInfor
     private val liveViewControl = ThetaLiveViewControl(liveViewListener)
     private var indicator : IIndicator? = null
 
-    private val statusWatcher = ThetaCameraStatusWatcher(sessionIdHolder)
+    private val statusWatcher = ThetaCameraStatusWatcher(sessionIdHolder, this)
     private var isStatusWatch = false
 
     fun setIndicator(indicator : IIndicator)
     {
         this.indicator = indicator
+    }
+
+    fun changeCaptureMode()
+    {
+        val options = if (statusWatcher.captureMode.contains("image"))
+        {
+            // image -> video
+            "\"captureMode\" : \"video\""
+        }
+        else
+        {
+            // video -> image
+            "\"captureMode\" : \"image\""
+        }
+        ThetaOptionUpdateControl(sessionIdHolder).setOptions(options, sessionIdHolder.isApiLevelV21())
+    }
+
+    override fun changedCaptureMode(captureMode : String)
+    {
+        try
+        {
+            val isImage = captureMode.contains("image")
+            context.runOnUiThread {
+                try
+                {
+                    val view : ImageButton = context.findViewById(R.id.button_camera)
+                    val iconId = if (isImage) { R.drawable.ic_baseline_videocam_24 } else { R.drawable.ic_baseline_camera_alt_24 }
+                    view.setImageDrawable(ContextCompat.getDrawable(context, iconId))
+                    view.invalidate()
+                }
+                catch (e : Exception)
+                {
+                    e.printStackTrace()
+                }
+            }
+        }
+        catch (e: Exception)
+        {
+            e.printStackTrace()
+        }
     }
 
     override fun initialize()
@@ -116,7 +161,17 @@ class ThetaControl(private val context: AppCompatActivity, private val showInfor
         }
         when (v.id)
         {
-            R.id.button_camera -> { ThetaSingleShotControl(sessionIdHolder, showInformation, liveViewControl).singleShot(sessionIdHolder.isApiLevelV21()) }
+            R.id.button_camera -> {
+                if (statusWatcher.captureMode.contains("image")) {
+                    // image
+                    ThetaSingleShotControl(sessionIdHolder, showInformation, liveViewControl).singleShot(sessionIdHolder.isApiLevelV21())
+                }
+                else
+                {
+                    // video
+                    ThetaMovieRecordingControl(sessionIdHolder, showInformation, liveViewControl).movieControl(sessionIdHolder.isApiLevelV21())
+                }
+            }
             else -> { }
         }
     }

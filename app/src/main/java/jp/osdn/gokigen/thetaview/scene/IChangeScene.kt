@@ -10,4 +10,5 @@ interface IChangeScene
     fun changeToConfiguration()
     fun changeToDebugInformation()
     fun exitApplication()
+    fun changeCaptureMode()
 }

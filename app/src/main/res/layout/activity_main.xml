@@ -36,7 +36,7 @@
         android:layout_marginRight="2dp"
         android:layout_alignTop="@id/button_configure"
         android:layout_alignParentBottom="true"
-        android:src="@drawable/ic_baseline_change_circle_24"
+        android:src="@drawable/ic_baseline_videocam_24"
         />
 
     <TextView

@@ -6,7 +6,7 @@ import jp.osdn.gokigen.thetaview.scene.IIndicator
 import jp.osdn.gokigen.thetaview.utils.communication.SimpleHttpClient
 import org.json.JSONObject
 
-class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdProvider, private val executeUrl : String = "http://192.168.1.1") : ICameraStatusWatcher, IThetaStatusHolder
+class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdProvider, private val captureModeReceiver : ICaptureModeReceiver, private val executeUrl : String = "http://192.168.1.1") : ICameraStatusWatcher, IThetaStatusHolder
 {
     private val httpClient = SimpleHttpClient()
     private var whileFetching = false
@@ -125,6 +125,7 @@ class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdPro
                 {
                     Log.v(TAG, " CapMode : $currentCaptureMode -> $captureMode")
                     currentCaptureMode = captureMode
+                    captureModeReceiver.changedCaptureMode(captureMode)
                     setMessage(IIndicator.Area.AREA_2, Color.WHITE, "Capture Mode : $captureMode")
                 }
             }

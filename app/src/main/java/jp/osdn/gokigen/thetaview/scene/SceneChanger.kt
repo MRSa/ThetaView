@@ -146,6 +146,8 @@ class SceneChanger(private val activity: AppCompatActivity, private val informat
         changeFragment(logCatFragment)
     }
 
+
+
     override fun exitApplication()
     {
         val dialog = ConfirmationDialog.newInstance(activity)
@@ -159,6 +161,19 @@ class SceneChanger(private val activity: AppCompatActivity, private val informat
                 }
             }
         )
+    }
+
+    override fun changeCaptureMode()
+    {
+        try
+        {
+            // CaptureModeの変更
+            thetaControl.changeCaptureMode()
+        }
+        catch (e : Exception)
+        {
+            e.printStackTrace()
+        }
     }
 
     private fun changeFragment(fragment: Fragment)

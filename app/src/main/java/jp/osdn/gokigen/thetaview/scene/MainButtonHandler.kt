@@ -56,7 +56,7 @@ class MainButtonHandler(private val activity : AppCompatActivity, private val co
     private fun camera()
     {
         Log.v(TAG, " - - - - - - - - - CAMERA - - - - - - - - -")
-        sceneChanger.changeToDebugInformation()
+        sceneChanger.changeCaptureMode()
     }
 
     private fun configure()
