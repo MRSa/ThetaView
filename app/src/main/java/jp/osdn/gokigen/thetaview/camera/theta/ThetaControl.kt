@@ -11,7 +11,7 @@ import jp.osdn.gokigen.thetaview.camera.ICameraStatusReceiver
 import jp.osdn.gokigen.thetaview.camera.theta.connection.ThetaCameraConnection
 import jp.osdn.gokigen.thetaview.camera.theta.liveview.ThetaLiveViewControl
 import jp.osdn.gokigen.thetaview.camera.theta.operation.ThetaMovieRecordingControl
-import jp.osdn.gokigen.thetaview.camera.theta.operation.ThetaOptionUpdateControl
+import jp.osdn.gokigen.thetaview.camera.theta.operation.ThetaOptionSetControl
 import jp.osdn.gokigen.thetaview.camera.theta.operation.ThetaSingleShotControl
 import jp.osdn.gokigen.thetaview.camera.theta.status.ICaptureModeReceiver
 import jp.osdn.gokigen.thetaview.camera.theta.status.ThetaCameraStatusWatcher
@@ -52,7 +52,7 @@ class ThetaControl(private val context: AppCompatActivity, private val showInfor
             // video -> image
             "\"captureMode\" : \"image\""
         }
-        ThetaOptionUpdateControl(sessionIdHolder).setOptions(options, sessionIdHolder.isApiLevelV21())
+        ThetaOptionSetControl(sessionIdHolder).setOptions(options, sessionIdHolder.isApiLevelV21())
     }
 
     override fun changedCaptureMode(captureMode : String)

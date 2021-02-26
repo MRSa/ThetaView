@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import jp.osdn.gokigen.thetaview.R
 import jp.osdn.gokigen.thetaview.camera.ICameraStatusReceiver
 import jp.osdn.gokigen.thetaview.camera.theta.operation.IOperationCallback
-import jp.osdn.gokigen.thetaview.camera.theta.operation.ThetaOptionUpdateControl
+import jp.osdn.gokigen.thetaview.camera.theta.operation.ThetaOptionSetControl
 import jp.osdn.gokigen.thetaview.scene.ICameraConnection
 import jp.osdn.gokigen.thetaview.scene.ICameraConnectionStatus
 import jp.osdn.gokigen.thetaview.camera.theta.status.IThetaSessionIdNotifier
@@ -224,7 +224,7 @@ class ThetaCameraConnection(private val context: AppCompatActivity, private val 
     {
         try
         {
-            val optionSet = ThetaOptionUpdateControl(sessionIdProvider)
+            val optionSet = ThetaOptionSetControl(sessionIdProvider)
             optionSet.setOptions("\"captureMode\" : \"image\"", (sessionIdProvider.sessionId.isBlank()),
                     object : IOperationCallback { override fun operationExecuted(result: Int, resultStr: String?)
                     {
