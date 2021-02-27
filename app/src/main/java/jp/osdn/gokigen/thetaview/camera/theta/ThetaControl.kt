@@ -10,6 +10,7 @@ import jp.osdn.gokigen.thetaview.R
 import jp.osdn.gokigen.thetaview.camera.ICameraStatusReceiver
 import jp.osdn.gokigen.thetaview.camera.theta.connection.ThetaCameraConnection
 import jp.osdn.gokigen.thetaview.camera.theta.liveview.ThetaLiveViewControl
+import jp.osdn.gokigen.thetaview.camera.theta.operation.IThetaShutter
 import jp.osdn.gokigen.thetaview.camera.theta.operation.ThetaMovieRecordingControl
 import jp.osdn.gokigen.thetaview.camera.theta.operation.ThetaOptionSetControl
 import jp.osdn.gokigen.thetaview.camera.theta.operation.ThetaSingleShotControl
@@ -24,7 +25,7 @@ import jp.osdn.gokigen.thetaview.operation.ICameraControl
 import jp.osdn.gokigen.thetaview.scene.ICameraConnectionStatus
 import jp.osdn.gokigen.thetaview.scene.IIndicator
 
-class ThetaControl(private val context: AppCompatActivity, private val showInformation : IShowInformation, statusReceiver : ICameraStatusReceiver) : ILiveViewController, ICameraControl, View.OnClickListener, ICaptureModeReceiver
+class ThetaControl(private val context: AppCompatActivity, private val showInformation : IShowInformation, statusReceiver : ICameraStatusReceiver) : ILiveViewController, ICameraControl, View.OnClickListener, ICaptureModeReceiver, IThetaShutter
 {
     private val sessionIdHolder = ThetaSessionHolder()
     private val cameraConnection = ThetaCameraConnection(context, statusReceiver, sessionIdHolder, sessionIdHolder, this)
@@ -161,18 +162,29 @@ class ThetaControl(private val context: AppCompatActivity, private val showInfor
         }
         when (v.id)
         {
-            R.id.button_camera -> {
-                if (statusWatcher.captureMode.contains("image")) {
-                    // image
-                    ThetaSingleShotControl(sessionIdHolder, showInformation, liveViewControl).singleShot(sessionIdHolder.isApiLevelV21())
-                }
-                else
-                {
-                    // video
-                    ThetaMovieRecordingControl(sessionIdHolder, showInformation, liveViewControl).movieControl(sessionIdHolder.isApiLevelV21())
-                }
-            }
+            R.id.button_camera -> { doShutter() }
             else -> { }
+        }
+    }
+
+    override fun doShutter()
+    {
+        try
+        {
+            if (statusWatcher.captureMode.contains("image"))
+            {
+                // image
+                ThetaSingleShotControl(sessionIdHolder, showInformation, liveViewControl).singleShot(sessionIdHolder.isApiLevelV21())
+            }
+            else
+            {
+                // video
+                ThetaMovieRecordingControl(sessionIdHolder, showInformation, liveViewControl).movieControl(sessionIdHolder.isApiLevelV21())
+            }
+        }
+        catch (e : Exception)
+        {
+            e.printStackTrace()
         }
     }
 

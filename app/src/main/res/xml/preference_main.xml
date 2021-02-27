@@ -40,6 +40,11 @@
             android:title="@string/pref_show_camera_status"
             android:summary="@string/pref_summary_show_camera_status"/>
 
+        <SwitchPreferenceCompat
+            android:key="use_mindwave_eeg"
+            android:title="@string/pref_use_mindwave_connection"
+            android:summary="@string/pref_summary_use_mindwave_connection"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory

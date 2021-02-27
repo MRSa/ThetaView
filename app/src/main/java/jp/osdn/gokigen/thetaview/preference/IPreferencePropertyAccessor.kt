@@ -29,6 +29,9 @@ interface IPreferencePropertyAccessor
         const val SHOW_CAMERA_STATUS = "show_camera_status"
         const val SHOW_CAMERA_STATUS_DEFAULT_VALUE = false
 
+        const val USE_MINDWAVE_EEG = "use_mindwave_eeg"
+        const val USE_MINDWAVE_EEG_DEFAULT_VALUE= false
+
         // --- SCREEN TRANSACTION LABEL ---
         const val LABEL_EXIT_APPLICATION = "exit_application"
         const val LABEL_WIFI_SETTINGS = "wifi_settings"

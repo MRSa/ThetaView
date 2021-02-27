@@ -1,6 +1,7 @@
 package jp.osdn.gokigen.thetaview
 
 import android.Manifest
+import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -8,23 +9,29 @@ import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
+import android.view.View
 import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
+import jp.osdn.gokigen.thetaview.bluetooth.connection.IBluetoothConnection
+import jp.osdn.gokigen.thetaview.bluetooth.connection.IBluetoothStatusNotify
 import jp.osdn.gokigen.thetaview.camera.ICameraStatusReceiver
+import jp.osdn.gokigen.thetaview.preference.IPreferencePropertyAccessor
 import jp.osdn.gokigen.thetaview.preference.PreferenceValueInitializer
 import jp.osdn.gokigen.thetaview.scene.*
 
-class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceiver, ICameraConnectionStatus
+class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceiver, ICameraConnectionStatus, IBluetoothStatusNotify
 {
     private val mainButtonHandler : MainButtonHandler = MainButtonHandler(this, this, this)
     private val showMessage : ShowMessage = ShowMessage(this)
     private val accessPermission : IScopedStorageAccessPermission? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { StorageOperationWithPermission(this) } else { null }
-    private val sceneChanger : SceneChanger = SceneChanger(this, showMessage, accessPermission, this, this)
+    private val sceneChanger : SceneChanger = SceneChanger(this, showMessage, accessPermission, this, this, this)
     private var connectionStatus : ICameraConnectionStatus.CameraConnectionStatus = ICameraConnectionStatus.CameraConnectionStatus.UNKNOWN
+    private var bluetoothStatus : IBluetoothConnection.ConnectionStatus = IBluetoothConnection.ConnectionStatus.Undefined
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -51,6 +58,7 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
             checkMediaWritePermission()
             sceneChanger.initializeFragment()
             mainButtonHandler.initialize()
+            initializeBluetooth()
         }
         else
         {
@@ -68,6 +76,15 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
         ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
 
+    private fun initializeBluetooth()
+    {
+        if (isEnabledBluetooth())
+        {
+            bluetoothStatus = IBluetoothConnection.ConnectionStatus.Ready
+        }
+        updateBluetoothIcon(bluetoothStatus)
+    }
+
     private fun checkMediaWritePermission()
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
@@ -76,11 +93,7 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    )
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray)
     {
         if (requestCode == REQUEST_CODE_PERMISSIONS)
         {
@@ -89,6 +102,7 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
                 checkMediaWritePermission()
                 sceneChanger.initializeFragment()
                 mainButtonHandler.initialize()
+                initializeBluetooth()
             }
             else
             {
@@ -110,29 +124,6 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
         {
             accessPermission?.responseStorageAccessFrameworkLocation(resultCode, data)
         }
-    }
-
-    companion object
-    {
-        private val TAG = MainActivity::class.java.simpleName
-
-        private const val REQUEST_CODE_PERMISSIONS = 10
-        const val REQUEST_CODE_MEDIA_EDIT = 12
-        const val REQUEST_CODE_OPEN_DOCUMENT_TREE = 20
-
-        private val REQUIRED_PERMISSIONS = arrayOf(
-                Manifest.permission.CAMERA,
-                Manifest.permission.VIBRATE,
-                Manifest.permission.INTERNET,
-                Manifest.permission.ACCESS_NETWORK_STATE,
-                Manifest.permission.ACCESS_WIFI_STATE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.BLUETOOTH,
-                Manifest.permission.BLUETOOTH_ADMIN,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-        )
     }
 
     override fun showToast(rscId: Int, appendMessage: String, duration: Int)
@@ -267,7 +258,7 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
 
     private fun updateConnectionIcon(connectionStatus : ICameraConnectionStatus.CameraConnectionStatus)
     {
-        Log.v(TAG, " onCameraDisconnected() $connectionStatus")
+        Log.v(TAG, " updateConnectionIcon() $connectionStatus")
         this.connectionStatus = connectionStatus
         try
         {
@@ -297,13 +288,124 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
         }
     }
 
+    private fun isEnabledBluetooth() : Boolean
+    {
+        try
+        {
+            val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+            if (!preferences.getBoolean(IPreferencePropertyAccessor.USE_MINDWAVE_EEG, false))
+            {
+                return (false)
+            }
+        }
+        catch (e : Exception)
+        {
+            e.printStackTrace()
+            return (false)
+        }
+        return (BluetoothAdapter.getDefaultAdapter().isEnabled)
+    }
+
+    private fun updateBluetoothIcon(bluetoothStatus : IBluetoothConnection.ConnectionStatus)
+    {
+        Log.v(TAG, " updateBluetoothIcon() $bluetoothStatus")
+        this.bluetoothStatus = bluetoothStatus
+        try
+        {
+            runOnUiThread {
+                try
+                {
+                    val view : ImageButton = this.findViewById(R.id.button_bluetooth)
+                    val iconId = when (bluetoothStatus)
+                    {
+                        IBluetoothConnection.ConnectionStatus.Undefined -> { R.drawable.ic_baseline_bluetooth_disabled_24 }
+                        IBluetoothConnection.ConnectionStatus.Ready -> { R.drawable.ic_baseline_bluetooth_24 }
+                        IBluetoothConnection.ConnectionStatus.Searching -> { R.drawable.ic_baseline_bluetooth_searching_24 }
+                        IBluetoothConnection.ConnectionStatus.Connected -> { R.drawable.ic_baseline_bluetooth_connected_24 }
+                    }
+                    view.setImageDrawable(ContextCompat.getDrawable(this, iconId))
+                    if ((iconId == R.drawable.ic_baseline_bluetooth_disabled_24)||(!isEnabledBluetooth()))
+                    {
+                        view.visibility = View.GONE
+                    }
+                    else
+                    {
+                        view.visibility = View.VISIBLE
+                    }
+                    view.invalidate()
+                }
+                catch (e : Exception)
+                {
+                    e.printStackTrace()
+                }
+            }
+        }
+        catch (e: Exception)
+        {
+            e.printStackTrace()
+        }
+    }
+
     override fun onCameraConnectError(msg: String?)
     {
         Log.v(TAG, " onCameraConnectError() $msg ")
     }
 
+    override fun updateBluetoothStatus(status: IBluetoothConnection.ConnectionStatus)
+    {
+        try
+        {
+            bluetoothStatus = status
+            updateBluetoothIcon(bluetoothStatus)
+        }
+        catch (e : Exception)
+        {
+            e.printStackTrace()
+        }
+    }
+
+    override fun updateBluetoothStatus()
+    {
+        try
+        {
+            updateBluetoothIcon(bluetoothStatus)
+        }
+        catch (e : Exception)
+        {
+            e.printStackTrace()
+        }
+    }
+
     override fun getConnectionStatus(): ICameraConnectionStatus.CameraConnectionStatus
     {
         return (connectionStatus)
+    }
+
+    override fun getBluetoothConnectionStatus() : IBluetoothConnection.ConnectionStatus
+    {
+        return (bluetoothStatus)
+    }
+
+    companion object
+    {
+        private val TAG = MainActivity::class.java.simpleName
+
+        private const val REQUEST_CODE_PERMISSIONS = 10
+        const val REQUEST_CODE_MEDIA_EDIT = 12
+        const val REQUEST_CODE_OPEN_DOCUMENT_TREE = 20
+
+        private val REQUIRED_PERMISSIONS = arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.VIBRATE,
+                Manifest.permission.INTERNET,
+                Manifest.permission.ACCESS_NETWORK_STATE,
+                Manifest.permission.ACCESS_WIFI_STATE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.BLUETOOTH,
+                Manifest.permission.BLUETOOTH_ADMIN,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+        )
     }
 }

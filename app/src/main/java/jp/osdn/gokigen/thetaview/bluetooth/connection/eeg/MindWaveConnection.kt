@@ -1,6 +1,5 @@
 package jp.osdn.gokigen.thetaview.bluetooth.connection.eeg
 
-import android.app.Activity
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.content.BroadcastReceiver
@@ -8,7 +7,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import jp.osdn.gokigen.thetaview.bluetooth.connection.BluetoothDeviceFinder
+import jp.osdn.gokigen.thetaview.bluetooth.connection.IBluetoothConnection
 import jp.osdn.gokigen.thetaview.bluetooth.connection.IBluetoothScanResult
 import jp.osdn.gokigen.thetaview.brainwave.BrainwaveFileLogger
 import jp.osdn.gokigen.thetaview.brainwave.IBrainwaveDataReceiver
@@ -18,7 +19,7 @@ import java.io.InputStream
 import java.util.*
 import kotlin.experimental.and
 
-class MindWaveConnection(private val activity : Activity, private val dataReceiver: IBrainwaveDataReceiver, private val scanResult: IBluetoothScanResult? = null) : IBluetoothScanResult
+class MindWaveConnection(private val activity : AppCompatActivity, private val dataReceiver: IBrainwaveDataReceiver, private val scanResult: IBluetoothScanResult? = null) : IBluetoothScanResult, IBluetoothConnection
 {
     companion object
     {
@@ -32,6 +33,10 @@ class MindWaveConnection(private val activity : Activity, private val dataReceiv
     private var loggingFlag = false
     private var targetDevice: BluetoothDevice? = null
 
+    /**
+     *
+     *
+     */
     private var connectionReceiver = object : BroadcastReceiver()
     {
         override fun onReceive(context: Context, intent: Intent)
@@ -40,7 +45,11 @@ class MindWaveConnection(private val activity : Activity, private val dataReceiv
         }
     }
 
-    fun connect(deviceName: String, loggingFlag: Boolean = false)
+    /**
+     *
+     *
+     */
+    override fun connect(deviceName: String, loggingFlag: Boolean)
     {
         Log.v(TAG, " BrainWaveMobileCommunicator::connect() : $deviceName Logging : $loggingFlag")
         try
@@ -60,13 +69,21 @@ class MindWaveConnection(private val activity : Activity, private val dataReceiv
         }
     }
 
-    fun disconnect()
+    /**
+     *
+     *
+     */
+    override fun disconnect()
     {
         foundDevice = false
         deviceFinder.reset()
         deviceFinder.stopScan()
     }
 
+    /**
+     *
+     *
+     */
     private fun registerReceiver()
     {
         try
@@ -82,6 +99,10 @@ class MindWaveConnection(private val activity : Activity, private val dataReceiv
         }
     }
 
+    /**
+     *
+     *
+     */
     private fun unregisterReceiver()
     {
         try
@@ -94,6 +115,10 @@ class MindWaveConnection(private val activity : Activity, private val dataReceiv
         }
     }
 
+    /**
+     *
+     *
+     */
     private fun parseReceivedData(data: ByteArray)
     {
         // 受信データブロック１つ分
@@ -131,6 +156,10 @@ class MindWaveConnection(private val activity : Activity, private val dataReceiv
         }
     }
 
+    /**
+     *
+     *
+     */
     private fun serialCommunicationMain(btSocket: BluetoothSocket)
     {
         var inputStream: InputStream? = null
@@ -162,7 +191,6 @@ class MindWaveConnection(private val activity : Activity, private val dataReceiv
             }
         }
         Log.v(TAG, " serialCommunicationMain : SERIAL COMMUNICATION STARTED.")
-
 
         // シリアルデータの受信メイン部分
         var previousData = 0xff.toByte()
@@ -204,6 +232,10 @@ class MindWaveConnection(private val activity : Activity, private val dataReceiv
         }
     }
 
+    /**
+     *
+     *
+     */
     override fun foundBluetoothDevice(device: BluetoothDevice)
     {
         try
@@ -249,6 +281,10 @@ class MindWaveConnection(private val activity : Activity, private val dataReceiv
         }
     }
 
+    /**
+     *
+     *
+     */
     private fun connectBluetoothDevice(device : BluetoothDevice?)
     {
         try
@@ -292,6 +328,10 @@ class MindWaveConnection(private val activity : Activity, private val dataReceiv
         }
     }
 
+    /**
+     *
+     *
+     */
     override fun notFindBluetoothDevice()
     {
         Log.v(TAG, " notFindBluetoothDevice()")

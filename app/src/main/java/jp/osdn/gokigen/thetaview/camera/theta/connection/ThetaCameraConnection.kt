@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import jp.osdn.gokigen.thetaview.R
+import jp.osdn.gokigen.thetaview.bluetooth.connection.IBluetoothConnection
 import jp.osdn.gokigen.thetaview.camera.ICameraStatusReceiver
 import jp.osdn.gokigen.thetaview.camera.theta.operation.IOperationCallback
 import jp.osdn.gokigen.thetaview.camera.theta.operation.ThetaOptionSetControl
@@ -198,6 +199,16 @@ class ThetaCameraConnection(private val context: AppCompatActivity, private val 
     {
         Log.v(TAG, "getConnectionStatus()")
         return connectionStatus
+    }
+
+    /**
+     *
+     *
+     */
+    override fun getBluetoothConnectionStatus(): IBluetoothConnection.ConnectionStatus
+    {
+        Log.v(TAG, "getBluetoothConnectionStatus()")
+        return (IBluetoothConnection.ConnectionStatus.Undefined)
     }
 
     /**

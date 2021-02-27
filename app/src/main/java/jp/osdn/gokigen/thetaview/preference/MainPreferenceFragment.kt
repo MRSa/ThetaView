@@ -36,7 +36,7 @@ class MainPreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceCha
     private fun prepareClickListener(label: String)
     {
         val settings : Preference? = findPreference(label)
-        settings?.setOnPreferenceClickListener(this)
+        settings?.onPreferenceClickListener = this
     }
 
     override fun onAttach(context: Context)
@@ -61,6 +61,7 @@ class MainPreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceCha
             IPreferencePropertyAccessor.CACHE_LIVE_VIEW_PICTURES -> value = preferences.getBoolean(key, IPreferencePropertyAccessor.CACHE_LIVE_VIEW_PICTURES_DEFAULT_VALUE)
             IPreferencePropertyAccessor.CAPTURE_ONLY_LIVE_VIEW -> value = preferences.getBoolean(key, IPreferencePropertyAccessor.CAPTURE_ONLY_LIVE_VIEW_DEFAULT_VALUE)
             IPreferencePropertyAccessor.SHOW_CAMERA_STATUS -> value = preferences.getBoolean(key, IPreferencePropertyAccessor.SHOW_CAMERA_STATUS_DEFAULT_VALUE)
+            IPreferencePropertyAccessor.USE_MINDWAVE_EEG -> value = preferences.getBoolean(key, IPreferencePropertyAccessor.USE_MINDWAVE_EEG_DEFAULT_VALUE)
             // else -> Log.v(TAG, " onSharedPreferenceChanged() : + $key ")
         }
         Log.v(TAG, " onSharedPreferenceChanged() : + $key, $value")

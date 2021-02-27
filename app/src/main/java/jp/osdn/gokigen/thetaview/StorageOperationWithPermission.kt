@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentActivity
 import jp.osdn.gokigen.thetaview.operation.imagefile.IImageStoreGrant
 import jp.osdn.gokigen.thetaview.preference.IPreferencePropertyAccessor
 import jp.osdn.gokigen.thetaview.preference.PreferenceAccessWrapper
+import jp.osdn.gokigen.thetaview.scene.MainButtonHandler
 import java.io.File
 
 /**
@@ -103,7 +104,7 @@ class StorageOperationWithPermission(private val activity: FragmentActivity) : I
 
     companion object
     {
-        private val  TAG = this.toString()
+        private val  TAG = StorageOperationWithPermission::class.java.simpleName
     }
 
 }

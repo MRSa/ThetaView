@@ -8,6 +8,9 @@ import androidx.fragment.app.FragmentTransaction
 import jp.osdn.gokigen.thetaview.IScopedStorageAccessPermission
 import jp.osdn.gokigen.thetaview.IShowInformation
 import jp.osdn.gokigen.thetaview.R
+import jp.osdn.gokigen.thetaview.bluetooth.connection.IBluetoothStatusNotify
+import jp.osdn.gokigen.thetaview.bluetooth.connection.eeg.MindWaveConnection
+import jp.osdn.gokigen.thetaview.brainwave.BrainwaveDataHolder
 import jp.osdn.gokigen.thetaview.camera.ICameraStatusReceiver
 import jp.osdn.gokigen.thetaview.camera.theta.ThetaControl
 import jp.osdn.gokigen.thetaview.liveview.LiveImageViewFragment
@@ -21,10 +24,11 @@ import jp.osdn.gokigen.thetaview.utils.ConfirmationDialog
 import jp.osdn.gokigen.thetaview.utils.logcat.LogCatFragment
 
 
-class SceneChanger(private val activity: AppCompatActivity, private val informationNotify: IInformationReceiver, accessRequest : IScopedStorageAccessPermission?, showInformation : IShowInformation, statusReceiver : ICameraStatusReceiver) : IChangeScene
+class SceneChanger(private val activity: AppCompatActivity, private val informationNotify: IInformationReceiver, accessRequest : IScopedStorageAccessPermission?, showInformation : IShowInformation, statusReceiver : ICameraStatusReceiver, private val bluetoothStatusNotify : IBluetoothStatusNotify) : IChangeScene
 {
     private val cameraControl: ICameraControl = CameraControl(activity, accessRequest)
     private val thetaControl : ThetaControl = ThetaControl(activity, showInformation, statusReceiver)
+    private val eegShutter : EEGShutter = EEGShutter(activity, bluetoothStatusNotify, thetaControl)
     private lateinit var liveViewFragment : LiveImageViewFragment
     private lateinit var previewFragment : PreviewFragment
     private lateinit var logCatFragment : LogCatFragment
@@ -54,7 +58,8 @@ class SceneChanger(private val activity: AppCompatActivity, private val informat
         setDefaultFragment(previewFragment)
         cameraControl.startCamera()
 
-        val msg = activity.getString(R.string.app_name) + " : " + " camerax"
+        //val msg = activity.getString(R.string.app_name) + " : " + " camerax"
+        val msg = " "
         informationNotify.updateMessage(msg, isBold = false, isColor = true, color = Color.LTGRAY)
     }
 
@@ -64,12 +69,14 @@ class SceneChanger(private val activity: AppCompatActivity, private val informat
         {
             liveViewFragment = LiveImageViewFragment.newInstance()
             liveViewFragment.setCameraControl(thetaControl)
+            liveViewFragment.setBluetoothStatusNotify(bluetoothStatusNotify)
             thetaControl.setIndicator(liveViewFragment)
         }
         setDefaultFragment(liveViewFragment)
         thetaControl.startCamera(false)
 
-        val msg = activity.getString(R.string.app_name) + " : " + " STARTED."
+        //val msg = activity.getString(R.string.app_name) + " : " + " STARTED."
+        val msg = " "
         informationNotify.updateMessage(msg, isBold = false, isColor = true, color = Color.LTGRAY)
     }
 
@@ -110,6 +117,7 @@ class SceneChanger(private val activity: AppCompatActivity, private val informat
         {
             liveViewFragment = LiveImageViewFragment.newInstance()
             liveViewFragment.setCameraControl(thetaControl)
+            liveViewFragment.setBluetoothStatusNotify(bluetoothStatusNotify)
             thetaControl.setIndicator(liveViewFragment)
         }
         changeFragment(liveViewFragment)
@@ -182,6 +190,7 @@ class SceneChanger(private val activity: AppCompatActivity, private val informat
         transaction.replace(R.id.fragment1, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+        bluetoothStatusNotify.updateBluetoothStatus()
     }
 
     private fun setDefaultFragment(fragment: Fragment)
@@ -205,8 +214,32 @@ class SceneChanger(private val activity: AppCompatActivity, private val informat
         }
     }
 
+    override fun connectToEEG()
+    {
+        try
+        {
+            eegShutter.connectToEEG()
+        }
+        catch (e : Exception)
+        {
+            e.printStackTrace()
+        }
+    }
+
+    override fun disconnectFromEEG()
+    {
+        try
+        {
+            eegShutter.disconnectFromEEG()
+        }
+        catch (e : Exception)
+        {
+            e.printStackTrace()
+        }
+    }
+
     companion object
     {
-        private val TAG = this.toString()
+        private val  TAG = SceneChanger::class.java.simpleName
     }
 }

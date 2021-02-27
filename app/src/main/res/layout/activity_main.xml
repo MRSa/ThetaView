@@ -28,6 +28,19 @@
         />
 
     <ImageButton
+        android:id="@+id/button_bluetooth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/blank"
+        android:layout_toRightOf="@id/button_connect"
+        android:layout_marginLeft="2dp"
+        android:layout_alignTop="@id/button_configure"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/ic_baseline_bluetooth_disabled_24"
+        android:visibility="gone"
+        />
+
+    <ImageButton
         android:id="@+id/button_camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,10 +60,10 @@
         android:textSize="8pt"
         android:gravity="center"
         android:layout_marginStart="0dp"
-        android:layout_toRightOf="@id/button_connect"
-        android:layout_toEndOf="@id/button_connect"
+        android:layout_toRightOf="@id/button_bluetooth"
+        android:layout_toEndOf="@id/button_bluetooth"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@id/button_configure"
+        android:layout_toLeftOf="@id/button_camera"
         android:layout_alignTop="@id/button_camera"
         android:layout_marginRight="2dp"
         />

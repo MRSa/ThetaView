@@ -1,7 +1,5 @@
 package jp.osdn.gokigen.thetaview.bluetooth.connection
 
-
-import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
@@ -10,10 +8,10 @@ import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
 import android.content.Context
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 
-class BluetoothDeviceFinder(private val context: Activity, private val scanResult: IBluetoothScanResult) : BluetoothAdapter.LeScanCallback, ScanCallback()
+class BluetoothDeviceFinder(private val context: AppCompatActivity, private val scanResult: IBluetoothScanResult) : IBluetoothDeviceFinder, BluetoothAdapter.LeScanCallback, ScanCallback()
 {
-
     companion object
     {
         private val TAG = BluetoothDeviceFinder::class.java.simpleName
@@ -22,12 +20,12 @@ class BluetoothDeviceFinder(private val context: Activity, private val scanResul
     private var foundBleDevice = false
     private var scanner : BluetoothLeScanner? = null
 
-    fun reset()
+    override fun reset()
     {
         foundBleDevice = false
     }
 
-    fun stopScan()
+    override fun stopScan()
     {
         try
         {
@@ -43,7 +41,7 @@ class BluetoothDeviceFinder(private val context: Activity, private val scanResul
         }
     }
 
-    fun startScan(targetDeviceName: String)
+    override fun startScan(targetDeviceName: String)
     {
         try
         {

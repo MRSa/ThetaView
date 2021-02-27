@@ -2,10 +2,9 @@ package jp.osdn.gokigen.thetaview.preference
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.net.Uri
 import androidx.preference.PreferenceManager
 
-class PreferenceValueInitializer() : IPreferenceValueInitializer
+class PreferenceValueInitializer : IPreferenceValueInitializer
 {
     override fun initializePreferences(context : Context)
     {
@@ -95,6 +94,13 @@ class PreferenceValueInitializer() : IPreferenceValueInitializer
                 editor.putBoolean(
                         IPreferencePropertyAccessor.SHOW_CAMERA_STATUS,
                         IPreferencePropertyAccessor.SHOW_CAMERA_STATUS_DEFAULT_VALUE
+                )
+            }
+            if (!items.containsKey(IPreferencePropertyAccessor.USE_MINDWAVE_EEG))
+            {
+                editor.putBoolean(
+                        IPreferencePropertyAccessor.USE_MINDWAVE_EEG,
+                        IPreferencePropertyAccessor.USE_MINDWAVE_EEG_DEFAULT_VALUE
                 )
             }
             if (!items.containsKey(IPreferencePropertyAccessor.EXTERNAL_STORAGE_LOCATION))

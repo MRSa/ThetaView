@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import jp.osdn.gokigen.thetaview.R
+import jp.osdn.gokigen.thetaview.bluetooth.connection.IBluetoothStatusNotify
 import jp.osdn.gokigen.thetaview.operation.ICameraControl
 import jp.osdn.gokigen.thetaview.preference.IPreferencePropertyAccessor
 import jp.osdn.gokigen.thetaview.preference.PreferenceAccessWrapper
@@ -15,6 +16,7 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
 {
     private lateinit var liveViewView : View
     private lateinit var cameraControl: ICameraControl
+    private lateinit var bluetoothStatusNotify : IBluetoothStatusNotify
     private lateinit var gestureDetector : GestureDetector
     private lateinit var scaleGestureDetector : ScaleGestureDetector
     private lateinit var imageView : GokigenGLView
@@ -29,6 +31,11 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
     fun setCameraControl(cameraControl : ICameraControl)
     {
         this.cameraControl = cameraControl
+    }
+
+    fun setBluetoothStatusNotify(bluetoothStatusNotify : IBluetoothStatusNotify)
+    {
+        this.bluetoothStatusNotify = bluetoothStatusNotify
     }
 
     override fun onCreate(savedInstanceState: Bundle?)
@@ -68,9 +75,12 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
     {
         super.onResume()
         Log.v(TAG, " onResume() : ")
-        if (::informationView.isInitialized)
-        {
+        if (::informationView.isInitialized) {
             informationView.setShowCameraStatus(PreferenceAccessWrapper(requireContext()).getBoolean(IPreferencePropertyAccessor.SHOW_CAMERA_STATUS, IPreferencePropertyAccessor.SHOW_CAMERA_STATUS_DEFAULT_VALUE))
+        }
+        if (::bluetoothStatusNotify.isInitialized)
+        {
+            bluetoothStatusNotify.updateBluetoothStatus()
         }
     }
 
