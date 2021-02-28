@@ -9,8 +9,6 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import jp.osdn.gokigen.thetaview.scene.IIndicator
-import java.lang.Exception
-
 
 class CanvasView : View
 {
@@ -19,7 +17,7 @@ class CanvasView : View
     private val informationMessage = mutableMapOf<IIndicator.Area, String>()
     private val informationColor = mutableMapOf<IIndicator.Area, Int>()
 
-    constructor(context: Context): super(context)
+    constructor(context: Context) : super(context)
     {
         initComponent()
     }
@@ -29,12 +27,12 @@ class CanvasView : View
         initComponent()
     }
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int): super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
     {
         initComponent()
     }
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int): super(context, attrs, defStyleAttr, defStyleRes)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
     {
         initComponent()
     }
@@ -42,8 +40,6 @@ class CanvasView : View
     private fun initComponent()
     {
         Log.v(TAG, "initComponent")
-
-
     }
 
     override fun onDraw(canvas: Canvas?)
@@ -70,7 +66,7 @@ class CanvasView : View
             informationMessage[area] = message
             informationColor[area] = color
         }
-        catch (e : Exception)
+        catch (e: Exception)
         {
             e.printStackTrace()
         }
@@ -105,12 +101,11 @@ class CanvasView : View
             val fontMetrics = paint.fontMetrics
             val fontHeight = fontMetrics.bottom - fontMetrics.top + 4.0f
 
-            val posX = 10.0f
+            var posX = 10.0f
             var posY = 20.0f
             var message = informationMessage[IIndicator.Area.AREA_1]
             var color = informationColor[IIndicator.Area.AREA_1]
-            if ((message != null) && (color != null))
-            {
+            if ((message != null) && (color != null)) {
                 paint.color = color
                 canvas.drawText(message, posX, posY, paint)
             }
@@ -118,8 +113,7 @@ class CanvasView : View
             posY += fontHeight
             message = informationMessage[IIndicator.Area.AREA_2]
             color = informationColor[IIndicator.Area.AREA_2]
-            if ((message != null) && (color != null))
-            {
+            if ((message != null) && (color != null)) {
                 paint.color = color
                 canvas.drawText(message, posX, posY, paint)
             }
@@ -127,8 +121,7 @@ class CanvasView : View
             posY += fontHeight
             message = informationMessage[IIndicator.Area.AREA_3]
             color = informationColor[IIndicator.Area.AREA_3]
-            if ((message != null) && (color != null))
-            {
+            if ((message != null) && (color != null)) {
                 paint.color = color
                 canvas.drawText(message, posX, posY, paint)
             }
@@ -136,8 +129,7 @@ class CanvasView : View
             posY += fontHeight
             message = informationMessage[IIndicator.Area.AREA_4]
             color = informationColor[IIndicator.Area.AREA_4]
-            if ((message != null) && (color != null))
-            {
+            if ((message != null) && (color != null)) {
                 paint.color = color
                 canvas.drawText(message, posX, posY, paint)
             }
@@ -145,8 +137,7 @@ class CanvasView : View
             posY += fontHeight
             message = informationMessage[IIndicator.Area.AREA_5]
             color = informationColor[IIndicator.Area.AREA_5]
-            if ((message != null) && (color != null))
-            {
+            if ((message != null) && (color != null)) {
                 paint.color = color
                 canvas.drawText(message, posX, posY, paint)
             }
@@ -154,8 +145,7 @@ class CanvasView : View
             posY += fontHeight
             message = informationMessage[IIndicator.Area.AREA_6]
             color = informationColor[IIndicator.Area.AREA_6]
-            if ((message != null) && (color != null))
-            {
+            if ((message != null) && (color != null)) {
                 paint.color = color
                 canvas.drawText(message, posX, posY, paint)
             }
@@ -163,8 +153,7 @@ class CanvasView : View
             posY += fontHeight
             message = informationMessage[IIndicator.Area.AREA_7]
             color = informationColor[IIndicator.Area.AREA_7]
-            if ((message != null) && (color != null))
-            {
+            if ((message != null) && (color != null)) {
                 paint.color = color
                 canvas.drawText(message, posX, posY, paint)
             }
@@ -172,8 +161,7 @@ class CanvasView : View
             posY += fontHeight
             message = informationMessage[IIndicator.Area.AREA_8]
             color = informationColor[IIndicator.Area.AREA_8]
-            if ((message != null) && (color != null))
-            {
+            if ((message != null) && (color != null)) {
                 paint.color = color
                 canvas.drawText(message, posX, posY, paint)
             }
@@ -181,43 +169,113 @@ class CanvasView : View
             posY += fontHeight
             message = informationMessage[IIndicator.Area.AREA_9]
             color = informationColor[IIndicator.Area.AREA_9]
-            if ((message != null) && (color != null))
-            {
+            if ((message != null) && (color != null)) {
                 paint.color = color
                 canvas.drawText(message, posX, posY, paint)
             }
 
             posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_10]
+            color = informationColor[IIndicator.Area.AREA_10]
+            if ((message != null) && (color != null)) {
+                paint.color = color
+                canvas.drawText(message, posX, posY, paint)
+            }
+
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_11]
+            color = informationColor[IIndicator.Area.AREA_11]
+            if ((message != null) && (color != null)) {
+                paint.color = color
+                canvas.drawText(message, posX, posY, paint)
+            }
+
+            //////////////////////////////////////////////////////////////////////////
+            posY = 20.0f
+            //posY += fontHeight
             message = informationMessage[IIndicator.Area.AREA_A]
+            posX = canvas.width - 10.0f - paint.measureText(message)
             color = informationColor[IIndicator.Area.AREA_A]
-            if ((message != null) && (color != null))
-            {
+            if ((message != null) && (color != null)) {
                 paint.color = color
                 canvas.drawText(message, posX, posY, paint)
             }
 
             posY += fontHeight
             message = informationMessage[IIndicator.Area.AREA_B]
+            posX = canvas.width - 10.0f - paint.measureText(message)
             color = informationColor[IIndicator.Area.AREA_B]
-            if ((message != null) && (color != null))
-            {
+            if ((message != null) && (color != null)) {
+                paint.color = color
+                canvas.drawText(message, posX, posY, paint)
+            }
+
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_C]
+            posX = canvas.width - 10.0f - paint.measureText(message)
+            color = informationColor[IIndicator.Area.AREA_C]
+            if ((message != null) && (color != null)) {
+                paint.color = color
+                canvas.drawText(message, posX, posY, paint)
+            }
+
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_D]
+            posX = canvas.width - 10.0f - paint.measureText(message)
+            color = informationColor[IIndicator.Area.AREA_D]
+            if ((message != null) && (color != null)) {
+                paint.color = color
+                canvas.drawText(message, posX, posY, paint)
+            }
+
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_E]
+            posX = canvas.width - 10.0f - paint.measureText(message)
+            color = informationColor[IIndicator.Area.AREA_E]
+            if ((message != null) && (color != null)) {
+                paint.color = color
+                canvas.drawText(message, posX, posY, paint)
+            }
+
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_F]
+            posX = canvas.width - 10.0f - paint.measureText(message)
+            color = informationColor[IIndicator.Area.AREA_F]
+            if ((message != null) && (color != null)) {
+                paint.color = color
+                canvas.drawText(message, posX, posY, paint)
+            }
+
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_G]
+            posX = canvas.width - 10.0f - paint.measureText(message)
+            color = informationColor[IIndicator.Area.AREA_G]
+            if ((message != null) && (color != null)) {
+                paint.color = color
+                canvas.drawText(message, posX, posY, paint)
+            }
+
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_H]
+            posX = canvas.width - 10.0f - paint.measureText(message)
+            color = informationColor[IIndicator.Area.AREA_H]
+            if ((message != null) && (color != null)) {
                 paint.color = color
                 canvas.drawText(message, posX, posY, paint)
             }
         }
-        catch (e : Exception)
+        catch (e: Exception)
         {
             e.printStackTrace()
         }
     }
 
-    fun setShowCameraStatus(isEnable : Boolean)
+    fun setShowCameraStatus(isEnable: Boolean)
     {
         showCameraStatus = isEnable
     }
 
-    companion object
-    {
+    companion object {
         private val TAG = CanvasView::class.java.simpleName
     }
 }

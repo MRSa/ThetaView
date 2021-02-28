@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import jp.osdn.gokigen.thetaview.bluetooth.connection.BluetoothDeviceFinder
 import jp.osdn.gokigen.thetaview.bluetooth.connection.IBluetoothConnection
 import jp.osdn.gokigen.thetaview.bluetooth.connection.IBluetoothScanResult
+import jp.osdn.gokigen.thetaview.bluetooth.connection.IBluetoothStatusNotify
 import jp.osdn.gokigen.thetaview.brainwave.BrainwaveFileLogger
 import jp.osdn.gokigen.thetaview.brainwave.IBrainwaveDataReceiver
 
@@ -19,7 +20,7 @@ import java.io.InputStream
 import java.util.*
 import kotlin.experimental.and
 
-class MindWaveConnection(private val activity : AppCompatActivity, private val dataReceiver: IBrainwaveDataReceiver, private val scanResult: IBluetoothScanResult? = null) : IBluetoothScanResult, IBluetoothConnection
+class MindWaveConnection(private val activity : AppCompatActivity, private val dataReceiver: IBrainwaveDataReceiver, private val bluetoothStatusNotify : IBluetoothStatusNotify, private val scanResult: IBluetoothScanResult? = null) : IBluetoothScanResult, IBluetoothConnection
 {
     companion object
     {
@@ -62,6 +63,8 @@ class MindWaveConnection(private val activity : AppCompatActivity, private val d
             foundDevice = false
             deviceFinder.reset()
             deviceFinder.startScan(deviceName)
+
+            bluetoothStatusNotify.updateBluetoothStatus(IBluetoothConnection.ConnectionStatus.Searching)
         }
         catch (e: Exception)
         {
@@ -78,6 +81,8 @@ class MindWaveConnection(private val activity : AppCompatActivity, private val d
         foundDevice = false
         deviceFinder.reset()
         deviceFinder.stopScan()
+
+        bluetoothStatusNotify.updateBluetoothStatus(IBluetoothConnection.ConnectionStatus.Ready)
     }
 
     /**
@@ -312,6 +317,7 @@ class MindWaveConnection(private val activity : AppCompatActivity, private val d
             }
             if (btSocket != null)
             {
+                bluetoothStatusNotify.updateBluetoothStatus(IBluetoothConnection.ConnectionStatus.Connected)
                 scanResult?.foundBluetoothDevice(device)
                 thread.start()
                 unregisterReceiver()
@@ -336,6 +342,7 @@ class MindWaveConnection(private val activity : AppCompatActivity, private val d
     {
         Log.v(TAG, " notFindBluetoothDevice()")
         scanResult?.notFindBluetoothDevice()
+        bluetoothStatusNotify.updateBluetoothStatus(IBluetoothConnection.ConnectionStatus.Ready)
         deviceFinder.stopScan()
     }
 

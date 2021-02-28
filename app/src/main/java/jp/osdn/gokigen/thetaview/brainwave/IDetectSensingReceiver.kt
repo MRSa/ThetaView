@@ -9,4 +9,6 @@ interface IDetectSensingReceiver
     fun detectMediation()
     fun lostMediation()
     fun detectMediationThreshold()
+
+    fun updateSummaryValue(attention : Int, mediation : Int)
 }

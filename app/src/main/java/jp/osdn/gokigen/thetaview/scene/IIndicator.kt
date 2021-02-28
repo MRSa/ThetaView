@@ -14,12 +14,16 @@ interface IIndicator
         AREA_7,
         AREA_8,
         AREA_9,
+        AREA_10,
+        AREA_11,
         AREA_A,
         AREA_B,
         AREA_C,
         AREA_D,
         AREA_E,
         AREA_F,
+        AREA_G,
+        AREA_H,
     }
 
     fun setMessage(area: Area, color: Int, message: String)

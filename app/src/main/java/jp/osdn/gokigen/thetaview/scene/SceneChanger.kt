@@ -71,6 +71,7 @@ class SceneChanger(private val activity: AppCompatActivity, private val informat
             liveViewFragment.setCameraControl(thetaControl)
             liveViewFragment.setBluetoothStatusNotify(bluetoothStatusNotify)
             thetaControl.setIndicator(liveViewFragment)
+            eegShutter.setIndicator(liveViewFragment)
         }
         setDefaultFragment(liveViewFragment)
         thetaControl.startCamera(false)
@@ -119,6 +120,7 @@ class SceneChanger(private val activity: AppCompatActivity, private val informat
             liveViewFragment.setCameraControl(thetaControl)
             liveViewFragment.setBluetoothStatusNotify(bluetoothStatusNotify)
             thetaControl.setIndicator(liveViewFragment)
+            eegShutter.setIndicator(liveViewFragment)
         }
         changeFragment(liveViewFragment)
         thetaControl.startCamera()
@@ -153,8 +155,6 @@ class SceneChanger(private val activity: AppCompatActivity, private val informat
         }
         changeFragment(logCatFragment)
     }
-
-
 
     override fun exitApplication()
     {

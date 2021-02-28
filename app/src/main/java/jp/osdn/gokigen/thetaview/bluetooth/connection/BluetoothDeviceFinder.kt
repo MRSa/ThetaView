@@ -111,6 +111,7 @@ class BluetoothDeviceFinder(private val context: AppCompatActivity, private val 
     override fun onScanFailed(errorCode: Int)
     {
         Log.v(TAG, " onScanFailed : $errorCode")
+        scanResult.notFindBluetoothDevice()
     }
 
     override fun onScanResult(callbackType: Int, result: ScanResult?)

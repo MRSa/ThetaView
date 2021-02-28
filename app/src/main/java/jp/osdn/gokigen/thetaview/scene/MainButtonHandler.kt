@@ -58,7 +58,7 @@ class MainButtonHandler(private val activity : AppCompatActivity, private val co
 
     private fun connectEEG()
     {
-        if (connectionStatus.getBluetoothConnectionStatus() != IBluetoothConnection.ConnectionStatus.Ready)
+        if (connectionStatus.getBluetoothConnectionStatus() == IBluetoothConnection.ConnectionStatus.Ready)
         {
             Log.v(TAG, " - - - - - - - - - CONNECT TO EEG - - - - - - - - -")
             showInformation.vibrate(IShowInformation.VibratePattern.SIMPLE_SHORT)

@@ -62,7 +62,8 @@ class BrainwaveDataHolder(private val receiver: IDetectSensingReceiver? = null, 
             {
                 val attention = currentSummaryData.getAttention()
                 val mediation = currentSummaryData.getMediation()
-                Log.v(TAG, "  ATTENTION : $attention   MEDIATION : $mediation")
+                //Log.v(TAG, "  ATTENTION : $attention   MEDIATION : $mediation")
+                receiver?.updateSummaryValue(attention, mediation)
                 if ((!dataReceived)&&(attention > 0)&&(mediation > 0))
                 {
                     // データの受信を開始した

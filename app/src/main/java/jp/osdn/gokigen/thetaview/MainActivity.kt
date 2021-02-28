@@ -315,6 +315,7 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
             runOnUiThread {
                 try
                 {
+                    Log.v(TAG, " updateBluetoothIcon() : $bluetoothStatus")
                     val view : ImageButton = this.findViewById(R.id.button_bluetooth)
                     val iconId = when (bluetoothStatus)
                     {

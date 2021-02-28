@@ -44,8 +44,8 @@ class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdPro
             setMessage(IIndicator.Area.AREA_7, Color.WHITE, "")
             setMessage(IIndicator.Area.AREA_8, Color.WHITE, "")
             setMessage(IIndicator.Area.AREA_9, Color.WHITE, "")
-            setMessage(IIndicator.Area.AREA_A, Color.WHITE, "")
-            setMessage(IIndicator.Area.AREA_B, Color.WHITE, "")
+            setMessage(IIndicator.Area.AREA_10, Color.WHITE, "")
+            setMessage(IIndicator.Area.AREA_11, Color.WHITE, "")
         }
         catch (e : Exception)
         {
@@ -263,11 +263,11 @@ class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdPro
                     {
                         if (currentAperture == 0.0)
                         {
-                            setMessage(IIndicator.Area.AREA_A, Color.WHITE, "F:auto")
+                            setMessage(IIndicator.Area.AREA_10, Color.WHITE, "F:auto")
                         }
                         else
                         {
-                            setMessage(IIndicator.Area.AREA_A, Color.WHITE, "F$currentAperture")
+                            setMessage(IIndicator.Area.AREA_10, Color.WHITE, "F$currentAperture")
                         }
                     }
                 }
