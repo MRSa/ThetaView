@@ -137,7 +137,7 @@ class EEGShutter(activity : AppCompatActivity, private val bluetoothStatusNotify
                     attention > 30 -> { Color.LTGRAY }
                     else -> { Color.DKGRAY }
                 }
-                indicator.setMessage(IIndicator.Area.AREA_G, colorAttention, "ATTENTION : $attention")
+                indicator.setMessage(IIndicator.Area.AREA_A, colorAttention, "ATTENTION : $attention")
 
                 val colorMediation = when {
                     mediation > 90 -> { Color.GREEN }
@@ -146,7 +146,7 @@ class EEGShutter(activity : AppCompatActivity, private val bluetoothStatusNotify
                     mediation > 30 -> { Color.LTGRAY }
                     else -> { Color.DKGRAY }
                 }
-                indicator.setMessage(IIndicator.Area.AREA_G, colorMediation, "MEDIATION : $mediation")
+                indicator.setMessage(IIndicator.Area.AREA_B, colorMediation, "MEDIATION : $mediation")
                 indicator.invalidate()
             }
         }

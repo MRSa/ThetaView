@@ -3,6 +3,7 @@ package jp.osdn.gokigen.thetaview.liveview
 import android.content.Context
 import android.graphics.PixelFormat
 import android.opengl.GLSurfaceView
+import android.os.Looper
 import android.util.AttributeSet
 import android.util.Log
 import jp.osdn.gokigen.thetaview.liveview.glrenderer.EquirectangularDrawer
@@ -98,7 +99,14 @@ class GokigenGLView : GLSurfaceView, ILiveViewRefresher, ILiveView, IMessageDraw
 
     override fun refresh()
     {
-        invalidate()
+        if (Looper.getMainLooper().thread === Thread.currentThread())
+        {
+            invalidate()
+        }
+        else
+        {
+            postInvalidate()
+        }
     }
 
     override fun setImageProvider(provider: IImageProvider)

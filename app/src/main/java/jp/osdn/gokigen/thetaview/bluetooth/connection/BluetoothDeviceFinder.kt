@@ -16,9 +16,10 @@ class BluetoothDeviceFinder(private val context: AppCompatActivity, private val 
     {
         private val TAG = BluetoothDeviceFinder::class.java.simpleName
     }
+
     private lateinit var targetDeviceName: String
     private var foundBleDevice = false
-    private var scanner : BluetoothLeScanner? = null
+    private var scanner: BluetoothLeScanner? = null
 
     override fun reset()
     {
@@ -35,7 +36,7 @@ class BluetoothDeviceFinder(private val context: AppCompatActivity, private val 
             scanner?.flushPendingScanResults(this)
             scanner?.stopScan(this)
         }
-        catch (e : Exception)
+        catch (e: Exception)
         {
             e.printStackTrace()
         }
@@ -120,7 +121,7 @@ class BluetoothDeviceFinder(private val context: AppCompatActivity, private val 
         val device = result?.device
         Log.v(TAG, " onScanResult($callbackType, ${device?.name}) ")
         val findDevice = (device?.name)?.contains(targetDeviceName)
-        if ((findDevice != null)&&(findDevice))
+        if ((findDevice != null) && (findDevice))
         {
             Log.v(TAG, " FIND DEVICE : $targetDeviceName")
             scanResult.foundBluetoothDevice(device)

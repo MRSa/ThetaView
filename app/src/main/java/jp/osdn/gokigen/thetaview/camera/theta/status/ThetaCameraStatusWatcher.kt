@@ -46,6 +46,15 @@ class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdPro
             setMessage(IIndicator.Area.AREA_9, Color.WHITE, "")
             setMessage(IIndicator.Area.AREA_10, Color.WHITE, "")
             setMessage(IIndicator.Area.AREA_11, Color.WHITE, "")
+
+            setMessage(IIndicator.Area.AREA_A, Color.WHITE, "")
+            setMessage(IIndicator.Area.AREA_B, Color.WHITE, "")
+            setMessage(IIndicator.Area.AREA_C, Color.WHITE, "")
+            setMessage(IIndicator.Area.AREA_D, Color.WHITE, "")
+            setMessage(IIndicator.Area.AREA_E, Color.WHITE, "")
+            setMessage(IIndicator.Area.AREA_F, Color.WHITE, "")
+            setMessage(IIndicator.Area.AREA_G, Color.WHITE, "")
+            setMessage(IIndicator.Area.AREA_H, Color.WHITE, "")
         }
         catch (e : Exception)
         {
