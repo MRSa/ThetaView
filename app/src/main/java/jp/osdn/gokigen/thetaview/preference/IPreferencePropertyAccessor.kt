@@ -32,6 +32,9 @@ interface IPreferencePropertyAccessor
         const val USE_MINDWAVE_EEG = "use_mindwave_eeg"
         const val USE_MINDWAVE_EEG_DEFAULT_VALUE= false
 
+        const val EEG_SIGNAL_USE_TYPE = "eeg_signal_type"
+        const val EEG_SIGNAL_USE_TYPE_DEFAULT_VALUE = "0"
+
         // --- SCREEN TRANSACTION LABEL ---
         const val LABEL_EXIT_APPLICATION = "exit_application"
         const val LABEL_WIFI_SETTINGS = "wifi_settings"

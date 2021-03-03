@@ -7,6 +7,7 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import androidx.preference.DropDownPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
@@ -31,6 +32,17 @@ class MainPreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceCha
         prepareClickListener(IPreferencePropertyAccessor.LABEL_EXIT_APPLICATION)
         prepareClickListener(IPreferencePropertyAccessor.LABEL_WIFI_SETTINGS)
         prepareClickListener(IPreferencePropertyAccessor.LABEL_DEBUG_INFO)
+
+        val useEEG  = findPreference<DropDownPreference>(IPreferencePropertyAccessor.EEG_SIGNAL_USE_TYPE)
+        if (useEEG != null)
+        {
+            useEEG.summary = useEEG.entry
+
+            useEEG.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
+                useEEG.summary = newValue  as CharSequence // とりあえず番号を表示した
+                true
+            }
+        }
     }
 
     private fun prepareClickListener(label: String)
@@ -62,6 +74,18 @@ class MainPreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceCha
             IPreferencePropertyAccessor.CAPTURE_ONLY_LIVE_VIEW -> value = preferences.getBoolean(key, IPreferencePropertyAccessor.CAPTURE_ONLY_LIVE_VIEW_DEFAULT_VALUE)
             IPreferencePropertyAccessor.SHOW_CAMERA_STATUS -> value = preferences.getBoolean(key, IPreferencePropertyAccessor.SHOW_CAMERA_STATUS_DEFAULT_VALUE)
             IPreferencePropertyAccessor.USE_MINDWAVE_EEG -> value = preferences.getBoolean(key, IPreferencePropertyAccessor.USE_MINDWAVE_EEG_DEFAULT_VALUE)
+            IPreferencePropertyAccessor.EEG_SIGNAL_USE_TYPE -> {
+                try
+                {
+                    val indexString = preferences.getString(IPreferencePropertyAccessor.EEG_SIGNAL_USE_TYPE, IPreferencePropertyAccessor.EEG_SIGNAL_USE_TYPE_DEFAULT_VALUE)
+                    indexString?.toInt()
+
+                }
+                catch (e : Exception)
+                {
+
+                }
+            }
             // else -> Log.v(TAG, " onSharedPreferenceChanged() : + $key ")
         }
         Log.v(TAG, " onSharedPreferenceChanged() : + $key, $value")

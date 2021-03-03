@@ -107,6 +107,13 @@ class PreferenceValueInitializer : IPreferenceValueInitializer
             {
                 editor.putString(IPreferencePropertyAccessor.EXTERNAL_STORAGE_LOCATION, IPreferencePropertyAccessor.EXTERNAL_STORAGE_LOCATION_DEFAULT_VALUE)
             }
+            if (!items.containsKey(IPreferencePropertyAccessor.EEG_SIGNAL_USE_TYPE))
+            {
+                editor.putString(
+                        IPreferencePropertyAccessor.EEG_SIGNAL_USE_TYPE,
+                        IPreferencePropertyAccessor.EEG_SIGNAL_USE_TYPE_DEFAULT_VALUE
+                )
+            }
             editor.apply()
         }
         catch (e : Exception)

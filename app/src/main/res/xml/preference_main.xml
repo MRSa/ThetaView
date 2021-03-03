@@ -45,6 +45,13 @@
             android:title="@string/pref_use_mindwave_connection"
             android:summary="@string/pref_summary_use_mindwave_connection"/>
 
+        <DropDownPreference
+            android:entries="@array/eeg_signal_type"
+            android:entryValues="@array/eeg_signal_type_value"
+            android:key="eeg_signal_type"
+            android:title="@string/pref_use_eeg_signal_type"
+            android:summary="@string/pref_summary_use_eeg_signal_type"
+            />
     </PreferenceCategory>
 
     <PreferenceCategory
