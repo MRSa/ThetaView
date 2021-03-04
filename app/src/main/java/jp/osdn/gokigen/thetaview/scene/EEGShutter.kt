@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothDevice
 import android.graphics.Color
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import jp.osdn.gokigen.thetaview.bluetooth.connection.IBluetoothConnection
 import jp.osdn.gokigen.thetaview.bluetooth.connection.IBluetoothScanResult
 import jp.osdn.gokigen.thetaview.bluetooth.connection.IBluetoothStatusNotify
@@ -11,10 +12,12 @@ import jp.osdn.gokigen.thetaview.bluetooth.connection.eeg.MindWaveConnection
 import jp.osdn.gokigen.thetaview.brainwave.BrainwaveDataHolder
 import jp.osdn.gokigen.thetaview.brainwave.IDetectSensingReceiver
 import jp.osdn.gokigen.thetaview.camera.theta.operation.IThetaShutter
+import jp.osdn.gokigen.thetaview.preference.IPreferencePropertyAccessor
 
-class EEGShutter(activity : AppCompatActivity, private val bluetoothStatusNotify : IBluetoothStatusNotify, private val shutter: IThetaShutter) : IDetectSensingReceiver, IBluetoothScanResult
+class EEGShutter(private val activity : AppCompatActivity, private val bluetoothStatusNotify : IBluetoothStatusNotify, private val shutter: IThetaShutter) : IDetectSensingReceiver, IBluetoothScanResult
 {
     private val bluetoothConnection = MindWaveConnection(activity, BrainwaveDataHolder(this), bluetoothStatusNotify, this)
+    private var useEEGSignalType : Int = 0
     private lateinit var indicator : IIndicator
 
     companion object
@@ -32,22 +35,24 @@ class EEGShutter(activity : AppCompatActivity, private val bluetoothStatusNotify
         Log.v(TAG, " connectToEEG()")
         try
         {
-/*
-            val thread = Thread {
-                try
-                {
-                    bluetoothConnection.connect("MindWave Mobile")
-                }
-                catch (e : Exception)
-                {
-                    e.printStackTrace()
-
-                }
-            }
-            thread.start()
-*/
             bluetoothConnection.connect("MindWave Mobile")
+        }
+        catch (e : Exception)
+        {
+            e.printStackTrace()
+        }
+        updateUseEEGSignal()
+    }
 
+    fun updateUseEEGSignal()
+    {
+        try
+        {
+            val signalType = PreferenceManager.getDefaultSharedPreferences(activity).getString(IPreferencePropertyAccessor.EEG_SIGNAL_USE_TYPE, IPreferencePropertyAccessor.EEG_SIGNAL_USE_TYPE_DEFAULT_VALUE)?.toInt()
+            if (signalType != null)
+            {
+                useEEGSignalType = signalType
+            }
         }
         catch (e : Exception)
         {
@@ -91,11 +96,21 @@ class EEGShutter(activity : AppCompatActivity, private val bluetoothStatusNotify
     override fun lostAttention()
     {
         Log.v(TAG, " lostAttention()")
+        if (useEEGSignalType == 0)
+        {
+            // シャッターを止める
+            shutter.doShutterOff()
+        }
     }
 
     override fun detectAttentionThreshold()
     {
         Log.v(TAG, " detectAttentionThreshold()")
+        if (useEEGSignalType == 0)
+        {
+            // シャッターを稼働させる
+            shutter.doShutter()
+        }
     }
 
     override fun detectMediation()
@@ -106,11 +121,21 @@ class EEGShutter(activity : AppCompatActivity, private val bluetoothStatusNotify
     override fun lostMediation()
     {
         Log.v(TAG, " lostMediation()")
+        if (useEEGSignalType != 0)
+        {
+            // シャッターを止める
+            shutter.doShutterOff()
+        }
     }
 
     override fun detectMediationThreshold()
     {
         Log.v(TAG, " detectMediationThreshold()")
+        if (useEEGSignalType != 0)
+        {
+            // シャッターを稼働させる
+            shutter.doShutter()
+        }
     }
 
     override fun foundBluetoothDevice(device: BluetoothDevice)

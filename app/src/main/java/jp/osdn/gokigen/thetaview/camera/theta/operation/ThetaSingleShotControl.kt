@@ -25,6 +25,8 @@ class ThetaSingleShotControl(private val sessionIdProvider: IThetaSessionIdProvi
             val thread = Thread {
                 try
                 {
+                    // 撮影開始を知らせる
+                    showInformation.vibrate(IShowInformation.VibratePattern.SIMPLE_SHORT_SHORT)
                     val shootUrl = "http://192.168.1.1/osc/commands/execute"
                     val postData = if (useOSCv2) "{\"name\":\"camera.takePicture\",\"parameters\":{\"timeout\":0}}" else "{\"name\":\"camera.takePicture\",\"parameters\":{\"sessionId\": \"" + sessionIdProvider.sessionId + "\"}}"
                     val result: String? = httpClient.httpPostWithHeader(shootUrl, postData, null, "application/json;charset=utf-8", timeoutMs)

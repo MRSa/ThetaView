@@ -39,7 +39,15 @@ class MainPreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceCha
             useEEG.summary = useEEG.entry
 
             useEEG.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
-                useEEG.summary = newValue  as CharSequence // とりあえず番号を表示した
+                try
+                {
+                    useEEG.summary = context?.resources!!.getStringArray(R.array.eeg_signal_type)[newValue.toString().toInt()]
+                }
+                catch (e : Exception)
+                {
+                    e.printStackTrace()
+                    useEEG.summary = (newValue  as CharSequence) // とりあえず番号を表示した
+                }
                 true
             }
         }

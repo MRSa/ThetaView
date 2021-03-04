@@ -4,7 +4,7 @@ interface IShowInformation
 {
     enum class VibratePattern
     {
-        NONE, SIMPLE_SHORT, SIMPLE_LONG
+        NONE, SIMPLE_SHORT_SHORT, SIMPLE_SHORT, SIMPLE_LONG
     }
 
     fun showToast(rscId: Int, appendMessage: String, duration: Int)

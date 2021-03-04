@@ -35,6 +35,7 @@ class ThetaControl(private val context: AppCompatActivity, private val showInfor
 
     private val statusWatcher = ThetaCameraStatusWatcher(sessionIdHolder, this)
     private var isStatusWatch = false
+    private var isMovieRecording = false
 
     fun setIndicator(indicator : IIndicator)
     {
@@ -180,12 +181,31 @@ class ThetaControl(private val context: AppCompatActivity, private val showInfor
             {
                 // video
                 ThetaMovieRecordingControl(sessionIdHolder, showInformation, liveViewControl).movieControl(sessionIdHolder.isApiLevelV21())
+                isMovieRecording = true
+            }
+        }
+        catch (e : Exception)
+        {
+            e.printStackTrace()
+            isMovieRecording = false
+        }
+    }
+
+    override fun doShutterOff()
+    {
+        try
+        {
+            if ((isMovieRecording)&&(!statusWatcher.captureMode.contains("image")))
+            {
+                // video
+                ThetaMovieRecordingControl(sessionIdHolder, showInformation, liveViewControl).movieControl(sessionIdHolder.isApiLevelV21())
             }
         }
         catch (e : Exception)
         {
             e.printStackTrace()
         }
+        isMovieRecording = false
     }
 
     companion object

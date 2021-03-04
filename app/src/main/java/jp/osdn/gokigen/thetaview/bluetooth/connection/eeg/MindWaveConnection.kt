@@ -25,6 +25,7 @@ class MindWaveConnection(private val activity : AppCompatActivity, private val d
     companion object
     {
         private val TAG = MindWaveConnection::class.java.simpleName
+        private const val LIMIT_EXCEPTION = 1000
     }
 
     private val deviceFinder = BluetoothDeviceFinder(activity, this)
@@ -33,6 +34,7 @@ class MindWaveConnection(private val activity : AppCompatActivity, private val d
     private var isPairing = false
     private var loggingFlag = false
     private var targetDevice: BluetoothDevice? = null
+    private var exceptionCount = 0
 
     /**
      *
@@ -200,7 +202,7 @@ class MindWaveConnection(private val activity : AppCompatActivity, private val d
         // シリアルデータの受信メイン部分
         var previousData = 0xff.toByte()
         val outputStream = ByteArrayOutputStream()
-        while (foundDevice)
+        while ((foundDevice)&&(exceptionCount < LIMIT_EXCEPTION))
         {
             try
             {
@@ -220,10 +222,12 @@ class MindWaveConnection(private val activity : AppCompatActivity, private val d
                     outputStream.write(byteData.toInt())
                 }
                 previousData = byteData
+                exceptionCount = 0
             }
             catch (e: Exception)
             {
                 e.printStackTrace()
+                exceptionCount++
             }
         }
         Log.v(TAG, " serialCommunicationMain : SERIAL COMMUNICATION FINISHED.")

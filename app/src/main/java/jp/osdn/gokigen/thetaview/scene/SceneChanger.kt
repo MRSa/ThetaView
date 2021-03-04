@@ -122,6 +122,7 @@ class SceneChanger(private val activity: AppCompatActivity, private val informat
             thetaControl.setIndicator(liveViewFragment)
             eegShutter.setIndicator(liveViewFragment)
         }
+        eegShutter.updateUseEEGSignal()
         changeFragment(liveViewFragment)
         thetaControl.startCamera()
     }

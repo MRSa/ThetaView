@@ -170,6 +170,7 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
                     {
                         when (vibratePattern)
                         {
+                            IShowInformation.VibratePattern.SIMPLE_SHORT_SHORT -> vibrator.vibrate(30)
                             IShowInformation.VibratePattern.SIMPLE_SHORT ->  vibrator.vibrate(50)
                             IShowInformation.VibratePattern.SIMPLE_LONG ->  vibrator.vibrate(150)
                             else -> { }
@@ -396,7 +397,7 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
         const val REQUEST_CODE_OPEN_DOCUMENT_TREE = 20
 
         private val REQUIRED_PERMISSIONS = arrayOf(
-                Manifest.permission.CAMERA,
+                //Manifest.permission.CAMERA,
                 Manifest.permission.VIBRATE,
                 Manifest.permission.INTERNET,
                 Manifest.permission.ACCESS_NETWORK_STATE,

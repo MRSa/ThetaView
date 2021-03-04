@@ -53,6 +53,8 @@ class ThetaMovieRecordingControl(private val sessionIdProvider: IThetaSessionIdP
                     {
                         Log.v(TAG, "startCapture() reply is null.  $postData")
                     }
+                    // 撮影開始をバイブレータで知らせる
+                    statusDrawer.vibrate(IShowInformation.VibratePattern.SIMPLE_SHORT)
                 }
                 catch (e: Exception)
                 {
@@ -91,6 +93,8 @@ class ThetaMovieRecordingControl(private val sessionIdProvider: IThetaSessionIdP
                             waitMs() // ちょっと待つ...
                             liveViewControl.startLiveView()
                         }
+                        // 撮影終了をバイブレータで知らせる
+                        statusDrawer.vibrate(IShowInformation.VibratePattern.SIMPLE_LONG)
                     }
                     else
                     {

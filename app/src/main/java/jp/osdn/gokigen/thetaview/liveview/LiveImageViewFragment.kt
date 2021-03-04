@@ -179,7 +179,7 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
 
     override fun setMessage(area: IIndicator.Area, color: Int, message: String)
     {
-        Log.v(TAG, ">>> $area[$color] : $message")
+        //Log.v(TAG, ">>> $area[$color] : $message")
         try
         {
             if (::informationView.isInitialized)
