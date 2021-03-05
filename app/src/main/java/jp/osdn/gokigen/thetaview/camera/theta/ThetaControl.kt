@@ -21,7 +21,10 @@ import jp.osdn.gokigen.thetaview.liveview.ILiveView
 import jp.osdn.gokigen.thetaview.liveview.ILiveViewController
 import jp.osdn.gokigen.thetaview.liveview.ILiveViewRefresher
 import jp.osdn.gokigen.thetaview.liveview.image.CameraLiveViewListenerImpl
+import jp.osdn.gokigen.thetaview.liveview.storeimage.StoreImage
 import jp.osdn.gokigen.thetaview.operation.ICameraControl
+import jp.osdn.gokigen.thetaview.preference.IPreferencePropertyAccessor
+import jp.osdn.gokigen.thetaview.preference.PreferenceAccessWrapper
 import jp.osdn.gokigen.thetaview.scene.ICameraConnectionStatus
 import jp.osdn.gokigen.thetaview.scene.IIndicator
 
@@ -36,6 +39,7 @@ class ThetaControl(private val context: AppCompatActivity, private val showInfor
     private val statusWatcher = ThetaCameraStatusWatcher(sessionIdHolder, this)
     private var isStatusWatch = false
     private var isMovieRecording = false
+    private val storeImage = StoreImage(context, liveViewListener)
 
     fun setIndicator(indicator : IIndicator)
     {
@@ -172,6 +176,7 @@ class ThetaControl(private val context: AppCompatActivity, private val showInfor
     {
         try
         {
+            captureImageLiveView()
             if (statusWatcher.captureMode.contains("image"))
             {
                 // image
@@ -206,6 +211,31 @@ class ThetaControl(private val context: AppCompatActivity, private val showInfor
             e.printStackTrace()
         }
         isMovieRecording = false
+    }
+
+    private fun captureImageLiveView()
+    {
+        try
+        {
+            //  preferenceから設定を取得する
+            val captureBothCamera = PreferenceAccessWrapper(context).getBoolean(
+                    IPreferencePropertyAccessor.CAPTURE_BOTH_CAMERA_AND_LIVE_VIEW,
+                    IPreferencePropertyAccessor.CAPTURE_BOTH_CAMERA_AND_LIVE_VIEW_DEFAULT_VALUE
+            )
+            if (captureBothCamera) {
+                // ライブビュー画像を保管する場合...
+                val thread = Thread { storeImage.doStore() }
+                try {
+                    thread.start()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+        catch (e : Exception)
+        {
+            e.printStackTrace()
+        }
     }
 
     companion object

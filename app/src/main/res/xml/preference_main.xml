@@ -16,17 +16,19 @@
             android:summary="@string/pref_summary_wifi_settings" />
     </PreferenceCategory>
 
+<!--
     <PreferenceCategory
         app:title="@string/pref_cat_application_settings">
-<!--
+
         <SwitchPreferenceCompat
             android:key="use_camera_x_preview"
             android:title="@string/pref_use_camerax_preview"/>
--->
+
         <SwitchPreferenceCompat
             android:key="save_local_location"
             android:title="@string/save_local_location"/>
     </PreferenceCategory>
+-->
 
     <PreferenceCategory
         android:title="@string/pref_cat_camera">
@@ -39,6 +41,10 @@
             android:key="show_camera_status"
             android:title="@string/pref_show_camera_status"
             android:summary="@string/pref_summary_show_camera_status"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="@string/pref_cat_eeg_settings">
 
         <SwitchPreferenceCompat
             android:key="use_mindwave_eeg"
@@ -59,10 +65,10 @@
         <Preference
             android:key="instruction_link"
             android:title="@string/pref_instruction_manual"
-            android:summary="https://osdn.net/projects/gokigen/wiki/Mangle"
+            android:summary="https://osdn.net/projects/gokigen/wiki/ThetaThoughtShutterS"
             android:selectable="true">
             <intent android:action="android.intent.action.VIEW"
-                android:data="https://osdn.net/projects/gokigen/wiki/Mangle" />
+                android:data="https://osdn.net/projects/gokigen/wiki/ThetaThoughtShutterS" />
         </Preference>
         <Preference
             android:key="privacy_policy"

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ThetaView</string>
+    <string name="app_name">Theta Thought ShutterS</string>
     <string name="blank"> </string>
     <string name="app_location">AirA01a</string>
     <string name="action_refresh">Refresh</string>
@@ -30,6 +30,8 @@
     <string name="pref_cat_camera">Camera</string>
     <string name="pref_capture_both_camera_and_live_view">Capture LiveView Image</string>
     <string name="pref_summary_capture_both_live_view">Captures a LiveView image.</string>
+
+    <string name="pref_cat_eeg_settings">EEG Settings</string>
 
     <string name="pref_cat_gokigen">GOKIGEN</string>
     <string name="pref_instruction_manual">Instructions</string>
