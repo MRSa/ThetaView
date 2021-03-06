@@ -32,6 +32,15 @@
 
     <PreferenceCategory
         android:title="@string/pref_cat_camera">
+
+        <DropDownPreference
+            android:entries="@array/preview_format"
+            android:entryValues="@array/preview_format_value"
+            android:key="liveview_resolution"
+            android:title="@string/pref_liveview_resolution"
+            android:summary="@string/pref_summary_liveview_resolution"
+            />
+
         <SwitchPreferenceCompat
             android:key="capture_both_camera_and_live_view"
             android:title="@string/pref_capture_both_camera_and_live_view"
@@ -41,6 +50,7 @@
             android:key="show_camera_status"
             android:title="@string/pref_show_camera_status"
             android:summary="@string/pref_summary_show_camera_status"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -58,6 +68,17 @@
             android:title="@string/pref_use_eeg_signal_type"
             android:summary="@string/pref_summary_use_eeg_signal_type"
             />
+
+        <SwitchPreferenceCompat
+            android:key="show_eeg_wave_signal"
+            android:title="@string/pref_show_eeg_wave_signal"
+            android:summary="@string/pref_summary_show_eeg_wave_signal"/>
+
+        <SwitchPreferenceCompat
+            android:key="record_eeg_wave_signal"
+            android:title="@string/pref_record_eeg_wave_signal"
+            android:summary="@string/pref_summary_record_eeg_wave_signal"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory

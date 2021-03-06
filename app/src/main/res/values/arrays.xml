@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="preview_format">
+        <item>640x320 30fps</item>
+        <item>640x320 8fps</item>
+        <item>1024x512 30fps</item>
+        <item>1024x512 8fps</item>
+        <item>1920x960 8fps</item>
+        <item>640x320 10fps</item>
+    </string-array>
+
+    <string-array name="preview_format_value">
+        <item>{"width": 640, "height": 320, "framerate": 30}</item>
+        <item>{"width": 640, "height": 320, "framerate":  8}</item>
+        <item>{“width”: 1024, “height”: 512, “framerate”: 30}</item>
+        <item>{“width”: 1024, “height”: 512, “framerate”: 8}</item>
+        <item>{“width”: 1920, “height”: 960, “framerate”: 8}</item>
+        <item>{“width”: 640, “height”: 320, “framerate”: 10}</item>
+    </string-array>
+
     <string-array name="eeg_signal_type">
         <item>ATTENTION</item>
         <item>MEDIATION</item>

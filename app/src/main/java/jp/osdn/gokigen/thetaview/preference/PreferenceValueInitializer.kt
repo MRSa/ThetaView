@@ -105,13 +105,37 @@ class PreferenceValueInitializer : IPreferenceValueInitializer
             }
             if (!items.containsKey(IPreferencePropertyAccessor.EXTERNAL_STORAGE_LOCATION))
             {
-                editor.putString(IPreferencePropertyAccessor.EXTERNAL_STORAGE_LOCATION, IPreferencePropertyAccessor.EXTERNAL_STORAGE_LOCATION_DEFAULT_VALUE)
+                editor.putString(
+                        IPreferencePropertyAccessor.EXTERNAL_STORAGE_LOCATION,
+                        IPreferencePropertyAccessor.EXTERNAL_STORAGE_LOCATION_DEFAULT_VALUE
+                )
+            }
+            if (!items.containsKey(IPreferencePropertyAccessor.SHOW_EEG_WAVE_SIGNAL))
+            {
+                editor.putBoolean(
+                        IPreferencePropertyAccessor.SHOW_EEG_WAVE_SIGNAL,
+                        IPreferencePropertyAccessor.SHOW_EEG_WAVE_SIGNAL_DEFAULT_VALUE
+                )
+            }
+            if (!items.containsKey(IPreferencePropertyAccessor.RECORD_EEG_WAVE_SIGNAL))
+            {
+                editor.putBoolean(
+                        IPreferencePropertyAccessor.RECORD_EEG_WAVE_SIGNAL,
+                        IPreferencePropertyAccessor.RECORD_EEG_WAVE_SIGNAL_DEFAULT_VALUE
+                )
             }
             if (!items.containsKey(IPreferencePropertyAccessor.EEG_SIGNAL_USE_TYPE))
             {
                 editor.putString(
                         IPreferencePropertyAccessor.EEG_SIGNAL_USE_TYPE,
                         IPreferencePropertyAccessor.EEG_SIGNAL_USE_TYPE_DEFAULT_VALUE
+                )
+            }
+            if (!items.containsKey(IPreferencePropertyAccessor.LIVEVIEW_RESOLUTION))
+            {
+                editor.putString(
+                        IPreferencePropertyAccessor.LIVEVIEW_RESOLUTION,
+                        IPreferencePropertyAccessor.LIVEVIEW_RESOLUTION_DEFAULT_VALUE
                 )
             }
             editor.apply()

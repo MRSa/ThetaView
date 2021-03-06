@@ -10,5 +10,6 @@ interface IDetectSensingReceiver
     fun lostMediation()
     fun detectMediationThreshold()
 
-    fun updateSummaryValue(attention : Int, mediation : Int)
+    @ExperimentalUnsignedTypes
+    fun updateSummaryValue(summaryValue : BrainwaveSummaryData)
 }

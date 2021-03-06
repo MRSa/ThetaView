@@ -14,13 +14,15 @@ class BrainwaveDataHolder(private val receiver: IDetectSensingReceiver? = null, 
     }
 
     private var valueBuffer: IntArray
-    private var currentSummaryData = BrainwaveSummaryData()
     private var maxBufferSize = 0
     private var currentPosition = 0
     private var bufferIsFull = false
     private var attentionCount = 0
     private var mediationCount = 0
     private var dataReceived = false
+
+    @ExperimentalUnsignedTypes
+    private var currentSummaryData = BrainwaveSummaryData()
 
     init
     {
@@ -47,6 +49,7 @@ class BrainwaveDataHolder(private val receiver: IDetectSensingReceiver? = null, 
         }
     }
 
+    @ExperimentalUnsignedTypes
     override fun receivedSummaryData(data: ByteArray?)
     {
         if (data != null)
@@ -63,7 +66,7 @@ class BrainwaveDataHolder(private val receiver: IDetectSensingReceiver? = null, 
                 val attention = currentSummaryData.getAttention()
                 val mediation = currentSummaryData.getMediation()
                 //Log.v(TAG, "  ATTENTION : $attention   MEDIATION : $mediation")
-                receiver?.updateSummaryValue(attention, mediation)
+                receiver?.updateSummaryValue(currentSummaryData)
                 if ((!dataReceived)&&(attention > 0)&&(mediation > 0))
                 {
                     // データの受信を開始した
@@ -124,6 +127,7 @@ class BrainwaveDataHolder(private val receiver: IDetectSensingReceiver? = null, 
         }
     }
 
+    @ExperimentalUnsignedTypes
     fun getSummaryData(): BrainwaveSummaryData
     {
         return currentSummaryData

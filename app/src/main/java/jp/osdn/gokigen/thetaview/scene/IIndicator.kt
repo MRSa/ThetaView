@@ -16,6 +16,7 @@ interface IIndicator
         AREA_9,
         AREA_10,
         AREA_11,
+        AREA_12,
         AREA_A,
         AREA_B,
         AREA_C,
@@ -24,6 +25,15 @@ interface IIndicator
         AREA_F,
         AREA_G,
         AREA_H,
+        AREA_I,
+        AREA_J,
+        AREA_K,
+        AREA_L,
+        AREA_M,
+        AREA_N,
+        AREA_O,
+        AREA_P,
+        AREA_Q,
     }
 
     fun setMessage(area: Area, color: Int, message: String)

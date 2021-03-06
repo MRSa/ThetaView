@@ -2,17 +2,18 @@ package jp.osdn.gokigen.thetaview.brainwave
 
 import kotlin.experimental.and
 
+@ExperimentalUnsignedTypes
 class BrainwaveSummaryData
 {
     //  3-byte value : delta (0.5 - 2.75Hz), theta (3.5 - 6.75Hz), low-alpha (7.5 - 9.25Hz), high-alpha (10 - 11.75Hz), low-beta (13 - 16.75Hz), high-beta (18 - 29.75Hz), low-gamma (31 - 39.75Hz), and mid-gamma (41 - 49.75Hz).
-    private var delta = 0
-    private var theta = 0
-    private var lowAlpha = 0
-    private var highAlpha = 0
-    private var lowBeta = 0
-    private var highBeta = 0
-    private var lowGamma = 0
-    private var midGamma = 0
+    private var delta : ULong = 0u
+    private var theta : ULong = 0u
+    private var lowAlpha : ULong = 0u
+    private var highAlpha : ULong = 0u
+    private var lowBeta  : ULong= 0u
+    private var highBeta : ULong = 0u
+    private var lowGamma : ULong = 0u
+    private var midGamma  : ULong = 0u
     private var poorSignal = 0
     private var attention = 0
     private var mediation = 0
@@ -28,14 +29,14 @@ class BrainwaveSummaryData
                 return ret
             }
             poorSignal = packet[4].toInt()
-            delta = (packet[7] and 0xff.toByte()) * 65536 + (packet[8] and 0xff.toByte()) * 256 + (packet[9] and 0xff.toByte())
-            theta = (packet[10] and 0xff.toByte()) * 65536 + (packet[11] and 0xff.toByte()) * 256 + (packet[12] and 0xff.toByte())
-            lowAlpha = (packet[13] and 0xff.toByte()) * 65536 + (packet[14] and 0xff.toByte()) * 256 + (packet[15] and 0xff.toByte())
-            highAlpha = (packet[16] and 0xff.toByte()) * 65536 + (packet[17] and 0xff.toByte()) * 256 + (packet[18] and 0xff.toByte())
-            lowBeta = (packet[19] and 0xff.toByte()) * 65536 + (packet[20] and 0xff.toByte()) * 256 + (packet[21] and 0xff.toByte())
-            highBeta = (packet[22] and 0xff.toByte()) * 65536 + (packet[23] and 0xff.toByte()) * 256 + (packet[24] and 0xff.toByte())
-            lowGamma = (packet[25] and 0xff.toByte()) * 65536 + (packet[26] and 0xff.toByte()) * 256 + (packet[27] and 0xff.toByte())
-            midGamma = (packet[28] and 0xff.toByte()) * 65536 + (packet[29] and 0xff.toByte()) * 256 + (packet[30] and 0xff.toByte())
+            delta = ((packet[7].toUByte() and 0xff.toUByte()).toULong() * 65536u + (packet[8].toUByte() and 0xff.toUByte()).toULong() * 256u + (packet[9].toUByte() and 0xff.toUByte()).toULong())
+            theta = ((packet[10].toUByte() and 0xff.toUByte()).toULong() * 65536u + (packet[11].toUByte() and 0xff.toUByte()).toULong() * 256u + (packet[12].toUByte() and 0xff.toUByte()).toULong())
+            lowAlpha = ((packet[13].toUByte() and 0xff.toUByte()).toULong() * 65536u + (packet[14].toUByte() and 0xff.toUByte()).toULong() * 256u + (packet[15].toUByte() and 0xff.toUByte()).toULong())
+            highAlpha = ((packet[16].toUByte() and 0xff.toUByte()).toULong() * 65536u + (packet[17].toUByte() and 0xff.toUByte()).toULong() * 256u + (packet[18].toUByte() and 0xff.toUByte()).toULong())
+            lowBeta = ((packet[19].toUByte() and 0xff.toUByte()).toULong() * 65536u + (packet[20].toUByte() and 0xff.toUByte()).toULong() * 256u + (packet[21].toUByte() and 0xff.toUByte()).toULong())
+            highBeta = ((packet[22].toUByte() and 0xff.toUByte()).toULong() * 65536u + (packet[23].toUByte() and 0xff.toUByte()).toULong() * 256u + (packet[24].toUByte() and 0xff.toUByte()).toULong())
+            lowGamma = ((packet[25].toUByte() and 0xff.toUByte()).toULong() * 65536u + (packet[26].toUByte() and 0xff.toUByte()).toULong() * 256u + (packet[27].toUByte() and 0xff.toUByte()).toULong())
+            midGamma = ((packet[28].toUByte() and 0xff.toUByte()).toULong() * 65536u + (packet[29].toUByte() and 0xff.toUByte()).toULong() * 256u + (packet[30].toUByte() and 0xff.toUByte()).toULong())
             attention = ((packet[32] and 0xff.toByte()).toInt())
             mediation = ((packet[34] and 0xff.toByte()).toInt())
             ret = true
@@ -57,44 +58,44 @@ class BrainwaveSummaryData
         return poorSignal
     }
 
-    fun getDelta(): Int
+    fun getDelta(): Long
     {
-        return delta
+        return delta.toLong()
     }
 
-    fun getTheta(): Int
+    fun getTheta(): Long
     {
-        return theta
+        return theta.toLong()
     }
 
-    fun getLowAlpha(): Int
+    fun getLowAlpha(): Long
     {
-        return lowAlpha
+        return lowAlpha.toLong()
     }
 
-    fun getHighAlpha(): Int
+    fun getHighAlpha(): Long
     {
-        return highAlpha
+        return highAlpha.toLong()
     }
 
-    fun getLowBeta(): Int
+    fun getLowBeta(): Long
     {
-        return lowBeta
+        return lowBeta.toLong()
     }
 
-    fun getHighBeta(): Int
+    fun getHighBeta(): Long
     {
-        return highBeta
+        return highBeta.toLong()
     }
 
-    fun getLowGamma(): Int
+    fun getLowGamma(): Long
     {
-        return lowGamma
+        return lowGamma.toLong()
     }
 
-    fun getMidGamma(): Int
+    fun getMidGamma(): Long
     {
-        return midGamma
+        return midGamma.toLong()
     }
 
     fun getAttention(): Int

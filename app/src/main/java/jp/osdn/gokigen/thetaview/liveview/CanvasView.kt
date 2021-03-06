@@ -190,77 +190,167 @@ class CanvasView : View
                 canvas.drawText(message, posX, posY, paint)
             }
 
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_12]
+            color = informationColor[IIndicator.Area.AREA_12]
+            if ((message != null) && (color != null)) {
+                paint.color = color
+                canvas.drawText(message, posX, posY, paint)
+            }
+
             //////////////////////////////////////////////////////////////////////////
             posY = 20.0f
             //posY += fontHeight
             message = informationMessage[IIndicator.Area.AREA_A]
-            posX = canvas.width - 10.0f - paint.measureText(message)
             color = informationColor[IIndicator.Area.AREA_A]
             if ((message != null) && (color != null)) {
                 paint.color = color
+                posX = canvas.width - 10.0f - paint.measureText(message)
                 canvas.drawText(message, posX, posY, paint)
             }
 
             posY += fontHeight
             message = informationMessage[IIndicator.Area.AREA_B]
-            posX = canvas.width - 10.0f - paint.measureText(message)
             color = informationColor[IIndicator.Area.AREA_B]
             if ((message != null) && (color != null)) {
                 paint.color = color
+                posX = canvas.width - 10.0f - paint.measureText(message)
                 canvas.drawText(message, posX, posY, paint)
             }
 
             posY += fontHeight
             message = informationMessage[IIndicator.Area.AREA_C]
-            posX = canvas.width - 10.0f - paint.measureText(message)
             color = informationColor[IIndicator.Area.AREA_C]
             if ((message != null) && (color != null)) {
                 paint.color = color
+                posX = canvas.width - 10.0f - paint.measureText(message)
                 canvas.drawText(message, posX, posY, paint)
             }
 
             posY += fontHeight
             message = informationMessage[IIndicator.Area.AREA_D]
-            posX = canvas.width - 10.0f - paint.measureText(message)
             color = informationColor[IIndicator.Area.AREA_D]
             if ((message != null) && (color != null)) {
                 paint.color = color
+                posX = canvas.width - 10.0f - paint.measureText(message)
                 canvas.drawText(message, posX, posY, paint)
             }
 
             posY += fontHeight
             message = informationMessage[IIndicator.Area.AREA_E]
-            posX = canvas.width - 10.0f - paint.measureText(message)
             color = informationColor[IIndicator.Area.AREA_E]
             if ((message != null) && (color != null)) {
                 paint.color = color
+                posX = canvas.width - 10.0f - paint.measureText(message)
                 canvas.drawText(message, posX, posY, paint)
             }
 
             posY += fontHeight
             message = informationMessage[IIndicator.Area.AREA_F]
-            posX = canvas.width - 10.0f - paint.measureText(message)
             color = informationColor[IIndicator.Area.AREA_F]
             if ((message != null) && (color != null)) {
                 paint.color = color
+                posX = canvas.width - 10.0f - paint.measureText(message)
                 canvas.drawText(message, posX, posY, paint)
             }
 
             posY += fontHeight
             message = informationMessage[IIndicator.Area.AREA_G]
-            posX = canvas.width - 10.0f - paint.measureText(message)
             color = informationColor[IIndicator.Area.AREA_G]
             if ((message != null) && (color != null)) {
                 paint.color = color
+                posX = canvas.width - 10.0f - paint.measureText(message)
                 canvas.drawText(message, posX, posY, paint)
             }
 
             posY += fontHeight
             message = informationMessage[IIndicator.Area.AREA_H]
-            posX = canvas.width - 10.0f - paint.measureText(message)
             color = informationColor[IIndicator.Area.AREA_H]
             if ((message != null) && (color != null)) {
                 paint.color = color
+                posX = canvas.width - 10.0f - paint.measureText(message)
+                canvas.drawText(message, posX, posY, paint)
+            }
+
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_I]
+            color = informationColor[IIndicator.Area.AREA_I]
+            if ((message != null) && (color != null)) {
+                paint.color = color
+                posX = canvas.width - 10.0f - paint.measureText(message)
+                canvas.drawText(message, posX, posY, paint)
+            }
+
+
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_J]
+            color = informationColor[IIndicator.Area.AREA_J]
+            if ((message != null) && (color != null)) {
+                paint.color = color
+                posX = canvas.width - 10.0f - paint.measureText(message)
+                canvas.drawText(message, posX, posY, paint)
+            }
+
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_K]
+            color = informationColor[IIndicator.Area.AREA_K]
+            if ((message != null) && (color != null)) {
+                paint.color = color
+                posX = canvas.width - 10.0f - paint.measureText(message)
+                canvas.drawText(message, posX, posY, paint)
+            }
+
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_L]
+            color = informationColor[IIndicator.Area.AREA_L]
+            if ((message != null) && (color != null)) {
+                paint.color = color
+                posX = canvas.width - 10.0f - paint.measureText(message)
+                canvas.drawText(message, posX, posY, paint)
+            }
+
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_M]
+            color = informationColor[IIndicator.Area.AREA_M]
+            if ((message != null) && (color != null)) {
+                paint.color = color
+                posX = canvas.width - 10.0f - paint.measureText(message)
+                canvas.drawText(message, posX, posY, paint)
+            }
+
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_N]
+            color = informationColor[IIndicator.Area.AREA_N]
+            if ((message != null) && (color != null)) {
+                paint.color = color
+                posX = canvas.width - 10.0f - paint.measureText(message)
+                canvas.drawText(message, posX, posY, paint)
+            }
+
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_O]
+            color = informationColor[IIndicator.Area.AREA_O]
+            if ((message != null) && (color != null)) {
+                paint.color = color
+                posX = canvas.width - 10.0f - paint.measureText(message)
+                canvas.drawText(message, posX, posY, paint)
+            }
+
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_P]
+            color = informationColor[IIndicator.Area.AREA_P]
+            if ((message != null) && (color != null)) {
+                paint.color = color
+                posX = canvas.width - 10.0f - paint.measureText(message)
+                canvas.drawText(message, posX, posY, paint)
+            }
+
+            posY += fontHeight
+            message = informationMessage[IIndicator.Area.AREA_Q]
+            color = informationColor[IIndicator.Area.AREA_Q]
+            if ((message != null) && (color != null)) {
+                paint.color = color
+                posX = canvas.width - 10.0f - paint.measureText(message)
                 canvas.drawText(message, posX, posY, paint)
             }
         }

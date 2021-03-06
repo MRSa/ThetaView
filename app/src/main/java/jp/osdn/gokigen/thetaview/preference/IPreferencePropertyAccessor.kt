@@ -35,6 +35,15 @@ interface IPreferencePropertyAccessor
         const val EEG_SIGNAL_USE_TYPE = "eeg_signal_type"
         const val EEG_SIGNAL_USE_TYPE_DEFAULT_VALUE = "0"
 
+        const val LIVEVIEW_RESOLUTION = "liveview_resolution"
+        const val LIVEVIEW_RESOLUTION_DEFAULT_VALUE = "{\"width\": 640, \"height\": 320, \"framerate\": 30}"
+
+        const val SHOW_EEG_WAVE_SIGNAL = "show_eeg_wave_signal"
+        const val SHOW_EEG_WAVE_SIGNAL_DEFAULT_VALUE = false
+
+        const val RECORD_EEG_WAVE_SIGNAL = "record_eeg_wave_signal"
+        const val RECORD_EEG_WAVE_SIGNAL_DEFAULT_VALUE = false
+
         // --- SCREEN TRANSACTION LABEL ---
         const val LABEL_EXIT_APPLICATION = "exit_application"
         const val LABEL_WIFI_SETTINGS = "wifi_settings"

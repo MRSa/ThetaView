@@ -240,7 +240,8 @@ class ThetaCameraConnection(private val context: AppCompatActivity, private val 
                     object : IOperationCallback { override fun operationExecuted(result: Int, resultStr: String?)
                     {
                         Log.v(TAG, " optionSet.setOptions(live view) : $resultStr ")
-                        optionSet.setOptions("\"previewFormat\" : {\"width\": 640, \"height\": 320, \"framerate\": 30}", (sessionIdProvider.sessionId.isBlank()),
+                        val previewFormat= "{\"width\": 640, \"height\": 320, \"framerate\": 30}"
+                        optionSet.setOptions("\"previewFormat\" : $previewFormat", (sessionIdProvider.sessionId.isBlank()),
                                 object : IOperationCallback { override fun operationExecuted(result: Int, resultStr: String?)
                                 {
                                     Log.v(TAG, " optionSet.setOptions(live view) : $resultStr ")
