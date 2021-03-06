@@ -23,6 +23,7 @@ class CameraLiveViewListenerImpl(private val context: Context) : IImageDataRecei
     private var cachePics = ArrayList<ByteArray>()
     private var maxCachePics : Int = 0
     private lateinit var imageBitmap : Bitmap
+    private var imageReceived = false
     //private var bitmapConverter : IPreviewImageConverter = ImageConvertFactory().getImageConverter(0)
     private lateinit var refresher : ILiveViewRefresher
 
@@ -38,12 +39,18 @@ class CameraLiveViewListenerImpl(private val context: Context) : IImageDataRecei
         setupLiveviewCache()
     }
 
+    fun isImageReceived() : Boolean
+    {
+        return (imageReceived)
+    }
+
     override fun onUpdateLiveView(data: ByteArray, metadata: Map<String, Any>?)
     {
         //Log.v(TAG, " onUpdateLiveView() : ${data.size} bytes.")
         try
         {
             imageBitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
+            imageReceived = true
             refresh()
         }
         catch (e : Exception)

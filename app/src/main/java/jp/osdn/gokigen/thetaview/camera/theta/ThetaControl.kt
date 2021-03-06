@@ -222,12 +222,16 @@ class ThetaControl(private val context: AppCompatActivity, private val showInfor
                     IPreferencePropertyAccessor.CAPTURE_BOTH_CAMERA_AND_LIVE_VIEW,
                     IPreferencePropertyAccessor.CAPTURE_BOTH_CAMERA_AND_LIVE_VIEW_DEFAULT_VALUE
             )
-            if (captureBothCamera) {
+            if ((captureBothCamera)&&(liveViewListener.isImageReceived()))
+            {
                 // ライブビュー画像を保管する場合...
                 val thread = Thread { storeImage.doStore() }
-                try {
+                try
+                {
                     thread.start()
-                } catch (e: Exception) {
+                }
+                catch (e: Exception)
+                {
                     e.printStackTrace()
                 }
             }
