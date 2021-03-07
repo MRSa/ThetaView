@@ -64,7 +64,7 @@ class SquareDrawer(context: Context) : IGraphicsDrawer
     override fun prepareDrawer(gl: GL10?)
     {
         Log.v(TAG, "prepareDrawer()")
-        mDroidTextureID = mGlUtils.prepareTexture(gl, R.drawable.sample)
+        mDroidTextureID = mGlUtils.prepareTexture(gl, R.drawable.sample2)
     }
 
     override fun preprocessDraw(gl: GL10?)
