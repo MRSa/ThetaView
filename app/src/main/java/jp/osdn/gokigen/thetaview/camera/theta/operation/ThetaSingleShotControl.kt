@@ -76,7 +76,7 @@ class ThetaSingleShotControl(private val sessionIdProvider: IThetaSessionIdProvi
     private fun waitChangeStatus()
     {
         val getStateUrl = "http://192.168.1.1/osc/state"
-        val maxWaitTimeoutMs = 9000 // 最大待ち時間 (単位: ms)
+        val maxWaitTimeoutMs = 12000 // 最大待ち時間 (単位: ms)
         var fingerprint = ""
         try
         {
@@ -102,22 +102,29 @@ class ThetaSingleShotControl(private val sessionIdProvider: IThetaSessionIdProvi
             while (currentTime - firstTime < maxWaitTimeoutMs)
             {
                 //  ... 状態を見て次に進める
-                val result: String? = httpClient.httpPost(getStateUrl, "", timeoutMs)
-                if ((result != null)&&(result.isNotEmpty()))
+                try
                 {
-                    val jsonObject = JSONObject(result)
-                    val currentFingerprint = jsonObject.getString("fingerprint")
-
-                    //  ログを出してみる
-                    // Log.v(TAG, " " + getStateUrl + " ( " + result + " ) " + "(" + fingerprint + " " + current_fingerprint + ")");
-                    if (fingerprint != currentFingerprint)
+                    val result: String? = httpClient.httpPost(getStateUrl, "", timeoutMs)
+                    if ((result != null)&&(result.isNotEmpty()))
                     {
-                        // fingerprintが更新された！
-                        break
+                        val jsonObject = JSONObject(result)
+                        val currentFingerprint = jsonObject.getString("fingerprint")
+
+                        //  ログを出してみる
+                        // Log.v(TAG, " " + getStateUrl + " ( " + result + " ) " + "(" + fingerprint + " " + current_fingerprint + ")");
+                        if (fingerprint != currentFingerprint)
+                        {
+                            // fingerprintが更新された！
+                            break
+                        }
+                        Log.v(TAG, "  -----  NOW PROCESSING  ----- : $fingerprint")
                     }
-                    Log.v(TAG, "  -----  NOW PROCESSING  ----- : $fingerprint")
                 }
-                waitMs(1000)
+                catch (e : Exception)
+                {
+                    e.printStackTrace()
+                }
+                waitMs(1500)
                 currentTime = System.currentTimeMillis()
             }
         }

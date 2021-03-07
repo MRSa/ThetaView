@@ -17,7 +17,6 @@ import jp.osdn.gokigen.thetaview.R
 
 class MainPreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener
 {
-    private lateinit var preferences : SharedPreferences
     private lateinit var changeScene : IChangeScene
 
     fun setSceneChanger(changer : IChangeScene)
@@ -38,7 +37,7 @@ class MainPreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceCha
         {
             useEEG.summary = useEEG.entry
 
-            useEEG.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
+            useEEG.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
                 try
                 {
                     useEEG.summary = context?.resources!!.getStringArray(R.array.eeg_signal_type)[newValue.toString().toInt()]
@@ -46,7 +45,33 @@ class MainPreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceCha
                 catch (e : Exception)
                 {
                     e.printStackTrace()
-                    useEEG.summary = (newValue  as CharSequence) // とりあえず番号を表示した
+                    useEEG.summary = (newValue  as CharSequence) // 例外発生時には、とりあえず番号を表示した
+                }
+                true
+            }
+        }
+
+        val previewFormat  = findPreference<DropDownPreference>(IPreferencePropertyAccessor.LIVEVIEW_RESOLUTION)
+        if (previewFormat != null)
+        {
+            previewFormat.summary = previewFormat.entry
+
+            previewFormat.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+                try
+                {
+                    for ((index, value) in context?.resources!!.getStringArray(R.array.preview_format_value).withIndex())
+                    {
+                        if (value == newValue)
+                        {
+                            previewFormat.summary = context?.resources!!.getStringArray(R.array.preview_format)[index]
+                            break
+                        }
+                    }
+                }
+                catch (e : Exception)
+                {
+                    e.printStackTrace()
+                    previewFormat.summary = (newValue  as CharSequence) // 例外発生時には、とりあえず値を表示した
                 }
                 true
             }
@@ -64,13 +89,14 @@ class MainPreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceCha
         super.onAttach(context)
         Log.v(TAG, " onAttach() : ")
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         PreferenceValueInitializer().initializePreferences(context)
         preferences.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?)
     {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         var value = false
         when (key)
         {
@@ -82,18 +108,8 @@ class MainPreferenceFragment : PreferenceFragmentCompat(), OnSharedPreferenceCha
             IPreferencePropertyAccessor.CAPTURE_ONLY_LIVE_VIEW -> value = preferences.getBoolean(key, IPreferencePropertyAccessor.CAPTURE_ONLY_LIVE_VIEW_DEFAULT_VALUE)
             IPreferencePropertyAccessor.SHOW_CAMERA_STATUS -> value = preferences.getBoolean(key, IPreferencePropertyAccessor.SHOW_CAMERA_STATUS_DEFAULT_VALUE)
             IPreferencePropertyAccessor.USE_MINDWAVE_EEG -> value = preferences.getBoolean(key, IPreferencePropertyAccessor.USE_MINDWAVE_EEG_DEFAULT_VALUE)
-            IPreferencePropertyAccessor.EEG_SIGNAL_USE_TYPE -> {
-                try
-                {
-                    val indexString = preferences.getString(IPreferencePropertyAccessor.EEG_SIGNAL_USE_TYPE, IPreferencePropertyAccessor.EEG_SIGNAL_USE_TYPE_DEFAULT_VALUE)
-                    indexString?.toInt()
-
-                }
-                catch (e : Exception)
-                {
-
-                }
-            }
+            IPreferencePropertyAccessor.EEG_SIGNAL_USE_TYPE -> { Log.v(TAG, " onSharedPreferenceChanged() : + $key ") }
+            IPreferencePropertyAccessor.LIVEVIEW_RESOLUTION -> { Log.v(TAG, " onSharedPreferenceChanged() : + $key ") }
             // else -> Log.v(TAG, " onSharedPreferenceChanged() : + $key ")
         }
         Log.v(TAG, " onSharedPreferenceChanged() : + $key, $value")

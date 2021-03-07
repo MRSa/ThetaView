@@ -7,6 +7,7 @@ import android.provider.Settings
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import jp.osdn.gokigen.thetaview.R
 import jp.osdn.gokigen.thetaview.bluetooth.connection.IBluetoothConnection
 import jp.osdn.gokigen.thetaview.camera.ICameraStatusReceiver
@@ -17,6 +18,7 @@ import jp.osdn.gokigen.thetaview.scene.ICameraConnectionStatus
 import jp.osdn.gokigen.thetaview.camera.theta.status.IThetaSessionIdNotifier
 import jp.osdn.gokigen.thetaview.camera.theta.status.IThetaSessionIdProvider
 import jp.osdn.gokigen.thetaview.liveview.ILiveViewController
+import jp.osdn.gokigen.thetaview.preference.IPreferencePropertyAccessor
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
@@ -239,8 +241,9 @@ class ThetaCameraConnection(private val context: AppCompatActivity, private val 
             optionSet.setOptions("\"captureMode\" : \"image\"", (sessionIdProvider.sessionId.isBlank()),
                     object : IOperationCallback { override fun operationExecuted(result: Int, resultStr: String?)
                     {
-                        Log.v(TAG, " optionSet.setOptions(live view) : $resultStr ")
-                        val previewFormat= "{\"width\": 640, \"height\": 320, \"framerate\": 30}"
+                        val previewFormat = PreferenceManager.getDefaultSharedPreferences(context).getString(IPreferencePropertyAccessor.LIVEVIEW_RESOLUTION, IPreferencePropertyAccessor.LIVEVIEW_RESOLUTION_DEFAULT_VALUE)
+                        //val previewFormat= "{\"width\": 640, \"height\": 320, \"framerate\": 30}"
+                        Log.v(TAG, " optionSet.setOptions(live view) : $resultStr : $previewFormat")
                         optionSet.setOptions("\"previewFormat\" : $previewFormat", (sessionIdProvider.sessionId.isBlank()),
                                 object : IOperationCallback { override fun operationExecuted(result: Int, resultStr: String?)
                                 {
