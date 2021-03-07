@@ -1,0 +1,78 @@
+<resources>
+    <string name="app_name">Theta Thought ShutterS</string>
+    <string name="blank"> </string>
+    <string name="app_location">AirA01a</string>
+    <string name="action_refresh">再描画</string>
+    <string name="finish_refresh">再描画完了</string>
+
+    <string name="permission_not_granted">アプリの権限が許されていません。</string>
+
+    <string name="dialog_positive_execute">OK</string>
+    <string name="dialog_negative_cancel">Cancel</string>
+
+    <string name="capture_success">撮影完了: </string>
+
+    <string name="dialog_confirm_title_output_log">デバッグログの共有</string>
+    <string name="dialog_confirm_message_output_log">デバッグログを共有します。</string>
+
+    <string name="dialog_title_exit_application">アプリ終了</string>
+    <string name="dialog_message_exit_application">アプリケーションを終了します。</string>
+
+    <string name="pref_cat_application_control">アプリ制御</string>
+    <string name="pref_exit_power_off">アプリ終了</string>
+    <string name="pref_summary_exit_power_off"> </string>
+    <string name="pref_wifi_settings">WIFI設定</string>
+    <string name="pref_summary_wifi_settings"> </string>
+
+    <string name="pref_cat_application_settings">アプリ設定</string>
+    <string name="save_local_location">ローカル領域に保存</string>
+
+    <string name="pref_cat_camera">カメラ設定</string>
+    <string name="pref_capture_both_camera_and_live_view">ライブ画像を同時保存</string>
+    <string name="pref_summary_capture_both_live_view">撮影時にライブビュー画像を同時保存します</string>
+
+    <string name="pref_cat_eeg_settings">EEG設定</string>
+
+    <string name="pref_cat_gokigen">GOKIGEN</string>
+    <string name="pref_instruction_manual">操作説明</string>
+    <string name="pref_privacy_policy">プライバシーポリシー</string>
+    <string name="pref_degug_info">デバッグ情報</string>
+    <string name="pref_summary_debug_info">LogCat情報</string>
+
+    <string name="pref_use_camerax_preview">カメラプレビューの使用(要再起動)</string>
+
+    <string name="pref_liveview_resolution">ライブビュー形式(要再起動)</string>
+    <string name="pref_summary_liveview_resolution"> </string>
+
+    <string name="pref_show_camera_status">機器状態を画面に表示</string>
+    <string name="pref_summary_show_camera_status">機器の状態を画面表示します</string>
+
+    <string name="pref_use_mindwave_connection">Mindwave Mobile(EEGヘッドセット)を使用する</string>
+    <string name="pref_summary_use_mindwave_connection">EEGヘッドセットを使用する場合に設定してください</string>
+
+    <string name="pref_use_eeg_signal_type">脳波シャッタータイプ</string>
+    <string name="pref_summary_use_eeg_signal_type"> </string>
+
+    <string name="pref_show_eeg_wave_signal">脳波信号も画面表示</string>
+    <string name="pref_summary_show_eeg_wave_signal">「状態を画面に表示」のチェック時、脳波信号も画面表示します</string>
+
+    <string name="pref_record_eeg_wave_signal">脳波信号をCSVファイルに出力</string>
+    <string name="pref_summary_record_eeg_wave_signal">脳波信号をCSVファイルとしてDownloadフォルダに記録します</string>
+
+    <string name="shoot_camera">撮影しました！</string>
+
+    <string name="connect_start">開始</string>
+    <string name="connect_check_wifi">WIFI確認中</string>
+    <string name="connect_connect">接続</string>
+    <string name="connect_connecting">接続中&#8230;</string>
+    <string name="connect_connected">接続完了</string>
+    <string name="connect_change_run_mode">モード変更</string>
+    <string name="connect_restore_camera_settings">カメラ設定調整</string>
+
+    <string name="camera_not_found">Not Found&#8230;</string>
+    <string name="theta_connect_response_ng">カメラに接続できませんでした。</string>
+
+    <string name="dialog_title_connect_failed_theta">接続失敗(THETA)</string>
+    <string name="dialog_title_button_retry">再試行</string>
+    <string name="dialog_title_button_network_settings">WiFi設定</string>
+</resources>

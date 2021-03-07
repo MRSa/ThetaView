@@ -237,6 +237,14 @@ class ThetaCameraConnection(private val context: AppCompatActivity, private val 
     {
         try
         {
+/*
+            val optionGet = ThetaOptionGetControl(sessionIdProvider)
+            optionGet.getOptions("[\"previewFormat\", \"previewFormatSupport\"]", (sessionIdProvider.sessionId.isBlank()),
+                    object : IOperationCallback { override fun operationExecuted(result: Int, resultStr: String?)
+                    {
+                        Log.v(TAG, " >>>>> optionGet.getOptions : $resultStr ")
+                    }})
+*/
             val optionSet = ThetaOptionSetControl(sessionIdProvider)
             optionSet.setOptions("\"captureMode\" : \"image\"", (sessionIdProvider.sessionId.isBlank()),
                     object : IOperationCallback { override fun operationExecuted(result: Int, resultStr: String?)
@@ -247,7 +255,7 @@ class ThetaCameraConnection(private val context: AppCompatActivity, private val 
                         optionSet.setOptions("\"previewFormat\" : $previewFormat", (sessionIdProvider.sessionId.isBlank()),
                                 object : IOperationCallback { override fun operationExecuted(result: Int, resultStr: String?)
                                 {
-                                    Log.v(TAG, " optionSet.setOptions(live view) : $resultStr ")
+                                    Log.v(TAG, " optionSet.setOptions(live view) : $resultStr ($previewFormat)")
                                     liveViewControl.startLiveView()
                                 }})
                     }})

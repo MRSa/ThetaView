@@ -11,11 +11,11 @@
     </string-array>
 
     <string-array name="preview_format_value">
-        <item>{"width": 640, "height": 320, "framerate": 30}</item>
-        <item>{"width": 640, "height": 320, "framerate":  8}</item>
-        <item>{“width”: 1024, “height”: 512, “framerate”: 30}</item>
-        <item>{“width”: 1024, “height”: 512, “framerate”: 8}</item>
-        <item>{“width”: 1920, “height”: 960, “framerate”: 8}</item>
+        <item>{"framerate":30,"height":320,"width":640}</item>
+        <item>{"framerate":8,"height":320,"width":640}</item>
+        <item>{"framerate":30,"height":512,"width":1024}</item>
+        <item>{"framerate":8,"height":512,"width":1024}</item>
+        <item>{"framerate":8,"height":960,"width":1920}</item>
         <!-- <item>{“width”: 640, “height”: 320, “framerate”: 10}</item> -->
     </string-array>
 

@@ -16,10 +16,9 @@
             android:summary="@string/pref_summary_wifi_settings" />
     </PreferenceCategory>
 
-<!--
     <PreferenceCategory
         app:title="@string/pref_cat_application_settings">
-
+<!--
         <SwitchPreferenceCompat
             android:key="use_camera_x_preview"
             android:title="@string/pref_use_camerax_preview"/>
@@ -27,8 +26,17 @@
         <SwitchPreferenceCompat
             android:key="save_local_location"
             android:title="@string/save_local_location"/>
-    </PreferenceCategory>
 -->
+        <SwitchPreferenceCompat
+            android:key="capture_both_camera_and_live_view"
+            android:title="@string/pref_capture_both_camera_and_live_view"
+            android:summary="@string/pref_summary_capture_both_live_view"/>
+
+        <SwitchPreferenceCompat
+            android:key="show_camera_status"
+            android:title="@string/pref_show_camera_status"
+            android:summary="@string/pref_summary_show_camera_status"/>
+    </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/pref_cat_camera">
@@ -40,17 +48,6 @@
             android:title="@string/pref_liveview_resolution"
             android:summary="@string/pref_summary_liveview_resolution"
             />
-
-        <SwitchPreferenceCompat
-            android:key="capture_both_camera_and_live_view"
-            android:title="@string/pref_capture_both_camera_and_live_view"
-            android:summary="@string/pref_summary_capture_both_live_view"/>
-
-        <SwitchPreferenceCompat
-            android:key="show_camera_status"
-            android:title="@string/pref_show_camera_status"
-            android:summary="@string/pref_summary_show_camera_status"/>
-
     </PreferenceCategory>
 
     <PreferenceCategory

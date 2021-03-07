@@ -3,8 +3,10 @@ package jp.osdn.gokigen.thetaview.liveview.glrenderer
 import android.content.Context
 import android.opengl.GLUtils
 import android.util.Log
+import androidx.preference.PreferenceManager
 import jp.osdn.gokigen.thetaview.R
 import jp.osdn.gokigen.thetaview.liveview.image.IImageProvider
+import jp.osdn.gokigen.thetaview.preference.IPreferencePropertyAccessor
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
@@ -13,7 +15,7 @@ import javax.microedition.khronos.opengles.GL10
 import kotlin.math.cos
 import kotlin.math.sin
 
-class EquirectangularDrawer(context: Context) : IGraphicsDrawer
+class EquirectangularDrawer(private val context: Context) : IGraphicsDrawer
 {
     private lateinit var imageProvider : IImageProvider
 
@@ -64,8 +66,35 @@ class EquirectangularDrawer(context: Context) : IGraphicsDrawer
 
     override fun prepareDrawer(gl: GL10?)
     {
-        Log.v(TAG, "prepareDrawer()")
-        mDroidTextureID = mGlUtils.prepareTexture(gl, R.drawable.sample)
+        try
+        {
+            val previewFormat = PreferenceManager.getDefaultSharedPreferences(context).getString(IPreferencePropertyAccessor.LIVEVIEW_RESOLUTION, IPreferencePropertyAccessor.LIVEVIEW_RESOLUTION_DEFAULT_VALUE)
+            if (previewFormat != null)
+            {
+                mDroidTextureID = when {
+                    previewFormat.contains("width:1920") -> {
+                        mGlUtils.prepareTexture(gl, R.drawable.sample2)
+                    }
+                    previewFormat.contains("width:1024") -> {
+                        mGlUtils.prepareTexture(gl, R.drawable.sample1)
+                    }
+                    else -> {
+                        mGlUtils.prepareTexture(gl, R.drawable.sample)
+                    }
+                }
+            }
+            else
+            {
+                // 取得できなかった場合は、640x320 にする
+                mDroidTextureID = mGlUtils.prepareTexture(gl, R.drawable.sample)
+            }
+            Log.v(TAG, "prepareDrawer() : $mDroidTextureID : $previewFormat")
+        }
+        catch (e : Exception)
+        {
+            e.printStackTrace()
+            mDroidTextureID = mGlUtils.prepareTexture(gl, R.drawable.sample)
+        }
     }
 
     override fun preprocessDraw(gl: GL10?)
