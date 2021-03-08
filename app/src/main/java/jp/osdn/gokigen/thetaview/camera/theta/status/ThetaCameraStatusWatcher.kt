@@ -483,4 +483,10 @@ class ThetaCameraStatusWatcher(private val sessionIdProvider: IThetaSessionIdPro
     override var captureMode: String
         get() = currentCaptureMode
         set(value) { currentCaptureMode = value }
+
+    override var captureStatus: String
+        get() = currentCaptureStatus
+        set(value) { currentCaptureStatus = value }
+
+
 }

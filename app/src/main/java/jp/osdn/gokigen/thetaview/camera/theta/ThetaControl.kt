@@ -176,6 +176,7 @@ class ThetaControl(private val context: AppCompatActivity, private val showInfor
     {
         try
         {
+            Log.v(TAG, " doShutter()")
             captureImageLiveView()
             if (statusWatcher.captureMode.contains("image"))
             {
@@ -185,7 +186,7 @@ class ThetaControl(private val context: AppCompatActivity, private val showInfor
             else
             {
                 // video
-                ThetaMovieRecordingControl(sessionIdHolder, showInformation, liveViewControl).movieControl(sessionIdHolder.isApiLevelV21())
+                ThetaMovieRecordingControl(sessionIdHolder, showInformation, liveViewControl, statusWatcher).movieControl(sessionIdHolder.isApiLevelV21())
                 isMovieRecording = true
             }
         }
@@ -203,7 +204,8 @@ class ThetaControl(private val context: AppCompatActivity, private val showInfor
             if ((isMovieRecording)&&(!statusWatcher.captureMode.contains("image")))
             {
                 // video
-                ThetaMovieRecordingControl(sessionIdHolder, showInformation, liveViewControl).movieControl(sessionIdHolder.isApiLevelV21())
+                Log.v(TAG, " doShutterOff()")
+                ThetaMovieRecordingControl(sessionIdHolder, showInformation, liveViewControl, statusWatcher).movieControl(sessionIdHolder.isApiLevelV21())
             }
         }
         catch (e : Exception)

@@ -3,19 +3,20 @@ package jp.osdn.gokigen.thetaview.camera.theta.operation
 import android.util.Log
 import jp.osdn.gokigen.thetaview.IShowInformation
 import jp.osdn.gokigen.thetaview.camera.theta.status.IThetaSessionIdProvider
+import jp.osdn.gokigen.thetaview.camera.theta.status.IThetaStatusHolder
 import jp.osdn.gokigen.thetaview.liveview.ILiveViewController
 import jp.osdn.gokigen.thetaview.utils.communication.SimpleHttpClient
 
-class ThetaMovieRecordingControl(private val sessionIdProvider: IThetaSessionIdProvider, private val statusDrawer: IShowInformation, private val liveViewControl : ILiveViewController)
+class ThetaMovieRecordingControl(private val sessionIdProvider: IThetaSessionIdProvider, private val statusDrawer: IShowInformation, private val liveViewControl : ILiveViewController, private val statusHolder : IThetaStatusHolder)
 {
     private val httpClient = SimpleHttpClient()
-    private var isCapturing = false
 
     fun movieControl(useOSCv2 : Boolean)
     {
         try
         {
-            if (!(isCapturing))
+
+            if (statusHolder.captureStatus.contains("idle"))
             {
                 startCapture(useOSCv2)
             }
@@ -24,7 +25,6 @@ class ThetaMovieRecordingControl(private val sessionIdProvider: IThetaSessionIdP
                 stopCapture(useOSCv2)
             }
             statusDrawer.invalidate()
-            isCapturing = !isCapturing
         }
         catch (e: Exception)
         {
@@ -133,6 +133,6 @@ class ThetaMovieRecordingControl(private val sessionIdProvider: IThetaSessionIdP
     companion object
     {
         private val TAG = ThetaMovieRecordingControl::class.java.simpleName
-        private const val timeoutMs = 6000
+        private const val timeoutMs = 4000
     }
 }
