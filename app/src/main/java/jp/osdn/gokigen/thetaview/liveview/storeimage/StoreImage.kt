@@ -12,6 +12,7 @@ import jp.osdn.gokigen.thetaview.R
 import jp.osdn.gokigen.thetaview.liveview.image.IImageProvider
 import jp.osdn.gokigen.thetaview.preference.IPreferencePropertyAccessor
 import jp.osdn.gokigen.thetaview.preference.PreferenceAccessWrapper
+import java.io.ByteArrayOutputStream
 
 import java.io.File
 import java.io.FileOutputStream
@@ -46,6 +47,7 @@ class StoreImage(private val context: FragmentActivity, private val imageProvide
         }
     }
 
+/*
     private fun storeImageImpl(target: Bitmap)
     {
 /*
@@ -89,7 +91,7 @@ class StoreImage(private val context: FragmentActivity, private val imageProvide
             t.printStackTrace()
         }
     }
-
+*/
     private fun prepareLocalOutputDirectory(): File
     {
         val mediaDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
@@ -167,6 +169,11 @@ class StoreImage(private val context: FragmentActivity, private val imageProvide
             values.put(MediaStore.Images.Media.MIME_TYPE, mimeType)
             val extStorageUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 values.put(MediaStore.Images.Media.RELATIVE_PATH, path)
+/*
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    values.put(MediaStore.Images.Media.XMP, xmpValue)
+                }
+*/
                 values.put(MediaStore.Images.Media.IS_PENDING, true)
                 MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
             } else {
@@ -196,7 +203,29 @@ class StoreImage(private val context: FragmentActivity, private val imageProvide
                 val outputStream = resolver.openOutputStream(imageUri)
                 if (outputStream != null)
                 {
-                    targetImage.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                    val xmpValue = "http://ns.adobe.com/xap/1.0/"
+                    val xmpValue1 = "<?xpacket begin=\"" + "\" ?> <x:xmpmeta xmlns:x=\"adobe:ns:meta/\" xmptk=\"ThetaThoughtShutter\">" +
+                                    "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"><rdf:Description rdf:about=\"\" xmlns:GPano=\"http://ns.google.com/photos/1.0/panorama/\">" +
+                                    "<GPano:UsePanoramaViewer>True</GPano:UsePanoramaViewer><GPano:ProjectionType>equirectangular</GPano:ProjectionType>" +
+                                    "<GPano:FullPanoWidthPixels>${targetImage.width}</GPano:FullPanoWidthPixels><GPano:FullPanoHeightPixels>${targetImage.height}</GPano:FullPanoHeightPixels>" +
+                                    "<GPano:CroppedAreaImageWidthPixels>${targetImage.width}</GPano:CroppedAreaImageWidthPixels><GPano:CroppedAreaImageHeightPixels>${targetImage.height}</GPano:CroppedAreaImageHeightPixels>"+
+                                    "<GPano:CroppedAreaLeftPixels>0</GPano:CroppedAreaLeftPixels><GPano:CroppedAreaTopPixels>0</GPano:CroppedAreaTopPixels></rdf:Description></rdf:RDF></x:xmpmeta><?xpacket end=\"r\"?>"
+                    val xmpLength = xmpValue.length + xmpValue1.length + 3
+                    val byteArrayStream = ByteArrayOutputStream()
+                    targetImage.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayStream)
+                    val jpegImage = byteArrayStream.toByteArray()
+
+                    outputStream.write(jpegImage, 0, 20)
+                    outputStream.write(0xff)
+                    outputStream.write(0xe1)
+                    outputStream.write((xmpLength and 0xff00) shr 8)
+                    outputStream.write((xmpLength and 0x00ff))
+                    outputStream.write(xmpValue.toByteArray())
+                    outputStream.write(0x00)
+                    outputStream.write(xmpValue1.toByteArray())
+                    outputStream.write(jpegImage, 20, (jpegImage.size -20))
+
+                    //targetImage.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
                     outputStream.flush()
                     outputStream.close()
                 }
