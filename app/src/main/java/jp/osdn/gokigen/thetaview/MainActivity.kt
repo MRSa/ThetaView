@@ -172,6 +172,7 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
                         {
                             IShowInformation.VibratePattern.SIMPLE_SHORT_SHORT -> vibrator.vibrate(30)
                             IShowInformation.VibratePattern.SIMPLE_SHORT ->  vibrator.vibrate(50)
+                            IShowInformation.VibratePattern.SIMPLE_MIDDLE -> vibrator.vibrate(100)
                             IShowInformation.VibratePattern.SIMPLE_LONG ->  vibrator.vibrate(150)
                             else -> { }
                         }

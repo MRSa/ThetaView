@@ -138,6 +138,13 @@ class PreferenceValueInitializer : IPreferenceValueInitializer
                         IPreferencePropertyAccessor.LIVEVIEW_RESOLUTION_DEFAULT_VALUE
                 )
             }
+            if (!items.containsKey(IPreferencePropertyAccessor.DO_NOT_USE_THETA_SHUTTER))
+            {
+                editor.putBoolean(
+                        IPreferencePropertyAccessor.DO_NOT_USE_THETA_SHUTTER,
+                        IPreferencePropertyAccessor.DO_NOT_USE_THETA_SHUTTER_DEFAULT_VALUE
+                )
+            }
             editor.apply()
         }
         catch (e : Exception)

@@ -177,7 +177,13 @@ class ThetaControl(private val context: AppCompatActivity, private val showInfor
         try
         {
             Log.v(TAG, " doShutter()")
-            captureImageLiveView()
+            val isNotDriveShutter = captureImageLiveView()
+            if (isNotDriveShutter)
+            {
+                //  シャッターを駆動させない(けど、バイブレーションで通知する)
+                showInformation.vibrate(IShowInformation.VibratePattern.SIMPLE_SHORT)
+                return
+            }
             if (statusWatcher.captureMode.contains("image"))
             {
                 // image
@@ -215,7 +221,7 @@ class ThetaControl(private val context: AppCompatActivity, private val showInfor
         isMovieRecording = false
     }
 
-    private fun captureImageLiveView()
+    private fun captureImageLiveView() : Boolean
     {
         try
         {
@@ -223,6 +229,10 @@ class ThetaControl(private val context: AppCompatActivity, private val showInfor
             val captureBothCamera = PreferenceAccessWrapper(context).getBoolean(
                     IPreferencePropertyAccessor.CAPTURE_BOTH_CAMERA_AND_LIVE_VIEW,
                     IPreferencePropertyAccessor.CAPTURE_BOTH_CAMERA_AND_LIVE_VIEW_DEFAULT_VALUE
+            )
+            val notUseShutter = PreferenceAccessWrapper(context).getBoolean(
+                    IPreferencePropertyAccessor.DO_NOT_USE_THETA_SHUTTER,
+                    IPreferencePropertyAccessor.DO_NOT_USE_THETA_SHUTTER_DEFAULT_VALUE
             )
             if ((captureBothCamera)&&(liveViewListener.isImageReceived()))
             {
@@ -237,11 +247,13 @@ class ThetaControl(private val context: AppCompatActivity, private val showInfor
                     e.printStackTrace()
                 }
             }
+            return (notUseShutter)
         }
         catch (e : Exception)
         {
             e.printStackTrace()
         }
+        return (false)
     }
 
     companion object

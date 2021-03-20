@@ -23,6 +23,9 @@ interface IPreferencePropertyAccessor
         const val CAPTURE_BOTH_CAMERA_AND_LIVE_VIEW = "capture_both_camera_and_live_view"
         const val CAPTURE_BOTH_CAMERA_AND_LIVE_VIEW_DEFAULT_VALUE = false
 
+        const val DO_NOT_USE_THETA_SHUTTER = "do_not_use_theta_shutter"
+        const val DO_NOT_USE_THETA_SHUTTER_DEFAULT_VALUE = false
+
         const val CAPTURE_ONLY_LIVE_VIEW = "capture_only_live_view"
         const val CAPTURE_ONLY_LIVE_VIEW_DEFAULT_VALUE = false
 

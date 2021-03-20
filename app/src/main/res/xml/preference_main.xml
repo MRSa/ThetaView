@@ -28,6 +28,11 @@
             android:title="@string/save_local_location"/>
 -->
         <SwitchPreferenceCompat
+            android:key="do_not_use_theta_shutter"
+            android:title="@string/pref_do_not_use_theta_shutter"
+            android:summary="@string/pref_summary_do_not_use_theta_shutter"/>
+
+        <SwitchPreferenceCompat
             android:key="capture_both_camera_and_live_view"
             android:title="@string/pref_capture_both_camera_and_live_view"
             android:summary="@string/pref_summary_capture_both_live_view"/>

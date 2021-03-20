@@ -28,6 +28,9 @@
     <string name="save_local_location">ローカル領域に保存</string>
 
     <string name="pref_cat_camera">カメラ設定</string>
+    <string name="pref_do_not_use_theta_shutter">カメラシャッターを使用しない</string>
+    <string name="pref_summary_do_not_use_theta_shutter">カメラ側のシャッターを駆動させません</string>
+
     <string name="pref_capture_both_camera_and_live_view">ライブ画像を同時保存</string>
     <string name="pref_summary_capture_both_live_view">撮影時にライブビュー画像を同時保存します</string>
 
