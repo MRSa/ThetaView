@@ -42,10 +42,14 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
     {
         super.onCreate(savedInstanceState)
 
+        val context = context
         //　入力の初期化
         gestureDetector = GestureDetector(context, this)
         gestureDetector.setIsLongpressEnabled(true)
-        scaleGestureDetector = ScaleGestureDetector(context, this)
+        if (context != null)
+        {
+            scaleGestureDetector = ScaleGestureDetector(context, this)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
@@ -91,39 +95,34 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
     }
 
     // View.OnTouchListener
-    override fun onTouch(v: View?, event: MotionEvent?): Boolean
+    override fun onTouch(v: View, event: MotionEvent): Boolean
     {
         //Log.v(TAG, " onTouch()")
-        if (event == null)
-        {
-            v?.performClick()
-            return (false)
-        }
         return (gestureDetector.onTouchEvent(event) || scaleGestureDetector.onTouchEvent(event))
     }
 
     // GestureDetector.OnGestureListener
-    override fun onDown(e: MotionEvent?): Boolean
+    override fun onDown(e: MotionEvent): Boolean
     {
         //Log.v(TAG, " Gesture onDown")
         return (false)
     }
 
     // GestureDetector.OnGestureListener
-    override fun onShowPress(e: MotionEvent?)
+    override fun onShowPress(e: MotionEvent)
     {
         //Log.v(TAG, " Gesture onShowPress")
     }
 
     // GestureDetector.OnGestureListener
-    override fun onSingleTapUp(e: MotionEvent?): Boolean
+    override fun onSingleTapUp(e: MotionEvent): Boolean
     {
         //Log.v(TAG, " Gesture onSingleTapUp")
         return (false)
     }
 
     // GestureDetector.OnGestureListener
-    override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean
+    override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean
     {
         //Log.v(TAG, " Gesture onScroll")
         imageView.moveView(distanceX, distanceY)
@@ -131,30 +130,27 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
     }
 
     // GestureDetector.OnGestureListener
-    override fun onLongPress(e: MotionEvent?)
+    override fun onLongPress(e: MotionEvent)
     {
         //Log.v(TAG, " Gesture onLongPress")
         imageView.resetView()
     }
 
     // GestureDetector.OnGestureListener
-    override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean
+    override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean
     {
         //Log.v(TAG, " Gesture onFling")
         return (false)
     }
 
     // ScaleGestureDetector.OnScaleGestureListener
-    override fun onScale(detector: ScaleGestureDetector?): Boolean
+    override fun onScale(detector: ScaleGestureDetector): Boolean
     {
         //Log.v(TAG, " Gesture onScale")
         try
         {
-            if (detector != null)
-            {
-                imageView.setScaleFactor(detector.scaleFactor)
-                return (true)
-            }
+            imageView.setScaleFactor(detector.scaleFactor)
+            return (true)
         }
         catch (e : Exception)
         {
@@ -164,14 +160,14 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
     }
 
     // ScaleGestureDetector.OnScaleGestureListener
-    override fun onScaleBegin(detector: ScaleGestureDetector?): Boolean
+    override fun onScaleBegin(detector: ScaleGestureDetector): Boolean
     {
         //Log.v(TAG, " Gesture onScaleBegin")
         return (true)
     }
 
     // ScaleGestureDetector.OnScaleGestureListener
-    override fun onScaleEnd(detector: ScaleGestureDetector?)
+    override fun onScaleEnd(detector: ScaleGestureDetector)
     {
         //Log.v(TAG, " Gesture onScaleEnd")
     }
