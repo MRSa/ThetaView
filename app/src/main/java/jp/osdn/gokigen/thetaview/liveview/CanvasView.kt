@@ -32,24 +32,24 @@ class CanvasView : View
         initComponent()
     }
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
-    {
-        initComponent()
-    }
+    //constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
+    //{
+    //    initComponent()
+    //}
 
     private fun initComponent()
     {
         Log.v(TAG, "initComponent")
     }
 
-    override fun onDraw(canvas: Canvas?)
+    override fun onDraw(canvas: Canvas)
     {
         super.onDraw(canvas)
-        if (canvas == null)
-        {
-            Log.v(TAG, " ===== onDraw : canvas is not ready. ==== ")
-            return
-        }
+        //if (canvas == null)
+        //{
+        //    Log.v(TAG, " ===== onDraw : canvas is not ready. ==== ")
+        //    return
+        //}
         //Log.v(TAG, " ----- onDraw() ----- ")
         //canvas.drawARGB(255, 0, 0, 0)
 

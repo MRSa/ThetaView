@@ -2,7 +2,6 @@ package jp.osdn.gokigen.thetaview
 
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -13,6 +12,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -53,16 +53,44 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
             e.printStackTrace()
         }
 
-        if (allPermissionsGranted())
+        try
         {
-            checkMediaWritePermission()
-            sceneChanger.initializeFragment()
-            mainButtonHandler.initialize()
-            initializeBluetooth()
+            ///////// SET PERMISSIONS /////////
+            if (!allPermissionsGranted())
+            {
+                val requestPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+
+                    ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
+
+                    if(!allPermissionsGranted())
+                    {
+                        // Abort launch application because required permissions was rejected.
+                        Toast.makeText(this, getString(R.string.permission_not_granted), Toast.LENGTH_SHORT).show()
+                        Log.v(TAG, "----- APPLICATION LAUNCH ABORTED -----")
+                        finish()
+                    }
+                    else
+                    {
+                        // ----- ----- ----- ----- ----- ----- -----
+                        checkMediaWritePermission()
+                        sceneChanger.initializeFragment()
+                        mainButtonHandler.initialize()
+                        initializeBluetooth()
+                    }
+                }
+                requestPermission.launch(REQUIRED_PERMISSIONS)
+            }
+            else
+            {
+                checkMediaWritePermission()
+                sceneChanger.initializeFragment()
+                mainButtonHandler.initialize()
+                initializeBluetooth()
+            }
         }
-        else
+        catch (e: Exception)
         {
-            ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
+            e.printStackTrace()
         }
     }
 
@@ -72,8 +100,40 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
         sceneChanger.finish()
     }
 
-    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
+    private fun allPermissionsGranted() : Boolean
+    {
+        var result = true
+        for (param in REQUIRED_PERMISSIONS)
+        {
+            if (ContextCompat.checkSelfPermission(
+                    baseContext,
+                    param
+                ) != PackageManager.PERMISSION_GRANTED
+            )
+            {
+                // Permission Denied...
+                if ((param == Manifest.permission.ACCESS_MEDIA_LOCATION)&&(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q))
+                {
+                    //　この場合は権限付与の判断を除外 (デバイスが (10) よりも古く、ACCESS_MEDIA_LOCATION がない場合）
+                }
+                else if ((param == Manifest.permission.READ_EXTERNAL_STORAGE)&&(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU))
+                {
+                    // この場合は、権限付与の判断を除外 (SDK: 33以上はエラーになる...)
+
+                }
+                else if ((param == Manifest.permission.WRITE_EXTERNAL_STORAGE)&&(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU))
+                {
+                    // この場合は、権限付与の判断を除外 (SDK: 33以上はエラーになる...)
+
+                }
+                else
+                {
+                    Log.v(TAG, " Permission: $param : ${Build.VERSION.SDK_INT}")
+                    result = false
+                }
+            }
+        }
+        return (result)
     }
 
     private fun initializeBluetooth()
@@ -93,6 +153,7 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
         }
     }
 
+/*
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray)
     {
         if (requestCode == REQUEST_CODE_PERMISSIONS)
@@ -112,7 +173,9 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
             }
         }
     }
+*/
 
+/*
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
         super.onActivityResult(requestCode, resultCode, data)
@@ -125,6 +188,7 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
             accessPermission?.responseStorageAccessFrameworkLocation(resultCode, data)
         }
     }
+*/
 
     override fun showToast(rscId: Int, appendMessage: String, duration: Int)
     {
@@ -153,21 +217,37 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
         try
         {
             // バイブレータをつかまえる
-            val vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
+            val vibrator =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                {
+                    getSystemService(Vibrator::class.java)
+                }
+                else
+                {
+                    @Suppress("DEPRECATION")
+                    getSystemService(VIBRATOR_SERVICE) as Vibrator
+                }
+
             if (!vibrator.hasVibrator())
             {
                 Log.v(TAG, " not have Vibrator...")
                 return
             }
-            @Suppress("DEPRECATION") val thread = Thread {
+
+            // ---------- ぶるぶるさせる
+            val thread = Thread {
                 try
                 {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                     {
-                        vibrator.vibrate(VibrationEffect.createOneShot(10, VibrationEffect.DEFAULT_AMPLITUDE))
+                        val effect = VibrationEffect.createOneShot(10.toLong(),
+                            VibrationEffect.DEFAULT_AMPLITUDE
+                        )
+                        vibrator?.vibrate(effect)
                     }
                     else
                     {
+                        @Suppress("DEPRECATION")
                         when (vibratePattern)
                         {
                             IShowInformation.VibratePattern.SIMPLE_SHORT_SHORT -> vibrator.vibrate(30)
@@ -305,6 +385,7 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
             e.printStackTrace()
             return (false)
         }
+        @Suppress("DEPRECATION")
         return (BluetoothAdapter.getDefaultAdapter().isEnabled)
     }
 
@@ -394,8 +475,8 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
         private val TAG = MainActivity::class.java.simpleName
 
         private const val REQUEST_CODE_PERMISSIONS = 10
-        const val REQUEST_CODE_MEDIA_EDIT = 12
-        const val REQUEST_CODE_OPEN_DOCUMENT_TREE = 20
+        //const val REQUEST_CODE_MEDIA_EDIT = 12
+        //const val REQUEST_CODE_OPEN_DOCUMENT_TREE = 20
 
         private val REQUIRED_PERMISSIONS = arrayOf(
                 //Manifest.permission.CAMERA,

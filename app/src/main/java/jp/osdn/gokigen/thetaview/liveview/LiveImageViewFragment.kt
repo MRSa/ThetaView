@@ -1,5 +1,6 @@
 package jp.osdn.gokigen.thetaview.liveview
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -95,6 +96,7 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
     }
 
     // View.OnTouchListener
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(v: View, event: MotionEvent): Boolean
     {
         //Log.v(TAG, " onTouch()")
@@ -122,7 +124,7 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
     }
 
     // GestureDetector.OnGestureListener
-    override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean
+    override fun onScroll(e1: MotionEvent?, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean
     {
         //Log.v(TAG, " Gesture onScroll")
         imageView.moveView(distanceX, distanceY)
@@ -137,7 +139,7 @@ class LiveImageViewFragment(private val contentLayoutId: Int = R.layout.glsurfac
     }
 
     // GestureDetector.OnGestureListener
-    override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean
+    override fun onFling(e1: MotionEvent?, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean
     {
         //Log.v(TAG, " Gesture onFling")
         return (false)
