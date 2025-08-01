@@ -58,7 +58,10 @@ object SimpleLogDumper
             val extendName = SimpleDateFormat("yyyyMMdd-HHmmss", Locale.getDefault()).format(calendar.time)
             @Suppress("DEPRECATION") val directoryPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).path + "/" + activity.getString(R.string.app_location) + "/"
             val outputFileName = fileNamePrefix + "_" + extendName + ".bin"
-            val filepath = File(directoryPath.toLowerCase(Locale.ROOT), outputFileName.toLowerCase(Locale.ROOT)).path
+            val filepath = File(
+                directoryPath.lowercase(Locale.ROOT),
+                outputFileName.lowercase(Locale.ROOT)
+            ).path
             val outputStream = FileOutputStream(filepath)
             outputStream.write(rx_body, 0, rx_body.size)
             outputStream.flush()

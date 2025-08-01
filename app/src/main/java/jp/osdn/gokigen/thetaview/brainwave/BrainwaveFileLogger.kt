@@ -20,7 +20,10 @@ class BrainwaveFileLogger(prefix : String = "TTShut", private val loggingSize : 
             val extendName: String = SimpleDateFormat("yyyyMMdd-HHmmss", Locale.getDefault()).format(calendar.time)
             @Suppress("DEPRECATION") val directoryPath: String = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path.toString() + "/"
             val outputFileName = fileNamePrefix + "_" + extendName + ".bin"
-            val filepath: String = File(directoryPath.toLowerCase(Locale.getDefault()), outputFileName.toLowerCase(Locale.getDefault())).path
+            val filepath: String = File(
+                directoryPath.lowercase(Locale.getDefault()),
+                outputFileName.lowercase(Locale.getDefault())
+            ).path
             outputStream = FileOutputStream(filepath)
         }
         catch (e: Exception)

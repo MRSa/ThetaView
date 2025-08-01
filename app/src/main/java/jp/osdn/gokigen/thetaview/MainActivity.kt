@@ -12,10 +12,15 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.preference.PreferenceManager
 import jp.osdn.gokigen.thetaview.bluetooth.connection.IBluetoothConnection
 import jp.osdn.gokigen.thetaview.bluetooth.connection.IBluetoothStatusNotify
@@ -37,12 +42,33 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
     {
         Log.v(TAG, " ----- onCreate() -----")
         super.onCreate(savedInstanceState)
+        try
+        {
+            ///////// SHOW SPLASH SCREEN : call before super.onCreate() /////////
+            installSplashScreen()
+
+            enableEdgeToEdge()
+        }
+        catch (e: Exception)
+        {
+            e.printStackTrace()
+        }
+
         mainButtonHandler.setSceneChanger(sceneChanger)
 
         setContentView(R.layout.activity_main)
 
         supportActionBar?.hide()
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+        try
+        {
+            setupWindowInset(findViewById(R.id.base_layout))
+        }
+        catch (e: Exception)
+        {
+            e.printStackTrace()
+        }
 
         try
         {
@@ -100,6 +126,32 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
         sceneChanger.finish()
     }
 
+    private fun setupWindowInset(view: View)
+    {
+        try
+        {
+            // Display cutout insets
+            //   https://developer.android.com/develop/ui/views/layout/edge-to-edge
+            ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
+                val bars = insets.getInsets(
+                    WindowInsetsCompat.Type.systemBars()
+                            or WindowInsetsCompat.Type.displayCutout()
+                )
+                v.updatePadding(
+                    left = bars.left,
+                    top = bars.top,
+                    right = bars.right,
+                    bottom = bars.bottom,
+                )
+                WindowInsetsCompat.CONSUMED
+            }
+        }
+        catch (e: Exception)
+        {
+            e.printStackTrace()
+        }
+    }
+
     private fun allPermissionsGranted() : Boolean
     {
         var result = true
@@ -124,7 +176,14 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
                 else if ((param == Manifest.permission.WRITE_EXTERNAL_STORAGE)&&(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU))
                 {
                     // この場合は、権限付与の判断を除外 (SDK: 33以上はエラーになる...)
-
+                }
+                else if ((param == Manifest.permission.ACCESS_FINE_LOCATION)&&(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU))
+                {
+                    // この場合は、権限付与の判断を除外 (SDK: 33以上はエラーになる...)
+                }
+                else if ((param == Manifest.permission.NEARBY_WIFI_DEVICES)&&(Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU))
+                {
+                    // この場合は、権限付与の判断を除外 (SDK: 33より下はエラーになる...)
                 }
                 else
                 {
@@ -490,6 +549,7 @@ class MainActivity : AppCompatActivity(), IShowInformation, ICameraStatusReceive
                 Manifest.permission.BLUETOOTH_ADMIN,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.NEARBY_WIFI_DEVICES,
         )
     }
 }
